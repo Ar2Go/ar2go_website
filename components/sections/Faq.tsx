@@ -1,18 +1,19 @@
 import { Section } from "@/components/ui/Section";
 import { faq } from "@/content/faq";
+import { medidaMaxima, tipografia } from "@/lib/typography";
 
 export function Faq() {
   return (
     <Section background="papel" id="faq">
-      <p className="font-mono text-sm uppercase tracking-wide text-gris">
-        Preguntas frecuentes
-      </p>
+      <p className={tipografia.eyebrow}>Preguntas frecuentes</p>
 
-      <dl className="mt-8 divide-y divide-tinta/10 border-t border-tinta/10">
+      <dl className="mt-8 divide-y divide-linea border-t border-linea">
         {faq.map((item) => (
           <div key={item.pregunta} className="py-6">
-            <dt className="text-lg font-medium">{item.pregunta}</dt>
-            <dd className="mt-2 max-w-[68ch] text-gris">{item.respuesta}</dd>
+            <dt className={tipografia.h3}>{item.pregunta}</dt>
+            <dd className={`mt-2 ${medidaMaxima} ${tipografia.cuerpo} text-gris`}>
+              {item.respuesta}
+            </dd>
           </div>
         ))}
       </dl>

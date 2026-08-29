@@ -1,13 +1,12 @@
 import { Section } from "@/components/ui/Section";
 import { conversacionEjemplo, productoPasos } from "@/content/producto";
+import { tipografia } from "@/lib/typography";
 
 export function Producto() {
   return (
     <Section background="neutro" id="producto">
-      <p className="font-mono text-sm uppercase tracking-wide text-gris">
-        Cómo funciona
-      </p>
-      <h2 className="mt-2 max-w-2xl text-3xl font-bold leading-[1.05] tracking-tight sm:text-4xl">
+      <p className={tipografia.eyebrow}>Cómo funciona</p>
+      <h2 className={`mt-2 max-w-2xl ${tipografia.h2}`}>
         El mismo proceso, mensaje por mensaje.
       </h2>
 
@@ -15,12 +14,12 @@ export function Producto() {
         <ol className="space-y-8">
           {productoPasos.map((paso) => (
             <li key={paso.numero} className="flex gap-4">
-              <span className="font-mono text-sm text-gris">
+              <span className={`${tipografia.dato} text-gris`}>
                 {paso.numero}
               </span>
               <div>
-                <p className="text-lg font-medium">{paso.titulo}</p>
-                <p className="mt-1 max-w-[60ch] text-gris">
+                <p className={tipografia.h3}>{paso.titulo}</p>
+                <p className={`mt-1 max-w-[60ch] ${tipografia.cuerpo} text-gris`}>
                   {paso.descripcion}
                 </p>
               </div>
@@ -28,18 +27,18 @@ export function Producto() {
           ))}
         </ol>
 
-        <div className="rounded-ar2go border border-tinta/10 bg-papel p-4 sm:p-6">
+        <div className="rounded-card border border-linea bg-papel p-4 sm:p-6">
           <div className="space-y-3">
             {conversacionEjemplo.map((mensaje, indice) => (
               <div
                 key={indice}
                 className={
                   mensaje.de === "agente"
-                    ? "ml-auto max-w-[85%] rounded-ar2go bg-neutro px-4 py-3"
-                    : "mr-auto max-w-[85%] rounded-ar2go border border-tinta/10 px-4 py-3"
+                    ? "ml-auto max-w-[85%] rounded-base bg-neutro px-4 py-3"
+                    : "mr-auto max-w-[85%] rounded-base border border-linea px-4 py-3"
                 }
               >
-                <p className="text-sm">{mensaje.texto}</p>
+                <p className={tipografia.cuerpoChico}>{mensaje.texto}</p>
               </div>
             ))}
           </div>

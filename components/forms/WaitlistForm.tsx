@@ -6,6 +6,7 @@ import {
   type EstadoListaEspera,
 } from "@/app/actions/lista-espera";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { Button } from "@/components/ui/Button";
 
 const estadoInicial: EstadoListaEspera = { status: "idle" };
 
@@ -42,18 +43,19 @@ export function WaitlistForm({ proceso, cta }: WaitlistFormProps) {
           name="correo"
           required
           placeholder="tu@correo.com"
-          className="min-w-0 flex-1 rounded-ar2go border border-tinta/20 px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta"
+          className="min-w-0 flex-1 rounded-base border border-linea px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta"
         />
-        <button
+        <Button
           type="submit"
+          variant="secondary"
           disabled={pendiente}
-          className="whitespace-nowrap rounded-ar2go border border-tinta px-3 py-2 text-sm font-medium hover:bg-neutro disabled:opacity-50"
+          className="!px-3 !py-2 !text-sm"
         >
           {pendiente ? "…" : cta}
-        </button>
+        </Button>
       </div>
       {estado.status === "error" && (
-        <p role="alert" className="mt-2 text-sm text-naranja-2">
+        <p role="alert" className="mt-2 text-sm text-error">
           {estado.mensaje}
         </p>
       )}

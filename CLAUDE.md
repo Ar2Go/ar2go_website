@@ -64,27 +64,18 @@ Reglas que no se negocian:
 
 ## 7. Sistema de diseño
 
-Archivos de marca esperados en `public/brand/`: `ar2go-logotipo.svg` (horizontal) y `ar2go-isotipo.svg` (cuadrado, para favicon y `og:image`). **Pendiente:** estos archivos no existen todavía en el repo — no se debe inventar el logo; se deja como placeholder documentado hasta que se reciban los SVG reales.
+> El sistema visual vive en `docs/brand.md`. Léelo antes de cualquier trabajo de interfaz. No modifiques tokens sin PR dedicado.
 
-### Tokens de color
+`docs/brand.md` es la fuente única de verdad de tokens de color, tipografía, espaciado, radio, componentes y uso del logotipo — si algo en el código contradice lo que dice ese archivo, gana `docs/brand.md`. Resumen para no tener que abrirlo cada vez:
 
-```
---tinta:     #101418   /* texto y fondos oscuros */
---naranja:   #FF6A13   /* acento único */
---naranja-2: #C24F06   /* hover */
---gris:      #6B7076   /* texto secundario */
---neutro:    #F4F3F1   /* fondos de sección */
---papel:     #FFFFFF
-```
-
-### Reglas de aplicación
-
-- El naranja aparece **una sola vez por pantalla visible**: en el CTA primario o en el elemento destacado de la sección, nunca en ambos. El logotipo ya trae su cuadrado naranja y cuenta como uso.
-- Tipografía: una sola familia geométrica sans para todo (Space Grotesk o similar, vía `next/font`), más una monoespaciada para etiquetas, precios y datos. La monoespaciada le da carácter al sitio; se usa en eyebrows, precios y microcopy — nunca en párrafos.
-- Escala tipográfica con salto real entre niveles: títulos apretados (`tracking-tight`, `leading-[1.05]`), cuerpo cómodo a 16–18px con medida máxima de 68 caracteres.
-- Nada de sombras difusas ni gradientes. Separación por línea de 1px, cambio de fondo o espacio en blanco.
-- Bordes: 4px de radio en tarjetas y botones, consistente con el radio del cuadrado del logo.
+- Paleta activa hoy: **verde** (`--color-acento: #0B8F4F`). Hay una paleta azul alternativa documentada pero inactiva; el cambio entre una y otra es una edición de tokens en `app/globals.css` + regenerar dos SVG, no debería tocar componentes.
+- El acento aparece **una sola vez por pantalla visible**: en el CTA primario o en el elemento destacado de la sección, nunca en ambos. El cuadrado del logotipo cuenta como uso.
+- Tipografía: Space Grotesk (sans, títulos y cuerpo) + JetBrains Mono (eyebrows, precios, datos — nunca en párrafos), vía `next/font`. Escala completa y roles tipográficos en `docs/brand.md` §4, implementados en `lib/typography.ts`.
+- Medida máxima de línea: 68 caracteres, sin excepción.
+- Nada de sombras difusas ni gradientes. Separación por línea `--color-linea` o cambio de fondo, nunca las dos a la vez.
+- Radio de 4px (`--radius-base` / `--radius-card`).
 - Modo oscuro: no implementado en esta versión.
+- Logotipo e isotipo viven en `public/brand/` (SVG reales, código fuente en `docs/brand.md` §8) — nunca reconstruidos en JSX dentro de componentes de UI. La excepción documentada es `app/opengraph-image.tsx`, donde el renderer de `next/og` (Satori) necesita el SVG como elementos JSX nativos en vez de una referencia a archivo.
 
 ## 8. Arquitectura de contenido
 
@@ -136,3 +127,15 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o
 - **2026-08-29** — Paso 6 (último): legales, metadatos y accesibilidad. Al calcular contraste WCAG de los tokens de §7 encontré que el botón primario (fondo `naranja`, texto `papel`) da ~2.9:1 — falla AA (necesita 4.5:1 para texto normal). Cambié el texto del botón primario a `tinta`, que da ~6.5:1 contra `naranja`. Queda un trade-off documentado, no resuelto: el estado hover (fondo `naranja-2`, más oscuro) con texto `tinta` da ~3.9:1 — pasa el umbral de "texto grande" (3:1) pero no el de texto normal (4.5:1); usar texto `papel` en cambio resolvería el hover pero rompería el estado por defecto (~2.9:1) en sentido contrario. Ninguna combinación de texto único cubre ambos estados con los tokens fijos de `naranja`/`naranja-2` — habría que ajustar alguno de los dos hex, y esa es una decisión de marca que no me toca tomar unilateralmente. Se deja para revisión de diseño.
 - **2026-08-29** — Paso 6: el aviso de privacidad y los términos (`content/legal.ts`) quedan `noindex` mientras conserven marcas `TODO_LEGAL`, para no dejar que un buscador indexe una versión legal sin revisar. El `og:image` y el favicon (`app/opengraph-image.tsx`, `app/icon.tsx`) se generan en el momento con los tokens de marca (tipografía + el cuadrado naranja) en vez de inventar el isotipo — se reemplazan cuando lleguen los SVG reales de `public/brand/`. Sin banner de cookies: Vercel Analytics no usa cookies.
 - **2026-08-29** — Paso 5: formulario de demo + captura de leads. `lib/leads-store.ts` guarda por ahora solo en logs de la función (visible en el dashboard de Vercel): es la opción con menos partes móviles mientras no hay base de datos ni cuenta de un servicio externo (Airtable, Google Sheets, etc.); el correo de Resend es, mientras tanto, la vía real para enterarse de un lead nuevo. El rate limit (`lib/rate-limit.ts`) es un `Map` en memoria por proceso, no un límite distribuido — suficiente para un sitio de este tráfico, documentado como reemplazable. El ancla `#formulario-demo` se movió de la sección Cierre a la nueva sección `FormularioDemo`, que la posee ahora. La lista de espera de "Próximos procesos" dejó de usar `mailto:` y ahora comparte `leadsStore` con el formulario de demo (mismo patrón de honeypot y rate limit). Detecté y corregí que `DemoForm.tsx` importaba `opcionesMensajesPorDia` desde `lib/schemas/demo.ts` (que importa Zod): eso arrastraba Zod entero al bundle del cliente (~90 KB extra en `/`). Se movió la constante a `lib/constants/mensajes-por-dia.ts`, sin Zod, para que el componente cliente no cargue el validador del servidor.
+- **2026-08-29** — Deploy en vivo diagnosticado y corregido (no por mí en el código, sino en la configuración de Vercel): el proyecto `ar2go-website-home` tenía **Framework Preset = "Other"** (y luego, a medio arreglar, "Node") en vez de "Next.js". Con "Other", Vercel usa la carpeta `public/` tal cual como salida de un sitio estático genérico en vez de correr el build output de Next — como `public/` solo tenía `brand/README.md`, cualquier ruta daba `404: NOT_FOUND` aunque el build reportara "Ready". Se corrigió a "Next.js" y se hizo redeploy. Queda documentado aquí porque no hay rastro de esto en el repo — es puramente configuración del dashboard de Vercel, y si se vuelve a crear el proyecto desde cero hay que verificar ese campo explícitamente.
+- **2026-08-29** — Rebrand completo a partir de `docs/brand.md` (aportado por el dueño del proyecto como fuente única de verdad del sistema visual, con instrucciones explícitas para Claude Code en su §0). Cambios de fondo:
+  - Paleta de acento única: **naranja `#FF6A13` → verde `#0B8F4F`** (con azul `#1E5BD6` documentado como alternativa inactiva). Nuevo token `--color-linea` (`#E3E1DD`) para bordes/separadores, reemplazando los `border-tinta/10` y `/20` ad hoc. Nuevo token funcional `--color-error` (`#B42318`), independiente del acento, para estados de error de formulario.
+  - A diferencia del naranja, esta paleta **no tiene el problema de contraste del paso 6**: papel sobre acento da 4.15:1 (AA texto grande/gráfico, verificado en `docs/brand.md` §10) y el hover (`acento-alt`) sube a 5.2:1 en vez de bajar — así que el botón primario vuelve a texto blanco, tal como pide la guía, sin el trade-off que dejamos pendiente en el paso 6.
+  - Radio dividido en dos tokens (`--radius-base`, `--radius-card`), ambos en 4px hoy pero separados por si divergen a futuro.
+  - Contenedor: `max-w-5xl` (1024px) → `max-w-[1080px]`; padding lateral `px-6` fijo → `px-5 md:px-8` (20px/32px); ritmo vertical de `sm:` a `md:` como breakpoint.
+  - Escala tipográfica completa de `docs/brand.md` §4 centralizada en `lib/typography.ts` (`tipografia.display/h2/h3/cuerpo/cuerpoChico/eyebrow/precio/dato`), usada por todas las secciones en vez de clases arbitrarias repetidas.
+  - Se generaron los tres SVG de marca reales (`public/brand/ar2go-logotipo.svg`, `ar2go-isotipo.svg`, `ar2go-logotipo-negativo.svg`) con el código fuente exacto de `docs/brand.md` §8 — nada inventado. Esto resuelve el placeholder de logo pendiente desde el paso 2.
+  - **Se agregó un header** (`components/layout/Header.tsx`) con el logotipo horizontal — el sitio no tenía ninguno hasta ahora. `docs/brand.md` §7 especifica header/pie/documentos como los usos por defecto del logotipo horizontal, y no existía un lugar para ponerlo.
+  - Favicon: `app/icon.tsx` (generado con `next/og`) → `app/icon.svg` (copia estática del isotipo real), más `app/apple-icon.png` (180×180, rasterizado del isotipo con Playwright — no hay herramienta de rasterizado en el entorno, así que se renderizó el SVG en una página headless y se capturó). `app/opengraph-image.tsx` ahora usa el logotipo negativo (como elementos SVG nativos de Satori, no una referencia a archivo — excepción documentada en `CLAUDE.md` §7) más el titular real del hero en Space Grotesk, cargada en runtime desde Google Fonts.
+  - `theme-color` (metadato) ahora usa `brand.acento`, vía `viewport` export (no `metadata.themeColor`, deprecado desde Next 14).
+  - `docs/brand.md` se sube tal cual al repo para trazabilidad — cualquier cambio de token futuro entra por PR con una fila nueva en su bitácora (§12 de ese archivo), no editando este archivo.

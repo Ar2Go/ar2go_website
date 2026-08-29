@@ -58,10 +58,12 @@ Variables de entorno a configurar en el proyecto de Vercel: ver
 | `content/` | Copy tipado por sección, uno por archivo. Cambiar texto del sitio es editar aquí, no el JSX. |
 | `lib/` | Validación (Zod), rate limit, envío de correo (Resend) y la interfaz de almacenamiento de leads (`leads-store.ts`). |
 | `components/seo/` | JSON-LD de `Organization`. |
-| `app/icon.tsx`, `app/opengraph-image.tsx` | Favicon y `og:image` generados con los tokens de marca — placeholders hasta que lleguen los SVG reales de `public/brand/`. |
+| `app/icon.svg`, `app/apple-icon.png`, `app/opengraph-image.tsx` | Favicon, ícono de iOS y `og:image`, generados a partir del isotipo real. |
 | `app/robots.ts`, `app/sitemap.ts` | `robots.txt` y `sitemap.xml`. |
-| `public/brand/` | Logotipo e isotipo de marca. **Pendientes** — ver el README dentro de esa carpeta. |
-| `CLAUDE.md` | Contexto de negocio, convenciones de código, sistema de diseño, decisiones tomadas. |
+| `public/brand/` | Logotipo e isotipo de marca (SVG reales). |
+| `docs/brand.md` | **Fuente única de verdad del sistema visual** — tokens, tipografía, componentes, uso del logotipo. Léelo antes de tocar cualquier UI. |
+| `lib/brand.ts`, `lib/typography.ts` | Los tokens de `docs/brand.md` y la escala tipográfica, como constantes de JS/Tailwind. |
+| `CLAUDE.md` | Contexto de negocio, convenciones de código, decisiones tomadas. |
 | `PLAN.md` | Desglose del orden de trabajo por paso/PR. |
 
 ## Formulario de demo y leads
