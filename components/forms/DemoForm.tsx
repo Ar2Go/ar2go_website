@@ -6,6 +6,7 @@ import {
   type EstadoFormularioDemo,
 } from "@/app/actions/demo";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { Button } from "@/components/ui/Button";
 import { site } from "@/content/site";
 import { opcionesMensajesPorDia } from "@/lib/constants/mensajes-por-dia";
 
@@ -141,13 +142,9 @@ export function DemoForm() {
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={pendiente}
-        className="inline-flex items-center justify-center rounded-ar2go bg-naranja px-6 py-3 font-medium text-papel transition-colors hover:bg-naranja-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta disabled:pointer-events-none disabled:opacity-50"
-      >
+      <Button type="submit" variant="primary" disabled={pendiente}>
         {pendiente ? "Enviando…" : "Agenda una demo"}
-      </button>
+      </Button>
     </form>
   );
 }

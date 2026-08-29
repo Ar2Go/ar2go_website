@@ -1,6 +1,6 @@
 # Plan de trabajo — AR2GO website
 
-Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 6, el último.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
+Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Los 6 pasos están completos.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29). Pendientes reales antes de que el sitio se pueda llamar "listo para publicar": resolver los placeholders `TODO_*` (dominio, WhatsApp, razón social/domicilio legal, precios, cifras del problema, cuenta de Resend) y correr una auditoría de Lighthouse contra el deploy real de Vercel.
 
 ## Paso 1 — `CLAUDE.md` y plan ✅ aprobado y fusionado (2026-08-29)
 
@@ -74,15 +74,16 @@ Entregables:
 
 Validado localmente end-to-end (formulario de demo y lista de espera, éxito y log del lead) además de lint/tsc/build.
 
-## Paso 6 — Legales, metadatos, auditoría de rendimiento y accesibilidad
+## Paso 6 — Legales, metadatos, auditoría de rendimiento y accesibilidad ✅ hecho (2026-08-29)
 
 Entregables:
-- `/aviso-de-privacidad`: borrador conforme art. 16 LFPDPPP (responsable, domicilio, finalidades primaria/secundaria, medios ARCO, revocación), marcado `TODO_LEGAL` para revisión de abogado.
-- `/terminos`: términos de uso básicos.
-- Metadatos: `title`, `description`, canonical, `og:image` generado a partir del isotipo (o placeholder si el isotipo real sigue sin llegar), JSON-LD de `Organization`.
-- Banner de cookies: se evalúa al final; si Vercel Analytics corre sin cookies no esenciales (caso esperado), no se agrega.
-- Auditoría Lighthouse en móvil: rendimiento ≥ 95, accesibilidad 100, SEO 100. Contraste AA, foco visible, navegable con teclado. Verificación a 360px de ancho.
-- `next build` limpio, cero dependencias sin usar.
+- `content/legal.ts` + `/aviso-de-privacidad`: borrador conforme art. 16 LFPDPPP (responsable, domicilio, finalidades primaria/secundaria, medios ARCO, revocación), marcado `TODO_LEGAL` para revisión de abogado. `noindex` hasta que se apruebe.
+- `/terminos`: términos de uso básicos, mismo estatus de borrador.
+- Metadatos en `app/layout.tsx`: `title` (con template), `description`, `alternates.canonical`, Open Graph + Twitter Card, favicon (`app/icon.tsx`) y `og:image` (`app/opengraph-image.tsx`) generados con los tokens de marca (sin inventar el isotipo — ver `public/brand/README.md`), JSON-LD de `Organization` (`components/seo/OrganizationJsonLd.tsx`). `app/robots.ts` y `app/sitemap.ts` agregados de paso.
+- Banner de cookies: no se agrega. Vercel Analytics corre sin cookies no esenciales.
+- Accesibilidad: se detectó y corrigió que el botón primario (`bg-naranja` + texto `papel`) daba ~2.9:1 de contraste, por debajo de AA — se cambió el texto a `tinta` (~6.5:1). Detalle y el trade-off que queda pendiente (estado hover) en `CLAUDE.md` §11.
+- `next build`, lint y `tsc --noEmit` limpios. `npx depcheck` marca varias devDependencies como "sin uso" (`tailwindcss`, `typescript`, `eslint-config-next`, etc.) — son falsos positivos: se usan vía configuración (`postcss.config.mjs`, `tsconfig.json`, `eslint.config.mjs`), no vía imports que depcheck pueda rastrear.
+- No se corrió una auditoría de Lighthouse real (requiere el sitio desplegado en Vercel); se verificó a mano contraste (cálculo de razones WCAG), navegación por teclado (elementos interactivos con foco visible nativo o `focus-visible:outline`) y el layout a 360px.
 
 ---
 

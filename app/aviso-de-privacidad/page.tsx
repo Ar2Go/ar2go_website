@@ -1,24 +1,38 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
+import { legal } from "@/content/legal";
 
-// Stub del paso 4 para que el enlace del pie de página no dé 404. El borrador
-// real (LFPDPPP, marcado TODO_LEGAL para revisión de abogado) llega en el
-// paso 6 del PLAN.md.
+// Borrador conforme al artículo 16 de la LFPDPPP — pendiente de revisión de
+// abogado antes de publicarse como definitivo (CLAUDE.md §10). noindex
+// mientras siga siendo borrador: no queremos que un buscador indexe una
+// versión legal sin revisar.
 export const metadata: Metadata = {
-  title: "Aviso de privacidad — AR2GO",
-  robots: { index: false, follow: false },
+  title: "Aviso de privacidad",
+  robots: { index: false, follow: true },
 };
 
 export default function AvisoDePrivacidadPage() {
   return (
     <Section background="papel">
       <h1 className="text-4xl font-bold leading-[1.05] tracking-tight">
-        Aviso de privacidad
+        {legal.avisoPrivacidad.titulo}
       </h1>
-      <p className="mt-4 max-w-[68ch] text-lg text-gris">
-        Estamos preparando el aviso de privacidad conforme a la LFPDPPP.
-        Todavía no está publicado en su versión definitiva.
-      </p>
+      <div
+        role="note"
+        className="mt-6 max-w-[68ch] rounded-ar2go border border-naranja-2/40 bg-naranja-2/5 p-4 text-sm"
+      >
+        Este es un borrador en revisión legal, todavía no es la versión
+        definitiva. Última actualización: {legal.ultimaActualizacion}.
+      </div>
+
+      <div className="mt-10 max-w-[68ch] space-y-8">
+        {legal.avisoPrivacidad.secciones.map((seccion) => (
+          <div key={seccion.titulo}>
+            <h2 className="text-xl font-medium">{seccion.titulo}</h2>
+            <p className="mt-2 text-gris">{seccion.contenido}</p>
+          </div>
+        ))}
+      </div>
     </Section>
   );
 }

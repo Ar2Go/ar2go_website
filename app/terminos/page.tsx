@@ -1,23 +1,36 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
+import { legal } from "@/content/legal";
 
-// Stub del paso 4 para que el enlace del pie de página no dé 404. Los
-// términos de uso reales llegan en el paso 6 del PLAN.md.
+// Términos de uso básicos — mismo estatus de borrador que el aviso de
+// privacidad, ver CLAUDE.md §10.
 export const metadata: Metadata = {
-  title: "Términos de uso — AR2GO",
-  robots: { index: false, follow: false },
+  title: "Términos de uso",
+  robots: { index: false, follow: true },
 };
 
 export default function TerminosPage() {
   return (
     <Section background="papel">
       <h1 className="text-4xl font-bold leading-[1.05] tracking-tight">
-        Términos de uso
+        {legal.terminos.titulo}
       </h1>
-      <p className="mt-4 max-w-[68ch] text-lg text-gris">
-        Estamos preparando los términos de uso del sitio y del servicio.
-        Todavía no están publicados en su versión definitiva.
-      </p>
+      <div
+        role="note"
+        className="mt-6 max-w-[68ch] rounded-ar2go border border-naranja-2/40 bg-naranja-2/5 p-4 text-sm"
+      >
+        Este es un borrador en revisión legal, todavía no es la versión
+        definitiva. Última actualización: {legal.ultimaActualizacion}.
+      </div>
+
+      <div className="mt-10 max-w-[68ch] space-y-8">
+        {legal.terminos.secciones.map((seccion) => (
+          <div key={seccion.titulo}>
+            <h2 className="text-xl font-medium">{seccion.titulo}</h2>
+            <p className="mt-2 text-gris">{seccion.contenido}</p>
+          </div>
+        ))}
+      </div>
     </Section>
   );
 }
