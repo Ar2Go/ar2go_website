@@ -27,7 +27,7 @@ export function Producto() {
           ))}
         </ol>
 
-        <div className="rounded-card border border-linea bg-papel p-4 sm:p-6">
+        <div className="rounded-base border border-linea bg-papel p-4 sm:p-6">
           <div className="space-y-3">
             {conversacionEjemplo.map((mensaje, indice) => (
               <div

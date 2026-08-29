@@ -68,14 +68,16 @@ Reglas que no se negocian:
 
 `docs/brand.md` es la fuente única de verdad de tokens de color, tipografía, espaciado, radio, componentes y uso del logotipo — si algo en el código contradice lo que dice ese archivo, gana `docs/brand.md`. Resumen para no tener que abrirlo cada vez:
 
-- Paleta activa hoy: **verde** (`--color-acento: #0B8F4F`). Hay una paleta azul alternativa documentada pero inactiva; el cambio entre una y otra es una edición de tokens en `app/globals.css` + regenerar dos SVG, no debería tocar componentes.
-- El acento aparece **una sola vez por pantalla visible**: en el CTA primario o en el elemento destacado de la sección, nunca en ambos. El cuadrado del logotipo cuenta como uso.
+- Paleta **cerrada** (`docs/brand.md` §1 y §12): **marino** `#10327A`, blanco y negro. Las exploraciones en naranja, verde y azul quedaron descartadas y no deben reaparecer en ningún componente.
+- El marino aparece **una sola vez por pantalla visible**: en el CTA primario o en el elemento destacado de la sección, nunca en ambos. El cuadrado del logotipo cuenta como uso.
+- **Regla dura:** marino y tinta nunca se tocan (1.55:1 de contraste, prohibido explícitamente). Sobre una sección de fondo tinta, el CTA primario no usa la variante marino — va en blanco con texto tinta (ver `components/sections/Cierre.tsx`).
 - Tipografía: Space Grotesk (sans, títulos y cuerpo) + JetBrains Mono (eyebrows, precios, datos — nunca en párrafos), vía `next/font`. Escala completa y roles tipográficos en `docs/brand.md` §4, implementados en `lib/typography.ts`.
 - Medida máxima de línea: 68 caracteres, sin excepción.
 - Nada de sombras difusas ni gradientes. Separación por línea `--color-linea` o cambio de fondo, nunca las dos a la vez.
-- Radio de 4px (`--radius-base` / `--radius-card`).
+- Radio único de 4px (`--radius-base`).
+- Colores funcionales, independientes de marca: `--color-error` (#B42318) y `--color-exito` (#0B8F4F) — solo para estados reales de interfaz (error/éxito de formulario), nunca decorativos.
 - Modo oscuro: no implementado en esta versión.
-- Logotipo e isotipo viven en `public/brand/` (SVG reales, código fuente en `docs/brand.md` §8) — nunca reconstruidos en JSX dentro de componentes de UI. La excepción documentada es `app/opengraph-image.tsx`, donde el renderer de `next/og` (Satori) necesita el SVG como elementos JSX nativos en vez de una referencia a archivo.
+- Logotipo, negativo, mono e isotipo viven en `public/brand/` (SVG reales, código fuente en `docs/brand.md` §8) — nunca reconstruidos en JSX dentro de componentes de UI. La excepción documentada es `app/opengraph-image.tsx`, donde el renderer de `next/og` (Satori) necesita el SVG como elementos JSX nativos en vez de una referencia a archivo.
 
 ## 8. Arquitectura de contenido
 
@@ -156,3 +158,12 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o
   - `/admin` hoy es un cascarón honesto: lista los cinco agentes de la fábrica como referencia, marcados "Sin conectar" — no hay API real de `ar2go-platform` que consultar todavía (sigue en etapa 0). No se inventaron datos ni estado.
   - Verificado sin credenciales reales de Google: con un `AUTH_SECRET` y client id/secret de prueba en local, confirmé que `signIn("google", ...)` arma la URL de autorización correcta (PKCE, `redirect_uri` a `/api/auth/callback/google`, scopes `openid profile email`) inspeccionando el header `x-action-redirect` de la Server Action — no se pudo probar el flujo completo (Google real) por las restricciones de red del entorno de desarrollo.
   - `npm run build` sin las variables de Auth configuradas sigue limpio y el resto del sitio no se rompe (`/admin` y `/admin/login` quedan como rutas dinámicas, no se intentan pre-renderizar en build) — mismo criterio de "no bloquea el resto del trabajo" que `RESEND_API_KEY`.
+- **2026-08-29** — Segundo rebrand, **decisión de color cerrada** según `docs/brand.md` v2: verde `#0B8F4F` → **marino `#10327A`** (blanco y negro). El dueño del proyecto marca esto como definitivo — naranja, verde y azul quedan retirados y no deberían volver a proponerse. Cambios de fondo:
+  - Los tokens de color se **renombran**, no solo cambian de valor: `--color-acento`/`--color-acento-alt` → `--color-marino`/`--color-marino-alt` (mismo criterio que la guía usa el nombre del color, no un rol genérico). `--color-linea` y `--color-neutro` también cambian de hex (`#E4E6E9`, `#F4F5F7`) aunque conservan el nombre.
+  - **Nuevo color funcional `--color-exito` (#0B8F4F)** — sí, es el mismo hex que tenía el acento verde anterior, pero ahora es explícitamente un color de estado de interfaz (confirmaciones de formulario), no de marca; no debe usarse decorativamente. Se aplicó en la confirmación de `DemoForm` y `WaitlistForm`, con el mismo tratamiento visual que ya tenía `--color-error`.
+  - **Se simplifica el radio a un solo token** `--radius-base` (se elimina `--radius-card`, que en el rebrand anterior quedó documentado como "separado por si diverge a futuro" — nunca divergió, así que la guía nueva lo consolida). `rounded-card` → `rounded-base` en todo el código.
+  - **A diferencia de las dos paletas anteriores, esta trae una restricción dura documentada explícitamente**: marino sobre tinta da 1.55:1 — prohibido, no es un trade-off a evaluar como el del botón naranja (paso 6) ni una mejora automática como el verde (rebrand anterior). Afecta un solo lugar del código: el CTA primario de `components/sections/Cierre.tsx` (fondo tinta) no usa la variante `primary` normal del `Button` — se sobreescribe a fondo papel/texto tinta, tal como pide `docs/brand.md` §6 ("sobre negro el marino desaparece"). Se replicó el mismo patrón en la sección de fondo tinta de `/muestra` para que quede documentado visualmente.
+  - Nuevo archivo de logo: `ar2go-logotipo-mono.svg` (una tinta, para grabado/serigrafía) — agregado a `public/brand/` desde el código fuente exacto de `docs/brand.md` §8, sin inventar nada.
+  - `app/opengraph-image.tsx`: el cuadrado del logotipo negativo pasa de verde a **blanco** (con el número en tinta) — la guía especifica que sobre fondo oscuro el cuadrado va blanco, no en el color de marca.
+  - Pendiente, no inventado: `docs/brand.md` §9 menciona `ar2go-whatsapp-apilado.jpg` y `ar2go-whatsapp-isotipo.jpg` (recortes circulares para WhatsApp/avatares) que no llegaron en este envío de assets — documentado en `public/brand/README.md`, no se fabricaron.
+  - `docs/brand.md` también se sube a `ar2go-platform` (mismo contenido) porque ese archivo declara explícitamente a ambos repos como consumidores — sin construir ninguna interfaz ahí, solo para que el diseño esté disponible si `ar2go-platform` llega a tener UI propia.

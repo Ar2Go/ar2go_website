@@ -18,7 +18,7 @@ export default function AvisoDePrivacidadPage() {
       <h1 className={tipografia.display}>{legal.avisoPrivacidad.titulo}</h1>
       <div
         role="note"
-        className={`mt-6 ${medidaMaxima} rounded-card border border-linea bg-neutro p-4 ${tipografia.cuerpoChico}`}
+        className={`mt-6 ${medidaMaxima} rounded-base border border-linea bg-neutro p-4 ${tipografia.cuerpoChico}`}
       >
         <p className={tipografia.eyebrow}>Borrador</p>
         <p className="mt-1">

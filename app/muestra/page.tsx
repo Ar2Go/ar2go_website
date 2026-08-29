@@ -71,9 +71,19 @@ export default function MuestraPage() {
       <Section background="tinta">
         <h2 className={`${tipografia.h2} text-papel`}>Section — fondo tinta</h2>
         <p className={`mt-4 ${medidaMaxima} ${tipografia.cuerpo} text-papel/80`}>
-          Para cierres de sección o bloques de alto contraste. El acento no se
-          usa aquí para no competir con el CTA primario de la pantalla.
+          Para cierres de sección o bloques de alto contraste. Marino y tinta
+          nunca se tocan (docs/brand.md §3): el CTA aquí va en blanco con
+          texto tinta, no en marino.
         </p>
+        <div className="mt-6">
+          <Button
+            href="#"
+            variant="primary"
+            className="!bg-papel !text-tinta hover:!bg-neutro"
+          >
+            Agenda una demo
+          </Button>
+        </div>
       </Section>
     </>
   );
