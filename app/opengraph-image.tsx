@@ -52,7 +52,8 @@ export default async function Image() {
             <path d="M326.28,21.72 A40,40 0 1 0 338,50 H306" />
             <circle cx="406" cy="50" r="40" />
           </g>
-          <rect x="184" y="0" width="52" height="52" rx="9" fill={brand.acento} />
+          {/* Negativo sobre tinta (docs/brand.md §7): cuadrado blanco, número en tinta. */}
+          <rect x="184" y="0" width="52" height="52" rx="9" fill={brand.papel} />
           <g
             transform="translate(196.4,6) scale(0.40)"
             fill="none"

@@ -24,8 +24,10 @@ export function DemoForm() {
 
   if (estado.status === "exito") {
     return (
-      <div className="rounded-card border border-linea bg-papel p-6 text-tinta">
-        <p className={tipografia.h3}>Listo, recibimos tu solicitud.</p>
+      // Éxito en el color funcional de docs/brand.md §6 — mismo tratamiento
+      // que el estado de error, no decorativo.
+      <div className="rounded-base border border-exito/40 bg-exito/5 p-6 text-tinta">
+        <p className={`${tipografia.h3} text-exito`}>Listo, recibimos tu solicitud.</p>
         <p className={`mt-2 ${tipografia.cuerpo} text-gris`}>
           Te contactamos por WhatsApp para agendar la demo. Si prefieres
           adelantarlo, escríbenos ahora:{" "}
@@ -40,7 +42,7 @@ export function DemoForm() {
   return (
     <form
       action={accion}
-      className="grid gap-5 rounded-card border border-linea bg-papel p-6 text-tinta"
+      className="grid gap-5 rounded-base border border-linea bg-papel p-6 text-tinta"
     >
       <HoneypotField />
 

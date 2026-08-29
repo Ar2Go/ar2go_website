@@ -23,7 +23,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <Section background="neutro" className="flex min-h-[60vh] items-center">
-      <div className="mx-auto w-full max-w-sm rounded-card border border-linea bg-papel p-8 text-center">
+      <div className="mx-auto w-full max-w-sm rounded-base border border-linea bg-papel p-8 text-center">
         <p className={tipografia.eyebrow}>Acceso restringido</p>
         <h1 className={`mt-2 ${tipografia.h3}`}>Panel de administración</h1>
         <p className={`mt-3 ${tipografia.cuerpoChico} text-gris`}>

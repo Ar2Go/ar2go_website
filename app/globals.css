@@ -6,33 +6,23 @@
  * Sin modo oscuro en esta versión: una sola paleta, sin @media (prefers-color-scheme).
  */
 @theme {
-  /* Color — paleta VERDE activa (docs/brand.md §1 y §3) */
-  --color-tinta: #101418;
-  --color-acento: #0b8f4f;
-  --color-acento-alt: #0a7d48; /* hover y presionado */
-  --color-gris: #6b7076;
-  --color-linea: #e3e1dd;
-  --color-neutro: #f4f3f1;
+  /* Color — decisión cerrada: marino, blanco y negro (docs/brand.md §1 y §3) */
+  --color-marino: #10327a; /* marca, CTA primario, cuadrado del logo */
+  --color-marino-alt: #0b2559; /* hover y presionado */
+  --color-tinta: #101418; /* texto y letras del logotipo */
   --color-papel: #ffffff;
+  --color-gris: #6b7076; /* texto secundario */
+  --color-linea: #e4e6e9;
+  --color-neutro: #f4f5f7; /* fondos de sección */
 
-  /* Paleta AZUL — inactiva, no borrar (docs/brand.md §1)
-  --color-tinta: #0D1728;
-  --color-acento: #1E5BD6;
-  --color-acento-alt: #1746A8;
-  --color-gris: #64707F;
-  --color-linea: #E2E6EC;
-  --color-neutro: #F2F4F7;
-  --color-marino: #10327A;
-  */
-
-  /* Color funcional, independiente del acento de marca (docs/brand.md §6) */
+  /* Funcionales — no son colores de marca, no se usan decorativamente */
   --color-error: #b42318;
+  --color-exito: #0b8f4f;
 
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 
   --radius-base: 4px;
-  --radius-card: 4px;
 }
 
 body {

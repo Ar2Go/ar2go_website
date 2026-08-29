@@ -19,6 +19,12 @@ export function Cierre() {
           section="cierre"
           label={cierre.ctaPrimario}
           variant="primary"
+          // Regla dura de docs/brand.md §3/§6: marino y tinta nunca se
+          // tocan. Sobre una sección oscura el CTA primario va en blanco
+          // con texto tinta, no en marino — "sobre negro el marino
+          // desaparece". Important para no depender del orden de
+          // generación de Tailwind frente a las clases del variant.
+          className="!bg-papel !text-tinta hover:!bg-neutro"
         />
         <CtaButton
           href={site.whatsapp.href}
@@ -27,8 +33,6 @@ export function Cierre() {
           variant="secondary"
           // Sobre fondo tinta, el hover invertido del secundario (fondo
           // tinta) sería invisible — aquí se invierte al revés: fondo papel.
-          // Important para no depender del orden de generación de Tailwind
-          // frente a las clases de color del variant "secondary".
           className="!border-papel !text-papel hover:!bg-papel hover:!text-tinta"
         />
       </div>

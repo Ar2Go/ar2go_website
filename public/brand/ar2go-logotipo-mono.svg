@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -14 484 128" width="968" height="256" role="img" aria-label="AR2GO">
-  <title>AR2GO</title>
+  <title>AR2GO una tinta</title>
   <g fill="none" stroke="#101418" stroke-width="20" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="6">
     <path d="M10,90 L37,12 H47 L74,90"/>
     <path d="M20,62 H64"/>
@@ -8,7 +8,7 @@
     <path d="M326.28,21.72 A40,40 0 1 0 338,50 H306"/>
     <circle cx="406" cy="50" r="40"/>
   </g>
-  <rect x="184" y="0" width="52" height="52" rx="9" fill="#10327A"/>
+  <rect x="184" y="0" width="52" height="52" rx="9" fill="#101418"/>
   <g transform="translate(196.4,6) scale(0.40)" fill="none" stroke="#FFFFFF" stroke-width="19" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="6">
     <path d="M9,32 A24,24 0 0 1 57,32 L9,91.5 H59"/>
   </g>

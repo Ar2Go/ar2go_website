@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 
 // docs/brand.md §9.
 export const viewport: Viewport = {
-  themeColor: brand.acento,
+  themeColor: brand.marino,
 };
 
 export default function RootLayout({

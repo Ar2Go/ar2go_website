@@ -23,7 +23,7 @@ export function WaitlistForm({ proceso, cta }: WaitlistFormProps) {
 
   if (estado.status === "exito") {
     return (
-      <p className="mt-4 text-sm text-gris">
+      <p className="mt-4 text-sm text-exito">
         Listo, te avisamos en cuanto esté disponible.
       </p>
     );

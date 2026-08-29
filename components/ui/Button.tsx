@@ -25,14 +25,17 @@ export type ButtonProps = ButtonAsButton | ButtonAsLink;
 const BASE_CLASSES =
   "inline-flex items-center justify-center rounded-base px-5 py-3 text-base font-medium transition-colors duration-[120ms] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta disabled:pointer-events-none disabled:opacity-50";
 
-// El acento identifica el CTA primario. Regla de marca (docs/brand.md §2):
+// El marino identifica el CTA primario. Regla de marca (docs/brand.md §2):
 // aparece una sola vez por pantalla visible — nunca dos botones "primary" a
-// la vez. Texto blanco tal como pide la guía: papel sobre acento da 4.15:1
-// (AA texto grande/elementos gráficos, ya verificado en docs/brand.md §10) y
-// el hover (acento-alt) sube a 5.2:1 — a diferencia de la paleta anterior,
-// aquí el hover no empeora el contraste.
+// la vez. Papel sobre marino da 11.9:1 (AAA, docs/brand.md §10) y el hover
+// (marino-alt) sube a 14.8:1 — ninguno de los dos estados es un compromiso.
+//
+// Ojo: marino y tinta nunca se tocan (1.55:1, prohibido explícitamente en
+// docs/brand.md §3 y §10). Este botón nunca debe usarse con texto tinta
+// sobre fondo marino ni viceversa. Sobre una Section de fondo tinta, el CTA
+// primario no usa esta variante — ver components/sections/Cierre.tsx.
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-acento text-papel hover:bg-acento-alt",
+  primary: "bg-marino text-papel hover:bg-marino-alt",
   secondary: "border border-tinta text-tinta hover:bg-tinta hover:text-papel",
 };
 
