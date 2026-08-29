@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de marca — ver CLAUDE.md §7 "Sistema de diseño".
+ * Sin modo oscuro en esta versión: una sola paleta, sin @media (prefers-color-scheme).
+ */
+@theme {
+  --color-tinta: #101418;
+  --color-naranja: #ff6a13;
+  --color-naranja-2: #c24f06;
+  --color-gris: #6b7076;
+  --color-neutro: #f4f3f1;
+  --color-papel: #ffffff;
+
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radio único para tarjetas y botones, igual al del cuadrado del isotipo. */
+  --radius-ar2go: 4px;
+}
+
+body {
+  background: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+}

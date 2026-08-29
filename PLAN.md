@@ -1,8 +1,8 @@
 # Plan de trabajo — AR2GO website
 
-Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 1.** No se avanza al paso 2 sin aprobación explícita en este PR o en el chat.
+Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 3.** El brief pide pausar y mostrar el sitio en vivo en Vercel al final del paso 3, antes de seguir con el resto de secciones.
 
-## Paso 1 — `CLAUDE.md` y plan (este PR) ✅ en revisión
+## Paso 1 — `CLAUDE.md` y plan ✅ aprobado y fusionado (2026-08-29)
 
 Entregables:
 - `CLAUDE.md`: contexto de negocio, stack, convenciones, sistema de diseño, placeholders pendientes, registro de decisiones.
@@ -21,7 +21,7 @@ Sin scaffold de Next.js, sin dependencias, sin deploy. Nada que ejecutar todaví
 
 ---
 
-## Paso 2 — Repo, scaffold y sistema de diseño
+## Paso 2 — Repo, scaffold y sistema de diseño ✅ hecho (2026-08-29)
 
 Objetivo: dejar la base técnica lista y visualmente demostrable, sin copy real todavía.
 
@@ -34,7 +34,7 @@ Entregables:
 - Página de muestra (`/muestra` o similar, **no enlazada desde la navegación pública**) que enseñe los tres componentes en sus variantes, para revisar el sistema de diseño antes de meterlo en la home real.
 - `public/brand/`: si los SVG de logo no han llegado, se deja un `README` corto en esa carpeta documentando qué falta y qué nombre de archivo se espera (`ar2go-logotipo.svg`, `ar2go-isotipo.svg`), sin inventar el logo.
 
-Criterio de salida: `next build` limpio, sin errores de TypeScript/ESLint, página de muestra revisable en preview de Vercel o local.
+Criterio de salida: `next build` limpio, sin errores de TypeScript/ESLint, página de muestra revisable en preview de Vercel o local. **Cumplido.**
 
 ## Paso 3 — Hero + producto + precio, deploy a Vercel
 
