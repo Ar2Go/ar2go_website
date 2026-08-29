@@ -1,6 +1,6 @@
 # Plan de trabajo — AR2GO website
 
-Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 4.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
+Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 5.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
 
 ## Paso 1 — `CLAUDE.md` y plan ✅ aprobado y fusionado (2026-08-29)
 
@@ -53,12 +53,14 @@ Criterio de salida: sitio visible en vivo en Vercel con estas tres secciones, an
 
 El brief pedía pausar aquí para ver el sitio en vivo antes de seguir; el dueño del proyecto autorizó explícitamente seguir fusionando y avanzando sin esperar aprobación paso por paso (2026-08-29), así que se continúa directo al paso 4.
 
-## Paso 4 — Resto de secciones
+## Paso 4 — Resto de secciones ✅ hecho (2026-08-29)
 
 Entregables:
-- `content/problema.ts` (cifras `TODO_DATO`), `content/control.ts`, `content/proceso.ts` (roadmap + lista de espera por correo), `content/faq.ts`.
-- Secciones: Problema, Control y límites, Cómo empezamos, Próximos procesos (con captura de correo para lista de espera — reutiliza la misma interfaz de almacenamiento del paso 5, ver abajo), FAQ, Cierre + pie de página.
-- Pie de página con datos de contacto y ligas a `/aviso-de-privacidad` y `/terminos` (aunque el contenido legal completo llegue en el paso 6, las rutas deben existir para no dar 404).
+- `content/problema.ts` (cifras `TODO_DATO`), `content/control.ts`, `content/comoEmpezamos.ts`, `content/proximosProcesos.ts` (roadmap + lista de espera), `content/faq.ts`, `content/cierre.ts`.
+- Secciones: Problema, Control y límites, Cómo empezamos, Próximos procesos, FAQ, Cierre + pie de página (`components/layout/Footer.tsx`, global en `app/layout.tsx`).
+- Pie de página con datos de contacto y ligas a `/aviso-de-privacidad` y `/terminos` — se agregaron como páginas stub (`noindex`) para que no den 404; el contenido legal completo llega en el paso 6.
+- La lista de espera de "Próximos procesos" quedó como enlace `mailto:` por proceso, no un formulario con backend — mide demanda sin construir infraestructura antes de tiempo. El paso 5 puede reemplazarlo por un Server Action sin tocar el resto de la sección.
+- Se agregó el ancla `#formulario-demo` a la sección Cierre: los CTA "Agenda una demo" ya no apuntan a un lugar inexistente, aunque todavía no hay formulario ahí — eso es el paso 5.
 
 ## Paso 5 — Formulario y captura de leads
 
