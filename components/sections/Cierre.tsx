@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 
 export function Cierre() {
   return (
-    <Section background="tinta" id="formulario-demo">
+    <Section background="tinta">
       <h2 className="max-w-2xl text-3xl font-bold leading-[1.05] tracking-tight text-papel sm:text-4xl">
         {cierre.titulo}
       </h2>

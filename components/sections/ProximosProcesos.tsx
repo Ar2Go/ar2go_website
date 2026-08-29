@@ -1,19 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
+import { WaitlistForm } from "@/components/forms/WaitlistForm";
 import { proximosProcesos } from "@/content/proximosProcesos";
-import { site } from "@/content/site";
-
-// Lista de espera por correo (mailto). Es una interfaz deliberadamente
-// simple: mide demanda antes de construir nada. El formulario/CRM real del
-// paso 5 puede reemplazar este enlace por un Server Action sin tocar el
-// resto de la sección.
-function enlaceListaEspera(nombreProceso: string) {
-  const asunto = encodeURIComponent(`Lista de espera: ${nombreProceso}`);
-  const cuerpo = encodeURIComponent(
-    `Quiero que me avisen cuando "${nombreProceso}" esté disponible.`,
-  );
-  return `mailto:${site.contacto.correo}?subject=${asunto}&body=${cuerpo}`;
-}
 
 export function ProximosProcesos() {
   return (
@@ -33,12 +21,13 @@ export function ProximosProcesos() {
           <Card key={proceso.slug}>
             <p className="text-lg font-medium">{proceso.nombre}</p>
             <p className="mt-2 text-sm text-gris">{proceso.descripcion}</p>
-            <a
-              href={enlaceListaEspera(proceso.nombre)}
-              className="mt-4 inline-block text-sm font-medium underline underline-offset-4"
-            >
+            <p className="mt-4 text-sm font-medium">
               {proximosProcesos.listaEspera.titulo}
-            </a>
+            </p>
+            <WaitlistForm
+              proceso={proceso.nombre}
+              cta={proximosProcesos.listaEspera.cta}
+            />
           </Card>
         ))}
       </div>

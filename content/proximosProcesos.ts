@@ -31,6 +31,6 @@ export const proximosProcesos = {
   ] satisfies ProximoProceso[],
   listaEspera: {
     titulo: "Avísame cuando esté listo",
-    apoyo: "Escríbenos qué proceso te interesa y te avisamos en cuanto esté disponible.",
+    cta: "Avísame",
   },
 } as const;
