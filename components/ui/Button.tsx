@@ -21,17 +21,19 @@ type ButtonAsLink = CommonProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
+// docs/brand.md §6: radio base, padding 12px/20px, peso 500, sin sombra.
 const BASE_CLASSES =
-  "inline-flex items-center justify-center rounded-ar2go px-6 py-3 text-base font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center rounded-base px-5 py-3 text-base font-medium transition-colors duration-[120ms] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta disabled:pointer-events-none disabled:opacity-50";
 
-// El naranja identifica el CTA primario. Regla de marca (CLAUDE.md §7): aparece
-// una sola vez por pantalla visible — nunca dos botones "primary" a la vez.
-// Texto en tinta, no papel: papel sobre naranja da ~2.9:1 de contraste
-// (falla AA); tinta sobre naranja da ~6.5:1. Ver CLAUDE.md §11 (paso 6)
-// sobre el estado hover, que queda algo por debajo de 4.5:1.
+// El acento identifica el CTA primario. Regla de marca (docs/brand.md §2):
+// aparece una sola vez por pantalla visible — nunca dos botones "primary" a
+// la vez. Texto blanco tal como pide la guía: papel sobre acento da 4.15:1
+// (AA texto grande/elementos gráficos, ya verificado en docs/brand.md §10) y
+// el hover (acento-alt) sube a 5.2:1 — a diferencia de la paleta anterior,
+// aquí el hover no empeora el contraste.
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-naranja text-tinta hover:bg-naranja-2",
-  secondary: "border border-tinta text-tinta hover:bg-neutro",
+  primary: "bg-acento text-papel hover:bg-acento-alt",
+  secondary: "border border-tinta text-tinta hover:bg-tinta hover:text-papel",
 };
 
 function isExternalHref(href: string): boolean {

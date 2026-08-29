@@ -1,12 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { OrganizationJsonLd } from "@/components/seo/OrganizationJsonLd";
+import { brand } from "@/lib/brand";
 import { site } from "@/content/site";
 import "./globals.css";
 
-// Familia geométrica única para todo el sitio (CLAUDE.md §7).
+// Familia geométrica única para todo el sitio. Sistema visual completo en
+// docs/brand.md — léelo antes de tocar tipografía, color o espaciado.
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin", "latin-ext"],
@@ -49,6 +52,11 @@ export const metadata: Metadata = {
   },
 };
 
+// docs/brand.md §9.
+export const viewport: Viewport = {
+  themeColor: brand.acento,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,6 +69,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col antialiased">
         <OrganizationJsonLd />
+        <Header />
         <div className="flex-1">{children}</div>
         <Footer />
         <Analytics />

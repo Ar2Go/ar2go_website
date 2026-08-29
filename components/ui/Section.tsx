@@ -9,7 +9,8 @@ type SectionProps = {
   id?: string;
 };
 
-// Separación entre secciones por cambio de fondo, nunca por sombra (CLAUDE.md §7).
+// Separación entre secciones por cambio de fondo, nunca por sombra
+// (docs/brand.md §2 y §5). No combinar con línea divisoria a la vez.
 const BACKGROUND_CLASSES: Record<SectionBackground, string> = {
   papel: "bg-papel text-tinta",
   neutro: "bg-neutro text-tinta",
@@ -27,7 +28,8 @@ export function Section({
       id={id}
       className={`${BACKGROUND_CLASSES[background]} ${className}`.trim()}
     >
-      <div className="mx-auto w-full max-w-5xl px-6 py-16 sm:py-24">
+      {/* Contenedor y ritmo vertical: docs/brand.md §5. */}
+      <div className="mx-auto w-full max-w-[1080px] px-5 py-16 md:px-8 md:py-24">
         {children}
       </div>
     </section>

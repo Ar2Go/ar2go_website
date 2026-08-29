@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { site } from "@/content/site";
+import { tipografia } from "@/lib/typography";
 
 export function Footer() {
   return (
-    <footer className="border-t border-tinta/10 bg-papel">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 py-10 text-sm text-gris sm:flex-row sm:items-center sm:justify-between">
+    <footer className="border-t border-linea bg-papel">
+      <div
+        className={`mx-auto flex w-full max-w-[1080px] flex-col gap-4 px-5 py-10 text-gris sm:flex-row sm:items-center sm:justify-between md:px-8 ${tipografia.cuerpoChico}`}
+      >
         <p>
           © {new Date().getFullYear()} {site.nombre}
         </p>

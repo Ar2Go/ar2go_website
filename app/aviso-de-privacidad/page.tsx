@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
 import { legal } from "@/content/legal";
+import { medidaMaxima, tipografia } from "@/lib/typography";
 
 // Borrador conforme al artículo 16 de la LFPDPPP — pendiente de revisión de
 // abogado antes de publicarse como definitivo (CLAUDE.md §10). noindex
@@ -14,22 +15,25 @@ export const metadata: Metadata = {
 export default function AvisoDePrivacidadPage() {
   return (
     <Section background="papel">
-      <h1 className="text-4xl font-bold leading-[1.05] tracking-tight">
-        {legal.avisoPrivacidad.titulo}
-      </h1>
+      <h1 className={tipografia.display}>{legal.avisoPrivacidad.titulo}</h1>
       <div
         role="note"
-        className="mt-6 max-w-[68ch] rounded-ar2go border border-naranja-2/40 bg-naranja-2/5 p-4 text-sm"
+        className={`mt-6 ${medidaMaxima} rounded-card border border-linea bg-neutro p-4 ${tipografia.cuerpoChico}`}
       >
-        Este es un borrador en revisión legal, todavía no es la versión
-        definitiva. Última actualización: {legal.ultimaActualizacion}.
+        <p className={tipografia.eyebrow}>Borrador</p>
+        <p className="mt-1">
+          En revisión legal, todavía no es la versión definitiva. Última
+          actualización: {legal.ultimaActualizacion}.
+        </p>
       </div>
 
-      <div className="mt-10 max-w-[68ch] space-y-8">
+      <div className={`mt-10 ${medidaMaxima} space-y-8`}>
         {legal.avisoPrivacidad.secciones.map((seccion) => (
           <div key={seccion.titulo}>
-            <h2 className="text-xl font-medium">{seccion.titulo}</h2>
-            <p className="mt-2 text-gris">{seccion.contenido}</p>
+            <h2 className={tipografia.h3}>{seccion.titulo}</h2>
+            <p className={`mt-2 ${tipografia.cuerpo} text-gris`}>
+              {seccion.contenido}
+            </p>
           </div>
         ))}
       </div>

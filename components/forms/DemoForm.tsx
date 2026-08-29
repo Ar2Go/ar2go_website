@@ -9,11 +9,12 @@ import { HoneypotField } from "@/components/forms/HoneypotField";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/content/site";
 import { opcionesMensajesPorDia } from "@/lib/constants/mensajes-por-dia";
+import { tipografia } from "@/lib/typography";
 
 const estadoInicial: EstadoFormularioDemo = { status: "idle" };
 
 const CAMPO_CLASES =
-  "w-full rounded-ar2go border border-tinta/20 bg-papel px-3 py-2 text-tinta focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta";
+  "w-full rounded-base border border-linea bg-papel px-3 py-2 text-tinta focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta";
 
 export function DemoForm() {
   const [estado, accion, pendiente] = useActionState(
@@ -23,9 +24,9 @@ export function DemoForm() {
 
   if (estado.status === "exito") {
     return (
-      <div className="rounded-ar2go border border-tinta/10 bg-papel p-6 text-tinta">
-        <p className="text-lg font-medium">Listo, recibimos tu solicitud.</p>
-        <p className="mt-2 text-gris">
+      <div className="rounded-card border border-linea bg-papel p-6 text-tinta">
+        <p className={tipografia.h3}>Listo, recibimos tu solicitud.</p>
+        <p className={`mt-2 ${tipografia.cuerpo} text-gris`}>
           Te contactamos por WhatsApp para agendar la demo. Si prefieres
           adelantarlo, escríbenos ahora:{" "}
           <a href={site.whatsapp.href} className="underline underline-offset-4">
@@ -39,7 +40,7 @@ export function DemoForm() {
   return (
     <form
       action={accion}
-      className="grid gap-5 rounded-ar2go border border-tinta/10 bg-papel p-6 text-tinta"
+      className="grid gap-5 rounded-card border border-linea bg-papel p-6 text-tinta"
     >
       <HoneypotField />
 
@@ -124,11 +125,13 @@ export function DemoForm() {
       </label>
 
       {estado.status === "error" && (
+        // Error en el color funcional de docs/brand.md §6, con texto
+        // explicativo — nunca solo con color.
         <div
           role="alert"
-          className="rounded-ar2go border border-naranja-2/40 bg-naranja-2/5 p-4 text-sm"
+          className="rounded-base border border-error/40 bg-error/5 p-4 text-sm text-tinta"
         >
-          <p>{estado.mensaje}</p>
+          <p className="font-medium text-error">{estado.mensaje}</p>
           <p className="mt-2">
             Si el problema sigue, escríbenos directo:{" "}
             <a
