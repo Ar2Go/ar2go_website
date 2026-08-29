@@ -22,7 +22,9 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000).
 
-- `/` — home del sitio (contenido real desde el paso 3 de `PLAN.md`).
+- `/` — home del sitio.
+- `/aviso-de-privacidad`, `/terminos` — borradores legales, marcados `noindex`
+  hasta que se resuelvan sus `TODO_LEGAL` y haya revisión de abogado.
 - `/muestra` — catálogo interno de componentes base (Button, Section, Card)
   para revisar el sistema de diseño. No se enlaza desde ninguna navegación
   pública y está marcada `noindex`.
@@ -55,6 +57,9 @@ Variables de entorno a configurar en el proyecto de Vercel: ver
 | `components/forms/` | Formularios cliente (`DemoForm`, `WaitlistForm`) y el campo honeypot compartido. |
 | `content/` | Copy tipado por sección, uno por archivo. Cambiar texto del sitio es editar aquí, no el JSX. |
 | `lib/` | Validación (Zod), rate limit, envío de correo (Resend) y la interfaz de almacenamiento de leads (`leads-store.ts`). |
+| `components/seo/` | JSON-LD de `Organization`. |
+| `app/icon.tsx`, `app/opengraph-image.tsx` | Favicon y `og:image` generados con los tokens de marca — placeholders hasta que lleguen los SVG reales de `public/brand/`. |
+| `app/robots.ts`, `app/sitemap.ts` | `robots.txt` y `sitemap.xml`. |
 | `public/brand/` | Logotipo e isotipo de marca. **Pendientes** — ver el README dentro de esa carpeta. |
 | `CLAUDE.md` | Contexto de negocio, convenciones de código, sistema de diseño, decisiones tomadas. |
 | `PLAN.md` | Desglose del orden de trabajo por paso/PR. |

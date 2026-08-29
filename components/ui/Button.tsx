@@ -26,8 +26,11 @@ const BASE_CLASSES =
 
 // El naranja identifica el CTA primario. Regla de marca (CLAUDE.md §7): aparece
 // una sola vez por pantalla visible — nunca dos botones "primary" a la vez.
+// Texto en tinta, no papel: papel sobre naranja da ~2.9:1 de contraste
+// (falla AA); tinta sobre naranja da ~6.5:1. Ver CLAUDE.md §11 (paso 6)
+// sobre el estado hover, que queda algo por debajo de 4.5:1.
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-naranja text-papel hover:bg-naranja-2",
+  primary: "bg-naranja text-tinta hover:bg-naranja-2",
   secondary: "border border-tinta text-tinta hover:bg-neutro",
 };
 
