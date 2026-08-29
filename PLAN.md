@@ -1,6 +1,6 @@
 # Plan de trabajo — AR2GO website
 
-Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 5.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
+Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 6, el último.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
 
 ## Paso 1 — `CLAUDE.md` y plan ✅ aprobado y fusionado (2026-08-29)
 
@@ -62,15 +62,17 @@ Entregables:
 - La lista de espera de "Próximos procesos" quedó como enlace `mailto:` por proceso, no un formulario con backend — mide demanda sin construir infraestructura antes de tiempo. El paso 5 puede reemplazarlo por un Server Action sin tocar el resto de la sección.
 - Se agregó el ancla `#formulario-demo` a la sección Cierre: los CTA "Agenda una demo" ya no apuntan a un lugar inexistente, aunque todavía no hay formulario ahí — eso es el paso 5.
 
-## Paso 5 — Formulario y captura de leads
+## Paso 5 — Formulario y captura de leads ✅ hecho (2026-08-29)
 
 Entregables:
-- Formulario de demo: nombre, empresa, WhatsApp, giro, "¿cuántos mensajes de prospectos recibes al día?".
-- Validación con Zod, honeypot antispam, rate limit por IP.
-- Server Action que: (a) envía correo vía Resend, (b) escribe la fila en un almacén simple detrás de una interfaz (`lib/leads-store.ts`) fácil de swappear después por una base de datos real.
-- Estados de carga y error visibles; si falla el envío, se muestra el WhatsApp directo como salida alterna.
-- Casilla de consentimiento explícito (LFPDPPP) + casilla separada para contacto comercial futuro, ambas requeridas/opcionales según corresponda.
-- Reutiliza el mismo mecanismo de captura para la lista de espera de "Próximos procesos" del paso 4.
+- Formulario de demo (`components/forms/DemoForm.tsx`, sección `FormularioDemo`): nombre, empresa, WhatsApp, giro, "¿cuántos mensajes de prospectos recibes al día?". Ahora dueño del ancla `#formulario-demo`.
+- Validación con Zod (`lib/schemas/demo.ts`, `lib/schemas/lista-espera.ts`), honeypot antispam (`components/forms/HoneypotField.tsx`), rate limit por IP en memoria (`lib/rate-limit.ts`).
+- Server Actions (`app/actions/demo.ts`, `app/actions/lista-espera.ts`) que: (a) intentan enviar correo vía Resend (`lib/email.ts`, no truena si `RESEND_API_KEY` no está configurada — solo lo avisa por log), (b) escriben el lead en `lib/leads-store.ts`, una interfaz con una implementación mínima por logs (sin base de datos ni servicio externo todavía) para poder swappearla después sin tocar quien la llama.
+- Estados de carga (`useActionState`) y error visibles; si falla el guardado, se muestra el WhatsApp directo como salida alterna.
+- Casilla de consentimiento explícito (LFPDPPP, requerida) + casilla separada para contacto comercial futuro (opcional), independientes entre sí.
+- La lista de espera de "Próximos procesos" del paso 4 se migró del enlace `mailto:` a un mini-formulario (`components/forms/WaitlistForm.tsx`) que reutiliza el mismo `leadsStore` y el mismo patrón de honeypot/rate-limit.
+
+Validado localmente end-to-end (formulario de demo y lista de espera, éxito y log del lead) además de lint/tsc/build.
 
 ## Paso 6 — Legales, metadatos, auditoría de rendimiento y accesibilidad
 
