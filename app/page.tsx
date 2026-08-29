@@ -1,21 +1,16 @@
-import { Section } from "@/components/ui/Section";
+import { Hero } from "@/components/sections/Hero";
+import { Precio } from "@/components/sections/Precio";
+import { Producto } from "@/components/sections/Producto";
 
-// Placeholder del paso 2 (scaffold + sistema de diseño). El home real —hero,
-// producto, precio y el resto de secciones— llega en los pasos 3 y 4 del
-// PLAN.md. Ver /muestra para el catálogo de componentes base.
+// Paso 3 del PLAN.md: hero, producto y precio con copy real. El resto de
+// secciones (problema, control, cómo empezamos, próximos procesos, FAQ,
+// cierre) llega en el paso 4.
 export default function Home() {
   return (
-    <Section background="papel" className="flex-1">
-      <p className="font-mono text-sm uppercase tracking-wide text-gris">
-        AR2GO
-      </p>
-      <h1 className="mt-4 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
-        Sitio en construcción.
-      </h1>
-      <p className="mt-4 max-w-[68ch] text-lg text-gris">
-        El home real (hero, producto y precio) llega en el siguiente PR. Este
-        es el andamiaje del paso 2: sistema de diseño y componentes base.
-      </p>
-    </Section>
+    <>
+      <Hero />
+      <Producto />
+      <Precio />
+    </>
   );
 }

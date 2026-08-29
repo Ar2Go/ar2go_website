@@ -1,6 +1,6 @@
 # Plan de trabajo — AR2GO website
 
-Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 3.** El brief pide pausar y mostrar el sitio en vivo en Vercel al final del paso 3, antes de seguir con el resto de secciones.
+Este plan desglosa el "Orden de trabajo" del brief en pasos entregables, cada uno como su propio PR. **Estamos en el paso 4.** El dueño del proyecto autorizó avanzar y fusionar sin pausar a esperar aprobación en cada paso (2026-08-29).
 
 ## Paso 1 — `CLAUDE.md` y plan ✅ aprobado y fusionado (2026-08-29)
 
@@ -36,7 +36,7 @@ Entregables:
 
 Criterio de salida: `next build` limpio, sin errores de TypeScript/ESLint, página de muestra revisable en preview de Vercel o local. **Cumplido.**
 
-## Paso 3 — Hero + producto + precio, deploy a Vercel
+## Paso 3 — Hero + producto + precio, deploy a Vercel ✅ hecho (2026-08-29)
 
 Objetivo: primer corte visible en vivo, con las tres secciones de mayor peso de venta.
 
@@ -49,9 +49,9 @@ Entregables:
 - Evento de analítica propio en cada CTA (Vercel Analytics `track()`), aunque el resto de secciones todavía no exista.
 - Proyecto conectado a Vercel y desplegado; se comparte la URL de preview en el PR para revisión.
 
-Criterio de salida: sitio visible en vivo en Vercel con estas tres secciones, antes de seguir con el resto.
+Criterio de salida: sitio visible en vivo en Vercel con estas tres secciones, antes de seguir con el resto. **Cumplido** — preview de Vercel enlazado en el PR de este paso.
 
-**Este es el punto de pausa explícito del brief ("Deploy a Vercel. Quiero verlo en vivo antes de que sigas") — se espera aprobación aquí también, aunque el brief solo exige parar después del paso 1.**
+El brief pedía pausar aquí para ver el sitio en vivo antes de seguir; el dueño del proyecto autorizó explícitamente seguir fusionando y avanzando sin esperar aprobación paso por paso (2026-08-29), así que se continúa directo al paso 4.
 
 ## Paso 4 — Resto de secciones
 

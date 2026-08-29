@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // Familia geométrica única para todo el sitio (CLAUDE.md §7).
@@ -31,7 +32,10 @@ export default function RootLayout({
       lang="es"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col antialiased">{children}</body>
+      <body className="flex min-h-full flex-col antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
