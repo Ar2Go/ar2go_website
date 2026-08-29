@@ -28,6 +28,10 @@ Abre [http://localhost:3000](http://localhost:3000).
 - `/muestra` — catálogo interno de componentes base (Button, Section, Card)
   para revisar el sistema de diseño. No se enlaza desde ninguna navegación
   pública y está marcada `noindex`.
+- `/admin` — panel de administración de los agentes de la fábrica
+  (`ar2go-platform`), con login de Google restringido a una lista blanca de
+  correos. Ver "Panel de administración" más abajo para configurarlo en
+  local.
 
 ## Otros comandos
 
@@ -50,8 +54,9 @@ Variables de entorno a configurar en el proyecto de Vercel: ver
 
 | Carpeta | Qué contiene |
 |---|---|
-| `app/` | Rutas (App Router): home, páginas legales, `/muestra`. |
+| `app/` | Rutas (App Router): home, páginas legales, `/muestra`, `/admin`. |
 | `app/actions/` | Server Actions (formulario de demo, lista de espera). |
+| `auth.ts`, `middleware.ts` | Login de Google y protección de `/admin` (Auth.js). |
 | `components/ui/` | Componentes base reutilizables (Button, Section, Card). |
 | `components/sections/` | Una sección de la home por archivo, en el orden de `CLAUDE.md` §8. |
 | `components/forms/` | Formularios cliente (`DemoForm`, `WaitlistForm`) y el campo honeypot compartido. |
@@ -75,6 +80,32 @@ un almacén real conectado, los leads quedan **solo en los logs de la función
 en Vercel** (`[lead] {...}` en el dashboard) — es la opción con menos partes
 móviles, no un CRM. Cambiarlo por un almacén de verdad es reemplazar
 `lib/leads-store.ts` sin tocar los Server Actions que lo llaman.
+
+## Panel de administración (`/admin`)
+
+Login con Google, hecho con [Auth.js](https://authjs.dev) (`next-auth@5`). El
+acceso está restringido a una lista blanca de correos en `auth.ts`
+(`CORREOS_ADMIN`) — hoy solo `juand86@gmail.com`. Agregar a alguien más es
+editar esa lista, no la configuración de Google Cloud.
+
+Para probarlo en local:
+
+1. Ve a [Google Cloud Console → Credenciales](https://console.cloud.google.com/apis/credentials)
+   (en el proyecto de Google que uses para AR2GO; créalo si no existe).
+2. Crea un **ID de cliente de OAuth** de tipo "Aplicación web".
+3. En **URIs de redireccionamiento autorizados**, agrega:
+   - `http://localhost:3000/api/auth/callback/google` (para local)
+   - `https://<tu-dominio-de-vercel>/api/auth/callback/google` (para producción/preview)
+4. Copia el **Client ID** y el **Client secret** a tu `.env.local`:
+   ```bash
+   AUTH_GOOGLE_ID=...
+   AUTH_GOOGLE_SECRET=...
+   AUTH_SECRET=$(openssl rand -base64 32)   # o cualquier cadena aleatoria larga
+   ```
+5. `npm run dev` y entra a `/admin` — te manda a `/admin/login` si no tienes sesión.
+
+Sin estas variables, `/admin` no deja iniciar sesión pero el resto del sitio
+funciona igual (ver `CLAUDE.md` §9).
 
 ## Placeholders pendientes
 

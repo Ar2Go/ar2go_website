@@ -29,7 +29,7 @@ Reglas que no se negocian:
 - No inventar cifras, testimonios, logos de clientes ni casos de éxito. Sin clientes todavía; un testimonio falso mata la venta cuando se descubre.
 - No usar ilustraciones genéricas de IA, cerebros, robots ni nodos conectados.
 - No agregar chat widget de terceros; el canal es WhatsApp.
-- No construir el panel de administración ni el tablero de auditoría en este repo (es sitio de marketing).
+- No construir el **tablero de auditoría** (el que muestra conversaciones del agente al dueño del negocio) en este repo — sigue siendo de otra plataforma. La única excepción, desde 2026-08-29 (ver §11), es un panel de administración interno (`/admin`) para administrar los agentes de la fábrica (`ar2go-platform`), con acceso restringido — no es una funcionalidad de cara al cliente.
 - No meter contenido en inglés en el sitio.
 - No cambiar de stack sin aprobación explícita (ver §5).
 - No implementar modo oscuro en esta versión.
@@ -93,6 +93,15 @@ Una sola página larga (`/`) más dos páginas legales (`/aviso-de-privacidad`, 
 
 Detalle de copy y aceptación por sección: ver `PLAN.md`.
 
+### Panel de administración (`/admin`)
+
+Fuera de la home pública, con login de Google restringido a una lista blanca de correos (hoy solo `juand86@gmail.com`, en `auth.ts`). Administra los agentes de la fábrica de `ar2go-platform` — hoy es solo el andamiaje de acceso, sin datos reales, porque esa plataforma sigue en etapa 0. Ver §11 (decisión 2026-08-29) para el porqué y el alcance exacto.
+
+- `auth.ts` — configuración de Auth.js (NextAuth v5), proveedor Google, sesión JWT (sin base de datos). La lista blanca vive en el callback `signIn`, no en Google Cloud Console — el consentimiento de Google puede estar abierto y aun así solo entra quien está en la lista.
+- `middleware.ts` — protege `/admin/*`; sin sesión, redirige a `/admin/login`.
+- `/admin/login`, `/admin` — ambos `noindex`.
+- Variables de entorno nuevas en `.env.example`: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` (ver README para cómo generarlas).
+
 ## 9. Placeholders pendientes (no publicar sin resolver)
 
 | Placeholder | Qué falta | Dónde vive |
@@ -103,6 +112,7 @@ Detalle de copy y aceptación por sección: ver `PLAN.md`.
 | `TODO_DATO` | Cifras del "problema" (leads fuera de horario, tiempo de primera respuesta, etc.) | `content/problema.ts` |
 | `TODO_PRECIO` | Montos de implementación/renta, en revisión | `content/precio.ts` |
 | `RESEND_API_KEY` | Cuenta de Resend aún no existe | `.env.example`, documentada como pendiente de configurar, no bloquea el resto del trabajo |
+| `AUTH_SECRET` / `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | Credenciales OAuth de Google aún no creadas | `.env.example`, documentadas como pendientes; sin ellas, `/admin` no deja iniciar sesión pero el resto del sitio funciona igual |
 
 Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o el dominio hardcodeado en más de un archivo de contenido — todo importa desde `content/site.ts`.
 
@@ -139,3 +149,10 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o
   - Favicon: `app/icon.tsx` (generado con `next/og`) → `app/icon.svg` (copia estática del isotipo real), más `app/apple-icon.png` (180×180, rasterizado del isotipo con Playwright — no hay herramienta de rasterizado en el entorno, así que se renderizó el SVG en una página headless y se capturó). `app/opengraph-image.tsx` ahora usa el logotipo negativo (como elementos SVG nativos de Satori, no una referencia a archivo — excepción documentada en `CLAUDE.md` §7) más el titular real del hero en Space Grotesk, cargada en runtime desde Google Fonts.
   - `theme-color` (metadato) ahora usa `brand.acento`, vía `viewport` export (no `metadata.themeColor`, deprecado desde Next 14).
   - `docs/brand.md` se sube tal cual al repo para trazabilidad — cualquier cambio de token futuro entra por PR con una fila nueva en su bitácora (§12 de ese archivo), no editando este archivo.
+- **2026-08-29** — Se agrega `/admin`: panel de administración de los agentes de la fábrica (`ar2go-platform`), con login de Google. **Revierte explícitamente** la regla de §3 ("no construir panel de administración... es sitio de marketing") y toca de refilón la de `ar2go-platform/docs/factory.md` §7 ("no interfaz de la fábrica") — el dueño del proyecto confirmó el cambio de decisión explícitamente cuando se lo pregunté, así que no lo tomé por mi cuenta. Queda pendiente reflejar esto en `ar2go-platform/docs/factory.md` — ese archivo pide que un cambio de arquitectura entre por PR aparte, así que no lo edité yo mismo en este PR; se lo señalé al dueño del proyecto.
+  - Auth.js v5 (`next-auth@5.0.0-beta.32`) con proveedor Google y sesión JWT — sin base de datos, mismo criterio de "menos partes móviles" que `leads-store.ts`.
+  - El control de acceso real es una lista blanca de correos (`CORREOS_ADMIN` en `auth.ts`, hoy solo `juand86@gmail.com`), verificada en el callback `signIn` — no depender del consentimiento de Google Cloud (que puede quedar abierto) para restringir quién entra.
+  - `middleware.ts` protege `/admin/*` verificando solo presencia de sesión — el filtro de correo ya ocurrió en el callback, así que una sesión válida ya implica una cuenta autorizada; no hace falta repetir el chequeo de correo en cada request.
+  - `/admin` hoy es un cascarón honesto: lista los cinco agentes de la fábrica como referencia, marcados "Sin conectar" — no hay API real de `ar2go-platform` que consultar todavía (sigue en etapa 0). No se inventaron datos ni estado.
+  - Verificado sin credenciales reales de Google: con un `AUTH_SECRET` y client id/secret de prueba en local, confirmé que `signIn("google", ...)` arma la URL de autorización correcta (PKCE, `redirect_uri` a `/api/auth/callback/google`, scopes `openid profile email`) inspeccionando el header `x-action-redirect` de la Server Action — no se pudo probar el flujo completo (Google real) por las restricciones de red del entorno de desarrollo.
+  - `npm run build` sin las variables de Auth configuradas sigue limpio y el resto del sitio no se rompe (`/admin` y `/admin/login` quedan como rutas dinámicas, no se intentan pre-renderizar en build) — mismo criterio de "no bloquea el resto del trabajo" que `RESEND_API_KEY`.
