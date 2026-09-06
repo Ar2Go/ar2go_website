@@ -105,9 +105,10 @@ Fuera de la home pública, con login de Google restringido a una lista blanca de
 
 ## 9. Placeholders pendientes (no publicar sin resolver)
 
+Ya no hay `TODO_DOMINIO`: el dominio real es `ar2go.io`, comprado y asignado en `content/site.ts` (2026-09-06, ver §11). Sigue pendiente conectarlo en Vercel (Settings → Domains) y verificarlo en Resend para poder enviar correo desde `hola@ar2go.io` — ninguno de los dos es un cambio de código.
+
 | Placeholder | Qué falta | Dónde vive |
 |---|---|---|
-| `TODO_DOMINIO` | Dominio definitivo del sitio | `content/site.ts` (centralizado) |
 | `TODO_WHATSAPP` | Número de WhatsApp Business | `content/site.ts` (centralizado) — ya no es el canal principal tras el pivote a autoservicio (§1), se conserva por si un flujo de contacto lo vuelve a usar |
 | `TODO_TELEFONO` | Teléfono de contacto del pie de página | `content/site.ts` (centralizado) — la maqueta traía `+52 55 0000 0000` de relleno, no un número real |
 | `TODO_LINKEDIN` | Liga real de LinkedIn de la empresa | `content/site.ts` (centralizado) |
@@ -180,3 +181,4 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp, 
   - **Radio**: se abandona el radio único (`--radius-base`, consolidado apenas en el rebrand anterior) por tres radios distintos (`--radius-btn` 8px, `--radius-card` 16px, `--radius-shot` 12px) — la maqueta real los usa así a propósito (los shots de agente son más angostos que las tarjetas de precio), así que la "simplificación a un solo radio" del rebrand anterior queda revertida aquí con una razón concreta, no por gusto.
   - `docs/brand.md` se reescribe completo (v3) reflejando todo lo anterior; queda pendiente subir la misma actualización a `ar2go-platform` (ese repo sigue en etapa 0 sin UI propia, así que no es urgente, pero el documento se declara a sí mismo como fuente para ambos repos).
   - Verificado: `npm run lint`, `npx tsc --noEmit` y `npm run build` limpios; capturas de Playwright del home completo (desktop y 390px), la interacción de tabs (cambio de industria), el menú móvil abierto, `/terminos`, `/admin/login`, `/muestra` y el `og:image` — todas revisadas visualmente antes de este commit.
+- **2026-09-06** — Dominio real comprado: `ar2go.io`. `DOMINIO` en `content/site.ts` deja de ser `TODO_DOMINIO`; raíz (sin `www`) como canónico, con `www.ar2go.io` como redirección — configuración de dominios de Vercel, no de este repo. De ahí salen `site.url`, `hola@ar2go.io` y las URLs absolutas de `metadataBase`/canonical/OG en `app/layout.tsx`, sin tocar ningún otro archivo (el propósito original del placeholder centralizado). Dos cosas siguen pendientes, ninguna es código: conectar el dominio en el proyecto de Vercel (Settings → Domains, con los registros DNS que Vercel indique) y verificar `ar2go.io` en el dashboard de Resend (SPF/DKIM propios) antes de poder enviar el correo de notificación de leads desde `hola@ar2go.io` en vez del remitente de prueba `onboarding@resend.dev` (`lib/email.ts`).
