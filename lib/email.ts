@@ -21,8 +21,10 @@ export async function enviarNotificacionLead(lead: Lead): Promise<void> {
       : `Lista de espera: ${lead.procesoInteres}`;
 
   await resend.emails.send({
-    // TODO_DOMINIO: reemplazar por un remitente del dominio propio una vez
-    // verificado en Resend.
+    // Dominio real ya asignado (ar2go.io, content/site.ts) — pendiente
+    // verificarlo en el dashboard de Resend (registros SPF/DKIM propios,
+    // trámite aparte del DNS de Vercel) antes de poder enviar desde
+    // hola@ar2go.io en vez de este remitente de prueba.
     from: `AR2GO <onboarding@resend.dev>`,
     to: [site.contacto.correo],
     subject: asunto,

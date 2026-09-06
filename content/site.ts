@@ -1,8 +1,10 @@
 // Datos centrales del sitio. Un solo lugar por dato (CLAUDE.md §9): ningún
 // otro archivo de contenido debe repetir el dominio, el teléfono o el correo.
 
-// TODO_DOMINIO: dominio definitivo del sitio, aún no decidido.
-const DOMINIO = "TODO_DOMINIO";
+// Dominio definitivo, comprado 2026-09-06. Raíz (sin "www") como canónico —
+// Vercel redirige www.ar2go.io → ar2go.io (configuración del proyecto, no de
+// este archivo).
+const DOMINIO = "ar2go.io";
 
 // TODO_WHATSAPP: número de WhatsApp Business en formato E.164 sin "+"
 // (ej. 5215512345678). Ya no es el canal principal del pivote a plataforma

@@ -22,9 +22,8 @@ const jetbrainsMono = JetBrains_Mono({
 const DESCRIPCION =
   "Agentes de IA que se contratan como a un empleado: permisos acotados, trabajo repetitivo automatizado y cada decisión registrada. Precio visible, empieza gratis.";
 
-// site.url usa TODO_DOMINIO hasta tener el dominio real (CLAUDE.md §9): las
-// URLs absolutas de metadataBase/canonical/OG quedan con ese placeholder
-// visible en vez de un dominio inventado.
+// site.url resuelve a https://ar2go.io (content/site.ts) — dominio real
+// desde 2026-09-06.
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
