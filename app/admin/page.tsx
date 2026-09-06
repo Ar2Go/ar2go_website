@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { auth, signOut } from "@/auth";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
@@ -26,48 +28,52 @@ export default async function AdminPage() {
   const session = await auth();
 
   return (
-    <Section background="papel">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className={tipografia.eyebrow}>Panel de administración</p>
-          <h1 className={`mt-2 ${tipografia.h2}`}>
-            {session?.user?.name ?? session?.user?.email ?? "Hola"}
-          </h1>
+    <>
+      <Header />
+      <Section background="fondo">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className={tipografia.eyebrow}>Panel de administración</p>
+            <h1 className={`mt-2 ${tipografia.h2}`}>
+              {session?.user?.name ?? session?.user?.email ?? "Hola"}
+            </h1>
+          </div>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/admin/login" });
+            }}
+          >
+            <Button type="submit" variant="secondary">
+              Cerrar sesión
+            </Button>
+          </form>
         </div>
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/admin/login" });
-          }}
-        >
-          <Button type="submit" variant="secondary">
-            Cerrar sesión
-          </Button>
-        </form>
-      </div>
 
-      <p className={`mt-6 ${medidaMaxima} ${tipografia.cuerpo} text-gris`}>
-        Este panel administra los agentes de la fábrica de AR2GO (repo{" "}
-        <code className="font-mono text-tinta">ar2go-platform</code>).
-        Todavía no hay nada que administrar de verdad: ese repo sigue en
-        etapa 0 (ver <code className="font-mono text-tinta">docs/factory.md</code>{" "}
-        ahí), sin agentes construidos ni API que conectar aquí. Este acceso
-        es el andamiaje — se conecta a datos reales cuando exista esa API.
-      </p>
+        <p className={`mt-6 ${medidaMaxima} ${tipografia.cuerpo} text-gris`}>
+          Este panel administra los agentes de la fábrica de AR2GO (repo{" "}
+          <code className="font-mono text-niebla">ar2go-platform</code>).
+          Todavía no hay nada que administrar de verdad: ese repo sigue en
+          etapa 0 (ver <code className="font-mono text-niebla">docs/factory.md</code>{" "}
+          ahí), sin agentes construidos ni API que conectar aquí. Este acceso
+          es el andamiaje — se conecta a datos reales cuando exista esa API.
+        </p>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {AGENTES_FABRICA.map((agente) => (
-          <Card key={agente.nombre}>
-            <p className={tipografia.h3}>{agente.nombre}</p>
-            <p className={`mt-1 ${tipografia.cuerpoChico} text-gris`}>
-              Produce: {agente.produce}
-            </p>
-            <p className={`mt-3 ${tipografia.dato} text-gris`}>
-              Sin conectar
-            </p>
-          </Card>
-        ))}
-      </div>
-    </Section>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {AGENTES_FABRICA.map((agente) => (
+            <Card key={agente.nombre}>
+              <p className={tipografia.h3}>{agente.nombre}</p>
+              <p className={`mt-1 ${tipografia.cuerpoChico} text-gris`}>
+                Produce: {agente.produce}
+              </p>
+              <p className={`mt-3 ${tipografia.dato} text-gris`}>
+                Sin conectar
+              </p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+      <Footer />
+    </>
   );
 }

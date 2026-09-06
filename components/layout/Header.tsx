@@ -1,14 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 
-// Logotipo horizontal en el header, uso por defecto (docs/brand.md §7).
-// Se referencia el SVG real de public/brand/, nunca reconstruido en JSX.
+// Header simple para /admin y las páginas legales — la home trae su propio
+// nav flotante (components/layout/HomeNav.tsx), este es el que usan el
+// resto de las rutas.
 export function Header() {
   return (
-    <header className="border-b border-linea bg-papel">
+    <header className="border-b border-linea/10 bg-fondo">
       <div className="mx-auto flex w-full max-w-[1080px] items-center px-5 py-5 md:px-8">
         <Link href="/" aria-label="AR2GO — inicio" className="inline-flex">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ar2go-logotipo.svg" alt="AR2GO" className="h-8 w-auto" />
+          <Image src="/brand/ar2go-logotipo-2026.png" alt="AR2GO" width={104} height={25} className="h-6 w-auto" />
         </Link>
       </div>
     </header>

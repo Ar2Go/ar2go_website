@@ -7,7 +7,7 @@ type CtaButtonProps = {
   href: string;
   section: string;
   label: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "ghost";
   className?: string;
 };
 

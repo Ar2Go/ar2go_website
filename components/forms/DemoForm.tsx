@@ -14,7 +14,7 @@ import { tipografia } from "@/lib/typography";
 const estadoInicial: EstadoFormularioDemo = { status: "idle" };
 
 const CAMPO_CLASES =
-  "w-full rounded-base border border-linea bg-papel px-3 py-2 text-tinta focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta";
+  "w-full rounded-card border border-linea/10 bg-superficie px-3 py-2 text-niebla focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azul";
 
 export function DemoForm() {
   const [estado, accion, pendiente] = useActionState(
@@ -26,7 +26,7 @@ export function DemoForm() {
     return (
       // Éxito en el color funcional de docs/brand.md §6 — mismo tratamiento
       // que el estado de error, no decorativo.
-      <div className="rounded-base border border-exito/40 bg-exito/5 p-6 text-tinta">
+      <div className="rounded-card border border-exito/40 bg-exito/10 p-6 text-niebla">
         <p className={`${tipografia.h3} text-exito`}>Listo, recibimos tu solicitud.</p>
         <p className={`mt-2 ${tipografia.cuerpo} text-gris`}>
           Te contactamos por WhatsApp para agendar la demo. Si prefieres
@@ -42,7 +42,7 @@ export function DemoForm() {
   return (
     <form
       action={accion}
-      className="grid gap-5 rounded-base border border-linea bg-papel p-6 text-tinta"
+      className="grid gap-5 rounded-card border border-linea/10 bg-superficie p-6 text-niebla"
     >
       <HoneypotField />
 
@@ -131,7 +131,7 @@ export function DemoForm() {
         // explicativo — nunca solo con color.
         <div
           role="alert"
-          className="rounded-base border border-error/40 bg-error/5 p-4 text-sm text-tinta"
+          className="rounded-card border border-error/40 bg-error/10 p-4 text-sm text-niebla"
         >
           <p className="font-medium text-error">{estado.mensaje}</p>
           <p className="mt-2">

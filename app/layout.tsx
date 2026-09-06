@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
 import { OrganizationJsonLd } from "@/components/seo/OrganizationJsonLd";
 import { brand } from "@/lib/brand";
 import { site } from "@/content/site";
@@ -22,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const DESCRIPCION =
-  "Agente de IA que atiende tus prospectos de WhatsApp, cotiza con tu catálogo y agenda la demo. Precio visible, sin llamada de ventas.";
+  "Agentes de IA que se contratan como a un empleado: permisos acotados, trabajo repetitivo automatizado y cada decisión registrada. Precio visible, empieza gratis.";
 
 // site.url usa TODO_DOMINIO hasta tener el dominio real (CLAUDE.md §9): las
 // URLs absolutas de metadataBase/canonical/OG quedan con ese placeholder
@@ -30,7 +28,7 @@ const DESCRIPCION =
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.nombre} — Agente de Leads WhatsApp`,
+    default: `${site.nombre} — Agentes de IA trabajando para ti`,
     template: `%s — ${site.nombre}`,
   },
   description: DESCRIPCION,
@@ -41,22 +39,26 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_MX",
     siteName: site.nombre,
-    title: `${site.nombre} — Agente de Leads WhatsApp`,
+    title: `${site.nombre} — Agentes de IA trabajando para ti`,
     description: DESCRIPCION,
     url: site.url,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.nombre} — Agente de Leads WhatsApp`,
+    title: `${site.nombre} — Agentes de IA trabajando para ti`,
     description: DESCRIPCION,
   },
 };
 
-// docs/brand.md §9.
+// docs/brand.md.
 export const viewport: Viewport = {
-  themeColor: brand.marino,
+  themeColor: brand.fondo,
 };
 
+// Sin Header/Footer genérico aquí: la home trae su propio nav flotante y pie
+// (maqueta 2026-09-06, ver components/layout/HomeNav.tsx y HomeFooter.tsx);
+// /admin y las páginas legales usan Header/Footer directamente en su propia
+// página (components/layout/Header.tsx y Footer.tsx).
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -69,9 +71,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col antialiased">
         <OrganizationJsonLd />
-        <Header />
         <div className="flex-1">{children}</div>
-        <Footer />
         <Analytics />
       </body>
     </html>

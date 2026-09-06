@@ -1,13 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="AR2GO">
-  <title>AR2GO — isotipo</title>
-  <rect width="1024" height="1024" rx="228" fill="#10327A"/>
-  <g transform="translate(184,366) scale(2.92)">
-    <g fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="6">
-      <path d="M10,90 L37,12 H47 L74,90"/>
-      <path d="M20,62 H64"/>
-      <path d="M106,90 V10 H138 A21,21 0 0 1 138,52 H106"/>
-      <path d="M136,52 L162,90"/>
-    </g>
-    <rect x="176" y="0" width="48" height="48" rx="8" fill="#FFFFFF"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0B0F19"/>
+  <path d="M8 22 L13 11 L18 22" stroke="#E6E9EF" stroke-width="2" fill="none" stroke-linejoin="round"/>
+  <rect x="19" y="16" width="7" height="2.4" fill="#2563EB"/>
 </svg>

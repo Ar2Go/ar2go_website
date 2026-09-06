@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "ghost";
 
 type CommonProps = {
   variant?: ButtonVariant;
@@ -21,22 +21,22 @@ type ButtonAsLink = CommonProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
-// docs/brand.md §6: radio base, padding 12px/20px, peso 500, sin sombra.
+// docs/brand.md: radio de botón (8px), padding 12px/20px, peso 500, sin
+// sombra.
 const BASE_CLASSES =
-  "inline-flex items-center justify-center rounded-base px-5 py-3 text-base font-medium transition-colors duration-[120ms] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-btn px-5 py-3 text-base font-medium transition-colors duration-[120ms] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azul disabled:pointer-events-none disabled:opacity-50";
 
-// El marino identifica el CTA primario. Regla de marca (docs/brand.md §2):
-// aparece una sola vez por pantalla visible — nunca dos botones "primary" a
-// la vez. Papel sobre marino da 11.9:1 (AAA, docs/brand.md §10) y el hover
-// (marino-alt) sube a 14.8:1 — ninguno de los dos estados es un compromiso.
-//
-// Ojo: marino y tinta nunca se tocan (1.55:1, prohibido explícitamente en
-// docs/brand.md §3 y §10). Este botón nunca debe usarse con texto tinta
-// sobre fondo marino ni viceversa. Sobre una Section de fondo tinta, el CTA
-// primario no usa esta variante — ver components/sections/Cierre.tsx.
+// El azul identifica el CTA primario — aparece una sola vez por pantalla
+// visible. Blanco sobre azul da 5.17:1 (AA, docs/brand.md). El secundario
+// usa azul-suave (una variante más clara del azul de marca) en vez del azul
+// base: el azul base como texto sobre --color-fondo da 3.71:1, no pasa AA de
+// texto normal (4.5:1) — azul-suave da 5.21:1.
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-marino text-papel hover:bg-marino-alt",
-  secondary: "border border-tinta text-tinta hover:bg-tinta hover:text-papel",
+  primary: "bg-azul text-papel hover:bg-azul-claro",
+  secondary:
+    "border border-azul-suave/50 text-azul-suave hover:border-azul hover:bg-azul/[0.14] hover:text-papel",
+  ghost:
+    "border border-linea/20 bg-fondo/35 text-niebla hover:border-linea/40 hover:bg-linea/10",
 };
 
 function isExternalHref(href: string): boolean {

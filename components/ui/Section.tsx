@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type SectionBackground = "papel" | "neutro" | "tinta";
+type SectionBackground = "fondo" | "superficie";
 
 type SectionProps = {
   background?: SectionBackground;
@@ -10,15 +10,16 @@ type SectionProps = {
 };
 
 // Separación entre secciones por cambio de fondo, nunca por sombra
-// (docs/brand.md §2 y §5). No combinar con línea divisoria a la vez.
+// (docs/brand.md). No combinar con línea divisoria a la vez. Sistema oscuro
+// de un solo tema: "fondo" es el fondo base de página, "superficie" es la
+// franja/tarjeta secundaria — ya no hay una variante clara ("papel").
 const BACKGROUND_CLASSES: Record<SectionBackground, string> = {
-  papel: "bg-papel text-tinta",
-  neutro: "bg-neutro text-tinta",
-  tinta: "bg-tinta text-papel",
+  fondo: "bg-fondo text-niebla",
+  superficie: "bg-superficie text-niebla",
 };
 
 export function Section({
-  background = "papel",
+  background = "fondo",
   className = "",
   children,
   id,
@@ -28,7 +29,7 @@ export function Section({
       id={id}
       className={`${BACKGROUND_CLASSES[background]} ${className}`.trim()}
     >
-      {/* Contenedor y ritmo vertical: docs/brand.md §5. */}
+      {/* Contenedor y ritmo vertical: docs/brand.md. */}
       <div className="mx-auto w-full max-w-[1080px] px-5 py-16 md:px-8 md:py-24">
         {children}
       </div>
