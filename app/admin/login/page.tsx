@@ -22,8 +22,8 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const mensajeError = error ? (MENSAJES_ERROR[error] ?? "No se pudo iniciar sesión.") : null;
 
   return (
-    <Section background="neutro" className="flex min-h-[60vh] items-center">
-      <div className="mx-auto w-full max-w-sm rounded-base border border-linea bg-papel p-8 text-center">
+    <Section background="superficie" className="flex min-h-[60vh] items-center">
+      <div className="mx-auto w-full max-w-sm rounded-card border border-linea/10 bg-fondo p-8 text-center">
         <p className={tipografia.eyebrow}>Acceso restringido</p>
         <h1 className={`mt-2 ${tipografia.h3}`}>Panel de administración</h1>
         <p className={`mt-3 ${tipografia.cuerpoChico} text-gris`}>
@@ -33,7 +33,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
         {mensajeError && (
           <p
             role="alert"
-            className={`mt-4 rounded-base border border-error/40 bg-error/5 p-3 ${tipografia.cuerpoChico} text-error`}
+            className={`mt-4 rounded-card border border-error/40 bg-error/10 p-3 ${tipografia.cuerpoChico} text-error`}
           >
             {mensajeError}
           </p>

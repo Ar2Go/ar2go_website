@@ -43,7 +43,7 @@ export function WaitlistForm({ proceso, cta }: WaitlistFormProps) {
           name="correo"
           required
           placeholder="tu@correo.com"
-          className="min-w-0 flex-1 rounded-base border border-linea px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinta"
+          className="min-w-0 flex-1 rounded-card border border-linea/10 px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azul"
         />
         <Button
           type="submit"

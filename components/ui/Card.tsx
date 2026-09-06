@@ -5,12 +5,12 @@ type CardProps = {
   children: ReactNode;
 };
 
-// docs/brand.md §6: borde línea, radio base, sin sombra ni hover elevado.
-// Si necesita destacar, el llamador cambia el fondo a neutro, no agrega sombra.
+// docs/brand.md: superficie secundaria, borde línea al 10% (hairline sobre
+// fondo oscuro), radio de tarjeta (16px), sin sombra ni hover elevado.
 export function Card({ className = "", children }: CardProps) {
   return (
     <div
-      className={`rounded-base border border-linea bg-papel p-6 ${className}`.trim()}
+      className={`rounded-card border border-linea/10 bg-superficie p-6 ${className}`.trim()}
     >
       {children}
     </div>

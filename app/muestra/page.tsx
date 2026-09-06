@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function MuestraPage() {
   return (
     <>
-      <Section background="papel">
+      <Section background="fondo">
         <p className={tipografia.eyebrow}>Eyebrow / mono</p>
         <h1 className={`mt-2 ${tipografia.display}`}>Título nivel 1</h1>
         <h2 className={`mt-8 ${tipografia.h2}`}>Título nivel 2</h2>
@@ -24,22 +24,26 @@ export default function MuestraPage() {
         <p className={`mt-4 ${medidaMaxima} ${tipografia.cuerpo} text-gris`}>
           Cuerpo de texto cómodo de leer, con medida máxima de 68 caracteres
           para que los párrafos largos no se estiren en pantallas anchas.
-          Esta es la familia geométrica única del sitio.
+          Esta es la familia geométrica única del sitio — display y h2 van en
+          peso ligero (300), a diferencia del resto de la escala.
         </p>
         <p className={`mt-2 ${medidaMaxima} ${tipografia.cuerpoChico} text-gris`}>
           Cuerpo chico, para texto secundario dentro de tarjetas y listas.
         </p>
-        <p className={`mt-4 ${tipografia.precio}`}>$2,900 MXN</p>
+        <p className={`mt-4 ${tipografia.precio}`}>$4,900 MXN</p>
         <p className={`mt-1 ${tipografia.dato} text-gris`}>
-          Pie / dato — 29 AGO 2026
+          Pie / dato — 06 SEP 2026
         </p>
 
         <div className="mt-8 flex flex-wrap gap-4">
           <Button href="#" variant="primary">
-            Agenda una demo
+            Empezar gratis
           </Button>
           <Button href="#" variant="secondary">
-            Pruébalo por WhatsApp
+            Hablar con ventas
+          </Button>
+          <Button href="#" variant="ghost">
+            Ver cómo funciona
           </Button>
           <Button variant="primary" disabled>
             Botón deshabilitado
@@ -47,42 +51,24 @@ export default function MuestraPage() {
         </div>
       </Section>
 
-      <Section background="neutro">
-        <h2 className={tipografia.h2}>Section — fondo neutro</h2>
+      <Section background="superficie">
+        <h2 className={tipografia.h2}>Section — fondo superficie</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Implementación</p>
-            <p className={`mt-1 ${tipografia.precio}`}>$9,000 MXN</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Explorar</p>
+            <p className={`mt-1 ${tipografia.precio}`}>$0</p>
           </Card>
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Renta mensual</p>
-            <p className={`mt-1 ${tipografia.precio}`}>$2,900 MXN</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Equipo</p>
+            <p className={`mt-1 ${tipografia.precio}`}>$4,900</p>
           </Card>
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Conversaciones</p>
-            <p className={`mt-1 ${tipografia.precio}`}>300 incluidas</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Empresa</p>
+            <p className={`mt-1 ${tipografia.precio}`}>A medida</p>
           </Card>
-        </div>
-      </Section>
-
-      <Section background="tinta">
-        <h2 className={`${tipografia.h2} text-papel`}>Section — fondo tinta</h2>
-        <p className={`mt-4 ${medidaMaxima} ${tipografia.cuerpo} text-papel/80`}>
-          Para cierres de sección o bloques de alto contraste. Marino y tinta
-          nunca se tocan (docs/brand.md §3): el CTA aquí va en blanco con
-          texto tinta, no en marino.
-        </p>
-        <div className="mt-6">
-          <Button
-            href="#"
-            variant="primary"
-            className="!bg-papel !text-tinta hover:!bg-neutro"
-          >
-            Agenda una demo
-          </Button>
         </div>
       </Section>
     </>

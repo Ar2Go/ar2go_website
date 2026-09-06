@@ -1,32 +1,51 @@
 @import "tailwindcss";
 
 /*
- * Tokens de marca — fuente única de verdad: docs/brand.md.
- * No cambies un valor aquí sin cambiarlo primero en docs/brand.md (PR aparte).
- * Sin modo oscuro en esta versión: una sola paleta, sin @media (prefers-color-scheme).
+ * Tokens de marca — fuente única de verdad: docs/brand.md (sistema oscuro
+ * v3, tomado de la maqueta aprobada de home, 2026-09-06).
+ * No cambies un valor aquí sin cambiarlo primero en docs/brand.md.
+ * El sitio usa un solo tema (oscuro) por defecto — no hay
+ * @media (prefers-color-scheme) ni toggle de modo claro/oscuro.
  */
 @theme {
-  /* Color — decisión cerrada: marino, blanco y negro (docs/brand.md §1 y §3) */
-  --color-marino: #10327a; /* marca, CTA primario, cuadrado del logo */
-  --color-marino-alt: #0b2559; /* hover y presionado */
-  --color-tinta: #101418; /* texto y letras del logotipo */
-  --color-papel: #ffffff;
-  --color-gris: #6b7076; /* texto secundario */
-  --color-linea: #e4e6e9;
-  --color-neutro: #f4f5f7; /* fondos de sección */
+  /* Superficies — de más oscura a menos oscura */
+  --color-fondo: #0b0f19; /* fondo base de toda página */
+  --color-superficie: #121826; /* tarjetas, nav, franjas alternas */
+  --color-superficie-alta: #161d2e; /* tarjeta destacada (plan--pick) */
 
-  /* Funcionales — no son colores de marca, no se usan decorativamente */
-  --color-error: #b42318;
-  --color-exito: #0b8f4f;
+  /* Azul de marca — único acento de color del sitio */
+  --color-azul: #2563eb; /* fondos: CTA primario, estados activos, iconos */
+  --color-azul-claro: #3b76f6; /* hover/pressed de elementos con fondo azul */
+  --color-azul-suave: #7ca4fa; /* texto/enlaces sobre fondo oscuro — el azul
+    de marca (#2563EB) da 3.71:1 como texto sobre --color-fondo, no pasa AA
+    de texto normal (4.5:1); esta variante da 5.21:1 */
+
+  /* Texto y líneas */
+  --color-niebla: #e6e9ef; /* texto de cuerpo por defecto */
+  --color-gris: #a0a7b4; /* texto secundario */
+  --color-papel: #ffffff; /* texto de énfasis, logotipo en negativo */
+  --color-linea: #e6e9ef; /* separadores — siempre con opacidad baja
+    (border-linea/10, /20), nunca sólido: sólido sobre fondo oscuro se ve
+    como una línea blanca dura, no una separación sutil */
+
+  /* Funcionales — no son colores de marca, no se usan decorativamente.
+     Los tonos base de error/éxito (#B42318/#0B8F4F) fallan AA como texto
+     sobre --color-fondo (2.91:1 y 4.61:1 al límite); se aclaran para uso
+     como texto/ícono sobre fondo oscuro (6.9:1 y 9.9:1). */
+  --color-error: #f87171;
+  --color-exito: #34d399;
 
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 
-  --radius-base: 4px;
+  --radius-btn: 8px;
+  --radius-card: 16px;
+  --radius-shot: 12px;
+  --radius-pill: 999px;
 }
 
 body {
-  background: var(--color-papel);
-  color: var(--color-tinta);
+  background: var(--color-fondo);
+  color: var(--color-niebla);
   font-family: var(--font-sans);
 }

@@ -4,35 +4,34 @@ Este archivo orienta a Claude Code (y a cualquier humano) sobre el contexto de n
 
 ## 1. Contexto de negocio
 
-AR2GO vende **procesos administrativos ejecutados por agentes de IA** a pymes mexicanas. El cliente no compra software: compra el resultado del proceso, y AR2GO responde por que corra.
+> **Pivote 2026-09-06 (ver §11):** AR2GO dejó de vender un solo proceso administrativo por demo y pasa a ser una **plataforma de agentes de IA de autoservicio**. Esta sección describe el modelo de negocio *actual*; el modelo anterior (Agente de Leads WhatsApp, venta por demo) queda documentado como histórico en §11.
 
-El catálogo se organiza **por proceso, no por industria**. El SAT y WhatsApp estandarizaron la capa de datos de la pyme mexicana, así que un mismo proceso empaquetado sirve para giros distintos con ~20% de configuración.
+AR2GO vende **agentes de IA que se contratan como a un empleado**: se les dan permisos acotados dentro de la operación de la empresa (ERP, sistemas de la línea de producción, inventario, cuentas por pagar, etc.) y ejecutan tareas repetitivas de forma autónoma, con cada decisión registrada. El cliente se da de alta solo (autoservicio), configura el agente y lo pone a trabajar — no hay venta uno a uno obligatoria, aunque el plan Empresa sí ofrece "Hablar con ventas".
 
-**Primer producto en venta: Agente de Leads WhatsApp.** Atiende conversaciones entrantes de prospectos, responde con el catálogo del cliente, califica, cotiza a precio de lista, agenda en el calendario, registra en el CRM y da seguimiento programado. Opera de forma autónoma dentro de un **espacio de acciones acotado**; escala a un humano cuando hay descuentos, compromisos de fecha, reclamos de clientes existentes, temas legales, o tres intercambios sin avanzar.
+El catálogo se organiza por **agente** (cuentas por pagar, propuestas, inventario, y los que se agreguen), agrupados en la home por caso de uso ("Elige el agente que tu negocio necesita hoy") y, en la sección de casos, por industria (Manufactura, Logística, Retail, Servicios financieros) — cada tab muestra dónde entra el primer agente y qué cambia después, con una cifra de resultado real.
 
-**Roadmap (mostrado como "próximamente"):** Conciliación y aplicación de pagos, Cobranza de cuentas por cobrar, Cuentas por pagar.
+**Cifras de negocio confirmadas como reales** (no son placeholders `TODO_DATO`): más de 150 agentes en producción, 99.95% de disponibilidad, y los resultados por industria de `content/casos.ts` (-31% de paro no planeado, 4.2h menos por embarque, 98.6% de exactitud de inventario, 3 semanas para incorporar un requerimiento de reporte). Confirmadas explícitamente por el dueño del proyecto el 2026-09-06 — si en algún momento dejan de ser reales, hay que quitarlas o volver a marcarlas `TODO_DATO`, no dejarlas como cifra fija.
 
 ## 2. Objetivo del sitio
 
-Una sola métrica: **demos agendadas por visitante**. El sitio califica solo, sin que nadie del equipo venda uno a uno.
+El sitio califica y convierte visitantes en cuentas de autoservicio, sin intervención de ventas para los planes Explorar y Equipo.
 
 Reglas que no se negocian:
 
-- El **precio va visible** en la página. La pyme mexicana descarta al proveedor que esconde el precio detrás de un formulario.
-- CTA primario: **"Agenda una demo"**. CTA secundario: **"Pruébalo por WhatsApp"** (el visitante habla directo con el agente).
-- Cada sección responde una objeción concreta, no describe tecnología.
+- El **precio va visible** en la página (sección Precios, `content/precio.ts`), en los tres planes (Explorar/Equipo/Empresa) — nunca detrás de un formulario para los dos primeros planes.
+- CTA primario: **"Empezar gratis"**. CTA secundario (hero): **"Ver cómo funciona"** (ancla a la sección de agentes). El plan Empresa usa "Hablar con ventas" como excepción, porque ese nivel sí requiere una conversación.
+- Cada sección responde a una industria o un caso de uso concreto, no describe arquitectura técnica.
 
 **Idioma:** español de México, tuteo, sin anglicismos innecesarios ("agente" no "AI agent", "proceso" no "workflow"). Cero contenido en inglés en el sitio público (los commits sí van en inglés, ver §4).
 
 ## 3. Qué no hacer
 
-- No inventar cifras, testimonios, logos de clientes ni casos de éxito. Sin clientes todavía; un testimonio falso mata la venta cuando se descubre.
-- No usar ilustraciones genéricas de IA, cerebros, robots ni nodos conectados.
-- No agregar chat widget de terceros; el canal es WhatsApp.
-- No construir el **tablero de auditoría** (el que muestra conversaciones del agente al dueño del negocio) en este repo — sigue siendo de otra plataforma. La única excepción, desde 2026-08-29 (ver §11), es un panel de administración interno (`/admin`) para administrar los agentes de la fábrica (`ar2go-platform`), con acceso restringido — no es una funcionalidad de cara al cliente.
+- No inventar cifras, testimonios, logos de clientes ni casos de éxito **sin confirmación explícita del dueño del proyecto**. Las cifras actuales de `content/hero.ts` y `content/casos.ts` están confirmadas (ver §1) — cualquier cifra nueva sigue el mismo criterio: se pregunta antes de publicarla, no se inventa.
+- No usar ilustraciones genéricas de IA, cerebros, robots ni nodos conectados. La fotografía del sitio es paisaje real con licencia (fiordos, Pexels) — no generada, no stock genérico de "tecnología".
+- No agregar chat widget de terceros.
+- No construir el **tablero de auditoría** (el que muestra conversaciones/ejecuciones del agente al dueño del negocio) en este repo — sigue siendo de otra plataforma. La única excepción, desde 2026-08-29 (ver §11), es un panel de administración interno (`/admin`) para administrar los agentes de la fábrica (`ar2go-platform`), con acceso restringido — no es una funcionalidad de cara al cliente.
 - No meter contenido en inglés en el sitio.
 - No cambiar de stack sin aprobación explícita (ver §5).
-- No implementar modo oscuro en esta versión.
 
 ## 4. Repositorio y flujo de trabajo
 
@@ -68,32 +67,32 @@ Reglas que no se negocian:
 
 `docs/brand.md` es la fuente única de verdad de tokens de color, tipografía, espaciado, radio, componentes y uso del logotipo — si algo en el código contradice lo que dice ese archivo, gana `docs/brand.md`. Resumen para no tener que abrirlo cada vez:
 
-- Paleta **cerrada** (`docs/brand.md` §1 y §12): **marino** `#10327A`, blanco y negro. Las exploraciones en naranja, verde y azul quedaron descartadas y no deben reaparecer en ningún componente.
-- El marino aparece **una sola vez por pantalla visible**: en el CTA primario o en el elemento destacado de la sección, nunca en ambos. El cuadrado del logotipo cuenta como uso.
-- **Regla dura:** marino y tinta nunca se tocan (1.55:1 de contraste, prohibido explícitamente). Sobre una sección de fondo tinta, el CTA primario no usa la variante marino — va en blanco con texto tinta (ver `components/sections/Cierre.tsx`).
-- Tipografía: Space Grotesk (sans, títulos y cuerpo) + JetBrains Mono (eyebrows, precios, datos — nunca en párrafos), vía `next/font`. Escala completa y roles tipográficos en `docs/brand.md` §4, implementados en `lib/typography.ts`.
+- **Tema único, oscuro** (`docs/brand.md` v3, decisión 2026-09-06): fondo `#0B0F19`, superficies `#121826`/`#161D2E`, texto casi blanco (`--color-niebla`). No hay modo claro ni toggle — esto revierte la regla anterior de "no implementar modo oscuro", que era sobre no tener *dos* temas, no sobre cuál color de fondo usar.
+- **Azul** (`#2563EB`) es el único acento de color — fondos de CTA primario, estados activos, iconos destacados. Como texto de tamaño normal se usa la variante clara `--color-azul-suave` (`#7CA4FA`): el azul base da 3.71:1 sobre el fondo, no pasa AA de texto (4.5:1).
+- Tipografía: Space Grotesk (sans — display y H2 en peso **ligero/300**, no bold) + JetBrains Mono (eyebrows, precios, datos — nunca en párrafos), vía `next/font`. Escala completa en `docs/brand.md` §4, implementada en `lib/typography.ts`.
 - Medida máxima de línea: 68 caracteres, sin excepción.
-- Nada de sombras difusas ni gradientes. Separación por línea `--color-linea` o cambio de fondo, nunca las dos a la vez.
-- Radio único de 4px (`--radius-base`).
-- Colores funcionales, independientes de marca: `--color-error` (#B42318) y `--color-exito` (#0B8F4F) — solo para estados reales de interfaz (error/éxito de formulario), nunca decorativos.
-- Modo oscuro: no implementado en esta versión.
-- Logotipo, negativo, mono e isotipo viven en `public/brand/` (SVG reales, código fuente en `docs/brand.md` §8) — nunca reconstruidos en JSX dentro de componentes de UI. La excepción documentada es `app/opengraph-image.tsx`, donde el renderer de `next/og` (Satori) necesita el SVG como elementos JSX nativos en vez de una referencia a archivo.
+- Nada de sombras difusas ni gradientes decorativos — los degradados sobre fotografía (para legibilidad del texto encima) son la excepción explícita. Líneas divisorias siempre con opacidad baja (`border-linea/10`, `/20`), nunca sólidas sobre el fondo oscuro.
+- Tres radios, no uno: `--radius-btn` (8px), `--radius-card` (16px), `--radius-shot` (12px, fotos de agente), `--radius-pill` (999px).
+- Colores funcionales, independientes de marca: `--color-error` (#F87171) y `--color-exito` (#34D399) — aclarados frente a los tonos "de manual" para que funcionen como texto sobre fondo oscuro (ver `docs/brand.md` §3). Solo para estados reales de interfaz, nunca decorativos.
+- Logotipo actual: `public/brand/ar2go-logotipo-2026.png` — es PNG, no SVG, porque es el único archivo real entregado (ver `docs/brand.md` §7 para el porqué y el pendiente de vector). El favicon (`app/icon.svg`) sí es SVG real. Los SVG del wordmark anterior (marino) quedan en `public/brand/` como histórico, sin uso activo. La excepción de siempre para reconstruir en JSX sigue siendo `app/opengraph-image.tsx` (Satori/`next/og` no soporta `next/image` ni archivos externos directamente).
+- Fotografía: paisaje real con licencia (fiordos, Pexels), nunca ilustración genérica de IA (regla de §3, sin cambios).
 
 ## 8. Arquitectura de contenido
 
-Una sola página larga (`/`) más dos páginas legales (`/aviso-de-privacidad`, `/terminos`). Orden de secciones en la home:
+Una sola página larga (`/`) más dos páginas legales (`/aviso-de-privacidad`, `/terminos`). Orden de secciones en la home (reescrito 2026-09-06 sobre la maqueta aprobada — ver §11):
 
-1. Hero (titular sobre el resultado + línea de apoyo + los dos CTA).
-2. El problema, en números del visitante (placeholders `TODO_DATO`).
-3. El producto, paso a paso, con visual de conversación (no diagrama de arquitectura).
-4. Control y límites (espacio de acciones acotado, escalamiento a humano, tablero de auditoría — descrito, no construido).
-5. Precio, visible (placeholders `TODO_PRECIO`).
-6. Cómo empezamos (tres pasos con tiempo asociado).
-7. Próximos procesos + lista de espera por correo.
-8. FAQ.
-9. Cierre con CTA + pie con contacto y ligas legales.
+1. Nav flotante (`HomeNav.tsx`, propio de la home — no el `Header` genérico) con enlaces de ancla, "Iniciar sesión" y "Crear cuenta".
+2. Hero cinematográfico: foto de fiordo a sangre + titular + los dos CTA ("Empezar gratis" / "Ver cómo funciona") + pie con las cifras de negocio confirmadas.
+3. Agentes (`Agentes.tsx`): tres tarjetas con foto + miniatura de interfaz superpuesta, una por agente (cuentas por pagar, propuestas, inventario).
+4. Casos por industria (`CasosPorIndustria.tsx`, client component): tabs — Manufactura / Logística / Retail / Servicios financieros — cada uno con problema, resultados y una cifra real.
+5. Nosotros (`Nosotros.tsx`): franja con foto a sangre, texto de posicionamiento ("Ingeniería, no una demo bonita") y las 4 etapas de uso (Descubre/Configura/Entrena/Activa).
+6. Precios (`Precios.tsx`), visible: tres planes (Explorar/Equipo/Empresa) con montos confirmados como reales.
+7. CTA final (`CtaFinal.tsx`): franja con foto a sangre + CTA "Empezar gratis".
+8. Pie (`HomeFooter.tsx`, propio de la home): logo, tagline, columnas Producto/Empresa/Contacto, ligas legales.
 
-Detalle de copy y aceptación por sección: ver `PLAN.md`.
+Las secciones del modelo de negocio anterior (Problema, Producto, Control, Cómo empezamos, Próximos procesos, FAQ, formulario de demo) se retiraron de la home en el pivote — ver §11 para qué pasó con su código.
+
+Detalle de copy y aceptación por sección del diseño original (ya no vigente): ver `PLAN.md`.
 
 ### Panel de administración (`/admin`)
 
@@ -109,19 +108,21 @@ Fuera de la home pública, con login de Google restringido a una lista blanca de
 | Placeholder | Qué falta | Dónde vive |
 |---|---|---|
 | `TODO_DOMINIO` | Dominio definitivo del sitio | `content/site.ts` (centralizado) |
-| `TODO_WHATSAPP` | Número de WhatsApp Business para el CTA "Pruébalo por WhatsApp" | `content/site.ts` (centralizado) |
+| `TODO_WHATSAPP` | Número de WhatsApp Business | `content/site.ts` (centralizado) — ya no es el canal principal tras el pivote a autoservicio (§1), se conserva por si un flujo de contacto lo vuelve a usar |
+| `TODO_TELEFONO` | Teléfono de contacto del pie de página | `content/site.ts` (centralizado) — la maqueta traía `+52 55 0000 0000` de relleno, no un número real |
+| `TODO_LINKEDIN` | Liga real de LinkedIn de la empresa | `content/site.ts` (centralizado) |
 | `TODO_LEGAL` | Razón social y domicilio fiscal para el aviso de privacidad (LFPDPPP) | `content/legal.ts` — marcado explícitamente como borrador para revisión de abogado |
-| `TODO_DATO` | Cifras del "problema" (leads fuera de horario, tiempo de primera respuesta, etc.) | `content/problema.ts` |
-| `TODO_PRECIO` | Montos de implementación/renta, en revisión | `content/precio.ts` |
-| `RESEND_API_KEY` | Cuenta de Resend aún no existe | `.env.example`, documentada como pendiente de configurar, no bloquea el resto del trabajo |
+| `RESEND_API_KEY` | Cuenta de Resend aún no existe | `.env.example`, documentada como pendiente de configurar; el flujo que la usaba (formulario de demo) quedó orgánicamente sin usar tras el pivote (§11), no bloquea el resto del trabajo |
 | `AUTH_SECRET` / `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | Credenciales OAuth de Google aún no creadas | `.env.example`, documentadas como pendientes; sin ellas, `/admin` no deja iniciar sesión pero el resto del sitio funciona igual |
 
-Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o el dominio hardcodeado en más de un archivo de contenido — todo importa desde `content/site.ts`.
+Ya no hay `TODO_DATO` ni `TODO_PRECIO`: las cifras de negocio y los montos de los planes están confirmados como reales (§1). Si algún dato nuevo entra sin confirmar, se marca con el mismo criterio que estos placeholders, no se inventa.
+
+Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp, el teléfono o el dominio hardcodeado en más de un archivo de contenido — todo importa desde `content/site.ts`.
 
 ## 10. Cumplimiento (LFPDPPP)
 
 - Aviso de privacidad conforme al artículo 16 de la LFPDPPP: identidad y domicilio del responsable, finalidades primarias y secundarias, medios para ejercer derechos ARCO, mecanismo de revocación. Se redacta como **borrador** marcado `TODO_LEGAL`, no se publica como definitivo sin revisión de abogado.
-- Consentimiento explícito en el formulario de demo, con **casilla separada** para contacto comercial futuro (opt-in independiente del envío del formulario).
+- Consentimiento explícito en el formulario de demo (`components/forms/DemoForm.tsx`), con **casilla separada** para contacto comercial futuro (opt-in independiente del envío del formulario) — el componente sigue existiendo y cumpliendo esto, pero desde el pivote de 2026-09-06 (§11) no está enlazado en ninguna página; queda disponible para el día en que el flujo de autoservicio necesite un formulario de contacto real.
 - Términos de uso básicos.
 - Banner de cookies: **solo si se terminan usando cookies no esenciales**. Si Vercel Analytics funciona sin ellas (es el caso por defecto, cookieless), no se pone banner.
 
@@ -167,3 +168,15 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp o
   - `app/opengraph-image.tsx`: el cuadrado del logotipo negativo pasa de verde a **blanco** (con el número en tinta) — la guía especifica que sobre fondo oscuro el cuadrado va blanco, no en el color de marca.
   - Pendiente, no inventado: `docs/brand.md` §9 menciona `ar2go-whatsapp-apilado.jpg` y `ar2go-whatsapp-isotipo.jpg` (recortes circulares para WhatsApp/avatares) que no llegaron en este envío de assets — documentado en `public/brand/README.md`, no se fabricaron.
   - `docs/brand.md` también se sube a `ar2go-platform` (mismo contenido) porque ese archivo declara explícitamente a ambos repos como consumidores — sin construir ninguna interfaz ahí, solo para que el diseño esté disponible si `ar2go-platform` llega a tener UI propia.
+- **2026-09-06** — **Pivote de negocio + tercer rebrand (v3), sobre una maqueta de home real, no un documento de exploración.** El dueño del proyecto subió tres archivos en la misma conversación: (1) un `.md` de sistema de diseño (paleta azul sobre fondo oscuro, logotipo "AR²GO" nuevo, sin SVG real, solo descripción); (2) un `home.html` completo y funcional (HTML/CSS/JS vainilla) con nav, hero, tarjetas de agente, tabs por industria, franja "Nosotros", precios de tres planes y CTA final — con cifras de negocio presentadas como reales (150+ agentes en producción, 99.95% disponibilidad, resultados por industria) y un modelo de autoservicio ("Crear cuenta"/"Empezar gratis") en vez del modelo de un solo proceso vendido por demo; (3) un zip con las fotos originales (fiordos noruegos, licencia Pexels) y dos PNG del logotipo real.
+  - Antes de tocar código pregunté explícitamente tres cosas, porque el HTML chocaba con reglas ya cerradas de este archivo: si el pivote de negocio era real (no solo un cambio visual), si las cifras de la maqueta eran reales o debían tratarse como `TODO_DATO`, y qué precios usar. El dueño del proyecto confirmó las tres: pivote completo, cifras reales, precios de la maqueta. Sin esa confirmación no habría publicado cifras de "casos de éxito" sin clientes reales — es exactamente lo que prohíbe el §3 original, y seguiría prohibiéndolo si no hubiera confirmación explícita.
+  - **Se revoca la regla "no implementar modo oscuro" de §3/§7** (paso 6 y rebrands anteriores): no era una regla sobre qué color de fondo usar, sino sobre no mantener dos temas (claro/oscuro con toggle). El sitio sigue teniendo un solo tema — ahora es oscuro por decisión de diseño, no un modo alternativo.
+  - **Se retiran de la home** las secciones del modelo de negocio anterior: `Problema`, `Producto`, `Control`, `ComoEmpezamos`, `ProximosProcesos`, `Faq`, `Cierre`, `FormularioDemo` (componentes y sus `content/*.ts`) — borrados, no comentados, porque describían un producto y un modelo de venta que ya no existen. `DemoForm.tsx`, `WaitlistForm.tsx`, sus Server Actions (`app/actions/demo.ts`, `app/actions/lista-espera.ts`), `lib/leads-store.ts`, `lib/rate-limit.ts` y `lib/schemas/demo.ts` **no se borraron**: quedan sin usar (ninguna página los importa) en vez de eliminados, porque representan trabajo real (validación, rate limit, envío de correo) que puede volver a hacer falta si el plan Empresa ("Hablar con ventas") o un futuro flujo de contacto necesita un formulario real. Documentado también en §10.
+  - **Nuevo home construido sobre la maqueta, no una traducción literal a CSS nuevo**: se reusó la arquitectura de componentes existente (`Section`, `Card`, `Button`, `CtaButton` para el tracking de analítica) retocando sus tokens, en vez de copiar el CSS de la maqueta a un archivo aparte — así toda la home sigue usando Tailwind v4 con los tokens de `docs/brand.md`, consistente con el resto del sitio (`CLAUDE.md` §5). Se simplificaron algunos detalles de la maqueta que no valían el costo de replicar al pixel: el nav no tiene el efecto de "pastilla que se funde en barra sólida al hacer scroll" (queda con blur fijo todo el tiempo) y no hay animaciones de entrada (`driftIn`/`rise`) — decisión de alcance, no una limitación técnica; se puede añadir después si se pide explícitamente. Las interacciones que sí importan para el contenido (menú móvil, tabs de casos por industria) están implementadas como componentes cliente de React normales, no el JS vainilla de la maqueta.
+  - **Nav (`HomeNav.tsx`) y pie (`HomeFooter.tsx`) de la home son propios**, no el `Header`/`Footer` genérico: la maqueta trae su propio nav flotante y su propio pie, distintos en estructura al header/footer simple que ya existía. `Header`/`Footer` genéricos se conservan y se re-tokenizan para las páginas que sí los necesitan (`/admin`, `/admin/login`, `/aviso-de-privacidad`, `/terminos`) — antes vivían en `app/layout.tsx` envolviendo *todas* las páginas; se sacaron de ahí (si no, se hubieran duplicado con el nav/pie propio de la home) y cada página que los necesita los importa directo.
+  - **Logotipo**: el PNG real (`AR2GO_t.png` del zip → `public/brand/ar2go-logotipo-2026.png`) se usa tal cual, sin vectorizar — no hay SVG fuente todavía, y dibujar uno a mano habría sido inventar el trazo exacto de una letra que no me corresponde diseñar. El favicon (`app/icon.svg`) sí es SVG real: viene copiado tal cual del `<head>` del `home.html` que subieron (el propio autor de la maqueta ya lo resolvió en vector). Los SVG del wordmark anterior (marino) quedan en `public/brand/` sin usar, por trazabilidad.
+  - **Imágenes**: las 6 fotos de fiordos que usa la home (`public/home/*.webp`) son las mismas que ya traía embebidas en base64 el `home.html` original (extraídas de ahí, no de los JPG sueltos del zip, para no adivinar qué recorte/gradazo de color le aplicaron a cada una) — se confirmó que son fotografía real con licencia Pexels, no generada, así que no chocan con la regla de §3 contra ilustración genérica de IA. Las referencias fotográficas del primer `.md` de diseño (superficies geométricas, "ondas de partículas") nunca se usaron — se preguntó explícitamente y se optó por no implementarlas.
+  - **Tipografía**: display y H2 pasan a peso ligero (300) en vez de bold, tal como trae la maqueta — cambio deliberado de la escala, no un descuido.
+  - **Radio**: se abandona el radio único (`--radius-base`, consolidado apenas en el rebrand anterior) por tres radios distintos (`--radius-btn` 8px, `--radius-card` 16px, `--radius-shot` 12px) — la maqueta real los usa así a propósito (los shots de agente son más angostos que las tarjetas de precio), así que la "simplificación a un solo radio" del rebrand anterior queda revertida aquí con una razón concreta, no por gusto.
+  - `docs/brand.md` se reescribe completo (v3) reflejando todo lo anterior; queda pendiente subir la misma actualización a `ar2go-platform` (ese repo sigue en etapa 0 sin UI propia, así que no es urgente, pero el documento se declara a sí mismo como fuente para ambos repos).
+  - Verificado: `npm run lint`, `npx tsc --noEmit` y `npm run build` limpios; capturas de Playwright del home completo (desktop y 390px), la interacción de tabs (cambio de industria), el menú móvil abierto, `/terminos`, `/admin/login`, `/muestra` y el `og:image` — todas revisadas visualmente antes de este commit.
