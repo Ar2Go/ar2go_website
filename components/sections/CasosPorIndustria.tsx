@@ -80,8 +80,8 @@ export function CasosPorIndustria() {
     <section className="band band--tight">
       <div className="wrap">
         <div className="head">
-          <h2>Una solución distinta en cada piso</h2>
-          <p className="lede">Elige tu industria para ver dónde entra el primer agente y qué cambia después.</p>
+          <h2>Un agente para cada necesidad. En cualquier industria.</h2>
+          <p className="lede">Descubre dónde puede empezar a trabajar por ti y qué puedes transformar después.</p>
         </div>
 
         <div className="tabs" role="tablist" aria-label="Casos por industria">
