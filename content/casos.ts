@@ -1,4 +1,4 @@
-// Sección "Un problema distinto en cada piso" — tabs por industria. El
+// Sección "Una solución distinta en cada piso" — tabs por industria. El
 // gráfico decorativo de cada panel (panel__art) es SVG único por caso; vive
 // en el componente (CasosPorIndustria.tsx), no aquí, porque es trazo
 // vectorial, no copy.
