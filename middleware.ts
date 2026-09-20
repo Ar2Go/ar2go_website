@@ -42,10 +42,30 @@ const clienteMiddleware = clerkMiddleware(
   { signInUrl: "/iniciar-sesion", signUpUrl: "/crear-cuenta" },
 );
 
+// Sin llaves de Clerk, `clerkMiddleware` truena en cada request y Vercel
+// responde MIDDLEWARE_INVOCATION_FAILED: un 500 opaco, sin rastro en la
+// página, para las tres rutas de cuenta. Se comprueba antes para que una
+// variable de entorno faltante no se vea como una caída de routing — mismo
+// criterio que /admin con AUTH_* (CLAUDE.md §9). No sustituye configurar las
+// llaves: sin ellas el alta sigue sin funcionar, solo falla de forma legible.
+const hayCredencialesDeClerk = Boolean(
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY,
+);
+
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
   if (req.nextUrl.pathname.startsWith("/admin")) {
     return adminMiddleware(req, event);
   }
+
+  if (!hayCredencialesDeClerk) {
+    // Falla cerrado en lo privado: sin Clerk no hay forma de saber si hay
+    // sesión, así que /cuenta se manda al inicio en vez de quedar abierta.
+    if (esRutaPrivadaDeCliente(req)) {
+      return NextResponse.redirect(new URL("/", req.nextUrl));
+    }
+    return NextResponse.next();
+  }
+
   return clienteMiddleware(req, event);
 }
 

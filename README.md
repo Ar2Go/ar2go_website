@@ -107,6 +107,38 @@ Para probarlo en local:
 Sin estas variables, `/admin` no deja iniciar sesión pero el resto del sitio
 funciona igual (ver `CLAUDE.md` §9).
 
+## Cuentas de cliente (`/crear-cuenta`, `/iniciar-sesion`, `/cuenta`)
+
+Alta e inicio de sesión de autoservicio con [Clerk](https://clerk.com)
+(correo + Google). Es un sistema aparte del de `/admin`, que usa Auth.js
+(ver `CLAUDE.md` §11); `middleware.ts` despacha por ruta y nunca corren los
+dos sobre el mismo request.
+
+En local:
+
+1. Crea la aplicación en el dashboard de Clerk y habilita ahí los métodos de
+   alta (correo y Google). Eso se configura en el dashboard, no en el código.
+2. Copia la pareja de llaves de **desarrollo** (Configure → API keys) a tu
+   `.env.local`:
+   ```bash
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+   CLERK_SECRET_KEY=sk_test_...
+   ```
+3. `npm run dev` y entra a `/crear-cuenta`.
+
+En Vercel (Production) van las llaves de la **instancia de producción**
+(`pk_live_…`/`sk_live_…`), no las de desarrollo, más los registros DNS que
+Clerk pida para `ar2go.io`. Una instancia de desarrollo solo funciona en
+localhost y en su dominio `*.accounts.dev`: sobre un dominio propio su
+handshake falla en cada request y Vercel devuelve `500
+MIDDLEWARE_INVOCATION_FAILED` en las tres rutas de cuenta.
+
+Si las variables faltan por completo, el middleware las detecta y deja pasar
+las rutas públicas (`/crear-cuenta`, `/iniciar-sesion`) en vez de tumbar el
+routing; `/cuenta` se manda al inicio, porque sin Clerk no hay forma de
+saber si hay sesión. Aun así, las páginas de alta no funcionan hasta que las
+llaves estén puestas.
+
 ## Placeholders pendientes
 
 Ciertos valores del sitio no están definidos todavía (dominio, WhatsApp,
