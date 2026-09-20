@@ -5,11 +5,10 @@ export const nav = {
     { label: "Nosotros", href: "#nosotros" },
     { label: "Precios", href: "#precios" },
   ],
-  // Sin backend de cuentas de cliente todavía (distinto del login de Google
-  // de /admin, que administra la fábrica, no clientes) — enlaces de
-  // producto en espera del backend real (mismo criterio que TODO_*).
-  iniciarSesion: { label: "Iniciar sesión", href: "#" },
-  crearCuenta: { label: "Crear cuenta", href: "#precios" },
+  // Alta y acceso de clientes con Clerk (correo + Google) — distinto del
+  // login de Google de /admin, que administra la fábrica, no clientes.
+  iniciarSesion: { label: "Iniciar sesión", href: "/iniciar-sesion" },
+  crearCuenta: { label: "Crear cuenta", href: "/crear-cuenta" },
 } as const;
 
 export const footer = {

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -i \"^sharp$\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3002/crear-cuenta)",
+      "Bash(break)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3005/crear-cuenta)",
+      "Bash(curl -s -o /dev/null -w \"raw:%{http_code}\\\\n\" http://localhost:3005/cuenta/fiordo.webp)",
+      "Bash(curl -s -o /dev/null -w \"opt:%{http_code}\\\\n\" \"http://localhost:3005/_next/image?url=%2Fcuenta%2Ffiordo.webp&w=1920&q=75\")",
+      "Bash(sed -i \"s#app/\\(cuenta\\)/cuenta.css#app/\\(cuenta\\)/cuenta.css#\" public/acceso/README.md)",
+      "Bash(node shot2.tmp.mjs)",
+      "Bash(rm -rf \"app/\\(cuenta\\)/vista-previa\" && rm -f shot.tmp.mjs shot2.tmp.mjs prev-*.tmp.png shot-*.tmp.png && git status --short)",
+      "PowerShell(Get-PSDrive C,D | Select-Object Name,@{n='FreeGB';e={[math]::Round\\($_.Free/1GB,2\\)}},@{n='UsedGB';e={[math]::Round\\($_.Used/1GB,2\\)}})",
+      "PowerShell(Remove-Item -Recurse -Force \"$env:LOCALAPPDATA\\\\ms-playwright\\\\chromium_headless_shell-1243\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\ms-playwright\" | Select-Object Name; [math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\))",
+      "PowerShell(npm cache clean --force 2>&1 | Select-Object -Last 2; [math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\))",
+      "PowerShell([math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\); Get-ChildItem \"$env:LOCALAPPDATA\\\\npm-cache\" -ErrorAction SilentlyContinue | Measure-Object | Select-Object Count)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime,@{n='MB';e={[math]::Round\\($_.WorkingSet/1MB\\)}} | Sort-Object StartTime)",
+      "PowerShell(foreach \\($id in 3508,16824,12188\\) { try { Stop-Process -Id $id -Force -ErrorAction Stop } catch {} }; Start-Sleep -Seconds 2; Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime | Sort-Object StartTime; [math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\))",
+      "PowerShell([math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\); [math]::Round\\(\\(Get-PSDrive D\\).Free/1GB,2\\); Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime | Sort-Object StartTime)",
+      "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3007/)"
+    ],
+    "additionalDirectories": [
+      "D:\\AR2GO\\website"
+    ]
+  }
+}

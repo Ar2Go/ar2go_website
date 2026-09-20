@@ -7,7 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/muestra", "/admin"],
+        // /crear-cuenta sí se indexa (es una página de conversión); su
+        // contraparte privada y los pasos de sesión, no.
+        disallow: ["/muestra", "/admin", "/cuenta", "/iniciar-sesion"],
       },
     ],
     sitemap: `${site.url}/sitemap.xml`,

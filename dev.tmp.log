@@ -1,0 +1,15 @@
+   ▲ Next.js 15.5.24 (Turbopack)
+   - Local:        http://localhost:3007
+   - Network:      http://192.168.68.68:3007
+   - Environments: .env.local
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 1859ms
+ ✓ Ready in 11.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 9.8s
+ GET / 200 in 11712ms
+ GET / 200 in 693ms
+ ✓ Compiled /icon.svg in 420ms
+ GET /icon.svg?icon.89084500.svg 200 in 926ms
