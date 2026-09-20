@@ -1,10 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextFetchEvent, type NextMiddleware, type NextRequest } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { auth } from "@/auth";
 
-// Protege /admin/*. La verificación de correo real vive en auth.ts
-// (callbacks.signIn) — esto solo decide si dejamos pasar una sesión que ya
-// pasó por ahí, o mandamos a /admin/login.
-export default auth((req) => {
+// Dos sistemas de sesión conviven a propósito (CLAUDE.md §11):
+// - Auth.js + Google, lista blanca de correos → /admin (fábrica de agentes).
+// - Clerk (correo + Google, autoservicio) → cuentas de cliente.
+// Next solo permite un middleware, así que este archivo despacha por ruta:
+// nunca corren los dos sobre el mismo request.
+
+const adminMiddleware = auth((req) => {
   const estaLogueado = Boolean(req.auth);
   const esLogin = req.nextUrl.pathname === "/admin/login";
 
@@ -18,8 +22,33 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+  // Auth.js tipa lo que devuelve `auth()` como handler de route handler
+  // (segundo argumento `{ params }`), pero como middleware Next lo invoca
+  // con (request, event) — que es justo el uso que documenta Auth.js. El
+  // cast alinea la firma; el comportamiento en runtime es el mismo que
+  // cuando este archivo exportaba `auth(...)` directamente.
+}) as unknown as NextMiddleware;
+
+// /crear-cuenta y /iniciar-sesion son públicas (son el alta); lo único que se
+// protege es /cuenta, a donde aterriza el usuario ya registrado.
+const esRutaPrivadaDeCliente = createRouteMatcher(["/cuenta(.*)"]);
+
+const clienteMiddleware = clerkMiddleware(
+  async (clerkAuth, req) => {
+    if (!esRutaPrivadaDeCliente(req)) return;
+    const { userId, redirectToSignIn } = await clerkAuth();
+    if (!userId) return redirectToSignIn();
+  },
+  { signInUrl: "/iniciar-sesion", signUpUrl: "/crear-cuenta" },
+);
+
+export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  if (req.nextUrl.pathname.startsWith("/admin")) {
+    return adminMiddleware(req, event);
+  }
+  return clienteMiddleware(req, event);
+}
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/cuenta/:path*", "/crear-cuenta/:path*", "/iniciar-sesion/:path*"],
 };

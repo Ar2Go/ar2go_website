@@ -1,0 +1,403 @@
+/* ═══════════════════════════════════════════
+   AR2GO · cuenta — hoja propia de /crear-cuenta, /iniciar-sesion y /cuenta.
+   Mismo criterio que app/home.css: la pantalla es una composición (foto a
+   sangre + columna de formulario) que no se arma con utilidades sueltas, y
+   además hay que pintar los componentes de Clerk, que solo se dejan estilar
+   por CSS. Escapada bajo `.ar-cuenta`; no toca el resto del sitio.
+
+   A diferencia de app/home.css, aquí NO se redefinen los tokens de marca:
+   se usan los de app/globals.css (--color-*), que son los mismos valores.
+   Los nombres de clase de la maqueta (.btn, .lede, .wrap) sí se replican
+   para que la pantalla lea igual que la home.
+   ═══════════════════════════════════════════ */
+
+.ar-cuenta {
+  --hair: rgba(230, 233, 239, 0.09);
+  --hair-strong: rgba(230, 233, 239, 0.18);
+  --fs-sm: 0.9375rem;
+  --fs-xs: 0.8125rem;
+
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--color-fondo);
+  color: var(--color-niebla);
+  line-height: 1.6;
+}
+@media (min-width: 960px) {
+  .ar-cuenta {
+    /* La foto pesa un poco más que el formulario, igual que el hero de la
+       home: la columna de contenido nunca pasa de 26rem de todos modos. */
+    grid-template-columns: 1.05fr 1fr;
+  }
+}
+.ar-cuenta :focus-visible {
+  outline: 2px solid var(--color-azul);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-cuenta * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─── Logotipo ───────────────────────────────
+   Mismo margen que el nav de la home (app/home.css: .nav con
+   inset 1.1rem y padding-inline clamp(1rem, 2.4vw, 2.75rem), logo de 26px
+   con la misma sombra). Va sobre la foto, como en el hero. */
+.ar-cuenta .cuenta__logo {
+  position: absolute;
+  top: 1.1rem;
+  left: clamp(1rem, 2.4vw, 2.75rem);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+}
+.ar-cuenta .cuenta__logo img {
+  display: block;
+  height: 26px;
+  width: auto;
+  filter: drop-shadow(0 1px 12px rgba(11, 15, 25, 0.7));
+}
+
+/* ─── Panel de foto ──────────────────────── */
+.ar-cuenta .cuenta__foto {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 46svh;
+  padding: 6rem clamp(1.25rem, 4vw, 2.75rem) clamp(1.75rem, 3vw, 2.75rem);
+}
+@media (min-width: 960px) {
+  .ar-cuenta .cuenta__foto {
+    min-height: 100svh;
+  }
+}
+.ar-cuenta .cuenta__foto-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* El recorte de la columna es mucho más alto que la foto (16:9), así que
+     se ancla un poco arriba del centro: ahí quedan el claro entre montañas
+     y el fiordo, que es lo que vale de la imagen. */
+  object-position: 52% 42%;
+  z-index: -3;
+  transform: scale(1.04);
+  animation: ar-cuenta-drift 2.4s cubic-bezier(0.2, 0.6, 0.25, 1) both;
+}
+@keyframes ar-cuenta-drift {
+  from {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+/* Mismos dos degradados que el hero de la home (app/home.css
+   .hero::before/::after): tinta para legibilidad + viñeta azul de marca.
+   El tercero cierra el borde derecho contra la columna del formulario para
+   que la foto no corte en seco. */
+.ar-cuenta .cuenta__foto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 15, 25, 0.5) 0%,
+      rgba(11, 15, 25, 0.04) 30%,
+      rgba(11, 15, 25, 0.38) 62%,
+      rgba(11, 15, 25, 0.88) 100%
+    ),
+    linear-gradient(90deg, rgba(11, 15, 25, 0.38) 0%, transparent 45%);
+}
+.ar-cuenta .cuenta__foto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 42% at 45% 52%, rgba(37, 99, 235, 0.22) 0%, transparent 70%),
+    radial-gradient(115% 88% at 40% 40%, transparent 52%, rgba(11, 15, 25, 0.45) 100%),
+    linear-gradient(90deg, transparent 62%, rgba(11, 15, 25, 0.82) 100%);
+}
+.ar-cuenta .cuenta__foto > * {
+  position: relative;
+  animation: ar-cuenta-rise 0.9s cubic-bezier(0.22, 0.7, 0.3, 1) both;
+}
+.ar-cuenta .cuenta__foto > *:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.ar-cuenta .cuenta__foto > *:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.ar-cuenta .cuenta__foto > *:nth-child(4) {
+  animation-delay: 0.5s;
+}
+@keyframes ar-cuenta-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.ar-cuenta .cuenta__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: var(--color-gris);
+  /* Sobre la foto (sobre todo en móvil, donde la banda es corta y el texto
+     cae sobre el cielo claro) el gris pierde contraste; misma solución que
+     el hero de la home, que le pone sombra al titular. */
+  text-shadow: 0 1px 16px rgba(11, 15, 25, 0.85);
+}
+.ar-cuenta .cuenta__foto h1 {
+  margin: 1.1rem 0 0;
+  font-weight: 300;
+  font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  max-width: 14ch;
+  text-shadow: 0 2px 40px rgba(11, 15, 25, 0.6);
+}
+.ar-cuenta .cuenta__foto .lede {
+  margin: 1.2rem 0 0;
+  max-width: 44ch;
+  color: var(--color-gris);
+  font-size: 1.0625rem;
+  text-shadow: 0 1px 16px rgba(11, 15, 25, 0.85);
+}
+.ar-cuenta .cuenta__foto-pie {
+  margin: clamp(1.8rem, 4vw, 3rem) 0 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(230, 233, 239, 0.14);
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+}
+.ar-cuenta .cuenta__foto-pie b {
+  font-weight: 400;
+  color: var(--color-niebla);
+}
+
+/* ─── Columna de formulario ──────────────── */
+.ar-cuenta .cuenta__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem);
+}
+@media (max-width: 959px) {
+  .ar-cuenta .cuenta__panel {
+    justify-content: flex-start;
+  }
+}
+.ar-cuenta .cuenta__panel-inner {
+  width: 100%;
+  max-width: 26rem;
+}
+.ar-cuenta .cuenta__legal {
+  margin: 1.75rem 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--color-gris);
+  max-width: 44ch;
+}
+.ar-cuenta .cuenta__legal a {
+  color: var(--color-azul-suave);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ar-cuenta .cuenta__legal a:hover {
+  color: var(--color-papel);
+}
+.ar-cuenta .cuenta__volver {
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+  transition: color 0.18s ease;
+}
+.ar-cuenta .cuenta__volver:hover {
+  color: var(--color-niebla);
+}
+
+/* Cabecera propia de /cuenta, que no monta un formulario de Clerk. */
+.ar-cuenta .cuenta__panel-inner h1 {
+  margin: 0.9rem 0 0;
+  font-weight: 300;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.ar-cuenta .cuenta__panel-inner .lede {
+  margin: 1rem 0 0;
+  color: var(--color-gris);
+  font-size: var(--fs-sm);
+}
+.ar-cuenta .cuenta__correo {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  color: var(--color-azul-suave);
+}
+.ar-cuenta .cuenta__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 2rem;
+}
+
+/* ─── Botones (mismas clases que la maqueta) ─ */
+.ar-cuenta .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.05rem;
+  border-radius: var(--radius-btn);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+.ar-cuenta .btn--primary {
+  background: var(--color-azul);
+  color: var(--color-papel);
+}
+.ar-cuenta .btn--primary:hover {
+  background: var(--color-azul-claro);
+}
+.ar-cuenta .btn--ghost {
+  border-color: var(--hair-strong);
+  color: var(--color-niebla);
+  background: rgba(11, 15, 25, 0.35);
+}
+.ar-cuenta .btn--ghost:hover {
+  border-color: rgba(230, 233, 239, 0.4);
+  background: rgba(230, 233, 239, 0.1);
+}
+
+/* ─── Componentes de Clerk ───────────────────
+   Se usan las clases `cl-<descriptor>` que Clerk emite en todos sus
+   elementos — son su punto de enganche público para CSS, no nombres
+   generados (esos sí cambian entre versiones). Lo que se puede resolver con
+   `appearance.variables` vive en lib/clerk-appearance.ts; aquí solo lo que
+   esa API no alcanza. La tarjeta va en `elevation: "flush"` (misma
+   configuración), así que el formulario se apoya en esta columna en vez de
+   traer su propio recuadro. */
+.ar-cuenta .cl-rootBox,
+.ar-cuenta .cl-cardBox,
+.ar-cuenta .cl-card {
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+}
+.ar-cuenta .cl-header {
+  /* El título grande de la pantalla lo pone el panel de la foto; el de
+     Clerk queda como rótulo del paso (verificación, otro método…). */
+  text-align: left;
+}
+.ar-cuenta .cl-headerTitle {
+  font-weight: 300;
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+  color: var(--color-niebla);
+}
+.ar-cuenta .cl-headerSubtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-gris);
+}
+.ar-cuenta .cl-formFieldLabel {
+  font-size: var(--fs-xs);
+  color: var(--color-niebla);
+}
+.ar-cuenta .cl-formFieldInput {
+  background: var(--color-fondo);
+  border: 1px solid var(--hair-strong);
+  color: var(--color-niebla);
+  box-shadow: none;
+}
+.ar-cuenta .cl-formButtonPrimary {
+  background: var(--color-azul);
+  color: var(--color-papel);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+.ar-cuenta .cl-formButtonPrimary:hover {
+  background: var(--color-azul-claro);
+}
+.ar-cuenta .cl-dividerLine {
+  background: var(--hair);
+}
+.ar-cuenta .cl-dividerText,
+.ar-cuenta .cl-footerActionText {
+  color: var(--color-gris);
+}
+.ar-cuenta .cl-footer,
+.ar-cuenta .cl-footerAction {
+  background: transparent;
+  border-color: var(--hair);
+}
+.ar-cuenta .cl-footerActionLink {
+  color: var(--color-azul-suave);
+}
+.ar-cuenta .cl-footerActionLink:hover {
+  color: var(--color-papel);
+}
+
+/* Botón de proveedor social: Clerk lo pinta con la superficie oscura en
+   /crear-cuenta y con el azul primario en /iniciar-sesion; en ambos casos
+   va blanco, que además es como Google pide mostrar su botón. */
+.ar-cuenta .cl-socialButtonsBlockButton,
+.ar-cuenta .cl-socialButtonsIconButton,
+.ar-cuenta .cl-alternativeMethodsBlockButton {
+  background-color: var(--color-papel);
+  color: var(--color-fondo);
+  border-color: transparent;
+  /* docs/brand.md §3: nada de sombras difusas */
+  box-shadow: none;
+}
+.ar-cuenta .cl-socialButtonsBlockButton:hover,
+.ar-cuenta .cl-socialButtonsBlockButton:focus-visible,
+.ar-cuenta .cl-socialButtonsIconButton:hover,
+.ar-cuenta .cl-socialButtonsIconButton:focus-visible,
+.ar-cuenta .cl-alternativeMethodsBlockButton:hover,
+.ar-cuenta .cl-alternativeMethodsBlockButton:focus-visible {
+  background-color: var(--color-niebla);
+}
+.ar-cuenta .cl-socialButtonsBlockButtonText,
+.ar-cuenta .cl-alternativeMethodsBlockButtonText,
+.ar-cuenta .cl-alternativeMethodsBlockButtonArrow {
+  color: var(--color-fondo);
+}
+.ar-cuenta .cl-lastAuthenticationStrategyBadge {
+  background-color: rgba(11, 15, 25, 0.08);
+  color: var(--color-fondo);
+}

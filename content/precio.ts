@@ -19,7 +19,7 @@ export const precio = {
         "Conectores estándar",
         "Historial de 7 días",
       ],
-      cta: { label: "Crear cuenta", href: "#" },
+      cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
     {
       nombre: "Equipo",
@@ -35,7 +35,7 @@ export const precio = {
         "Ambientes de prueba y producción",
         "Soporte en horario hábil",
       ],
-      cta: { label: "Empezar 14 días gratis", href: "#" },
+      cta: { label: "Empezar 14 días gratis", href: "/crear-cuenta" },
     },
     {
       nombre: "Empresa",
