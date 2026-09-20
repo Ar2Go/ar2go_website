@@ -17,7 +17,27 @@
       "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime,@{n='MB';e={[math]::Round\\($_.WorkingSet/1MB\\)}} | Sort-Object StartTime)",
       "PowerShell(foreach \\($id in 3508,16824,12188\\) { try { Stop-Process -Id $id -Force -ErrorAction Stop } catch {} }; Start-Sleep -Seconds 2; Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime | Sort-Object StartTime; [math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\))",
       "PowerShell([math]::Round\\(\\(Get-PSDrive C\\).Free/1MB,1\\); [math]::Round\\(\\(Get-PSDrive D\\).Free/1GB,2\\); Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime | Sort-Object StartTime)",
-      "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3007/)"
+      "Bash(curl -s -o /dev/null -w \"home:%{http_code}\\\\n\" http://localhost:3007/)",
+      "Bash(curl -s -o /dev/null -w \"signin:%{http_code}\\\\nsignup:%{http_code}\\\\n\" http://localhost:3007/iniciar-sesion -o /dev/null -w \"signin:%{http_code}\\\\n\")",
+      "Bash(curl -s -o /dev/null -w \"signup:%{http_code}\\\\n\" http://localhost:3007/crear-cuenta)",
+      "Bash(node -e ' *)",
+      "Bash(curl -sL -D - -o /dev/null https://www.ar2go.io/crear-cuenta)",
+      "Bash(NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY= CLERK_SECRET_KEY= npx next dev --turbopack -p 3008)",
+      "Bash(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' http://localhost:3008/cuenta)",
+      "Bash(echo \"cuenta:   $\\(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' http://localhost:3008/cuenta\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:3008/crear-cuenta)",
+      "Bash(echo \"crear:    $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:3008/crear-cuenta\\)\")",
+      "Bash(grep -iA3 \"error\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.StartTime -gt \\(Get-Date\\).AddMinutes\\(-30\\) } | ForEach-Object { try { Stop-Process -Id $_.Id -Force -ErrorAction Stop } catch {} }; Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,StartTime)",
+      "PowerShell(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -ge 3000 -and $_.LocalPort -le 3010 } | Select-Object LocalPort,OwningProcess | Sort-Object LocalPort)",
+      "PowerShell(foreach \\($id in 15520,20204\\) { try { Stop-Process -Id $id -Force -ErrorAction Stop; \"killed $id\" } catch { \"no se pudo: $id\" } }; Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -ge 3000 -and $_.LocalPort -le 3010 } | Select-Object LocalPort,OwningProcess)",
+      "Bash(git rm *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh pr *)",
+      "Bash(gh pr create --base main --head feat/pagina-login --title 'feat\\(cuenta\\): alta e inicio de sesión de clientes con Clerk' --body ' *)",
+      "Bash(npx vercel *)"
     ],
     "additionalDirectories": [
       "D:\\AR2GO\\website"
