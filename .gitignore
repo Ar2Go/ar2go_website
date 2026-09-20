@@ -30,6 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# salidas de servidores de desarrollo y archivos de trabajo temporales
+# (se colaron al repo en el commit 7620885)
+.dev-log.txt
+dev*.log
+*.tmp.*
+
 # env files (.env.example sí se versiona, ver README.md)
 .env
 .env.local
