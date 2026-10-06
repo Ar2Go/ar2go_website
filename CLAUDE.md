@@ -29,7 +29,7 @@ Reglas que no se negocian:
 - No inventar cifras, testimonios, logos de clientes ni casos de éxito **sin confirmación explícita del dueño del proyecto**. Las cifras actuales de `content/hero.ts` y `content/casos.ts` están confirmadas (ver §1) — cualquier cifra nueva sigue el mismo criterio: se pregunta antes de publicarla, no se inventa.
 - No usar ilustraciones genéricas de IA, cerebros, robots ni nodos conectados. La fotografía del sitio es paisaje real con licencia (fiordos, Pexels) — no generada, no stock genérico de "tecnología".
 - No agregar chat widget de terceros.
-- No construir el **tablero de auditoría** (el que muestra conversaciones/ejecuciones del agente al dueño del negocio) en este repo — sigue siendo de otra plataforma. La única excepción, desde 2026-08-29 (ver §11), es un panel de administración interno (`/admin`) para administrar los agentes de la fábrica (`ar2go-platform`), con acceso restringido — no es una funcionalidad de cara al cliente.
+- No construir el **tablero de auditoría** (el que muestra conversaciones/ejecuciones del agente al dueño del negocio) en este repo — sigue siendo de otra plataforma. La única excepción, desde 2026-08-29 (ver §11), es un panel de administración interno (`/admin`) para administrar los agentes de la fábrica (`ar2go-platform`), con acceso restringido — no es una funcionalidad de cara al cliente. Desde 2026-10-06 (ver §11), `/cuenta` y `/admin` son además la **interfaz del plano de control** de AR2GO (empresas, suscripciones a productos, accesos); las reglas de negocio, la base de datos y la API hacia los productos viven en un servicio aparte, no en este repo. Arquitectura en [`Ar2Go/Ar2Go`](https://github.com/AR2GO/Ar2Go) (`docs/arquitectura.md`).
 - No meter contenido en inglés en el sitio.
 - No cambiar de stack sin aprobación explícita (ver §5).
 
@@ -103,6 +103,15 @@ Fuera de la home pública, con login de Google restringido a una lista blanca de
 - `middleware.ts` — protege `/admin/*`; sin sesión, redirige a `/admin/login`.
 - `/admin/login`, `/admin` — ambos `noindex`.
 - Variables de entorno nuevas en `.env.example`: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` (ver README para cómo generarlas).
+
+### Plano de control (`/cuenta` y `/admin`)
+
+AR2GO vende varios productos a cada empresa contratante (el primero es HORIQ, registro electrónico de jornada) y cada producto corre en su propia infraestructura. Este sitio aporta las pantallas del plano de control; no su lógica:
+
+- `/cuenta` (Clerk) — la empresa contrata productos, invita a su equipo y abre cada producto con login único.
+- `/admin` (Auth.js) — el equipo de AR2GO ve el estado de cada empresa y suscripción y hace ajustes.
+- Ambas consumen la API del servicio del plano de control (por crear; dónde vive es la decisión D1 de `Ar2Go/docs/decisiones.md`). Nada de esa lógica se implementa con Server Actions de este repo salvo como solución temporal documentada aquí.
+- Fuente de verdad: [`Ar2Go/Ar2Go`](https://github.com/AR2GO/Ar2Go) — `docs/arquitectura.md` y `docs/contrato-producto.md`. Si este archivo y esos documentos difieren, ganan esos.
 
 ## 9. Placeholders pendientes (no publicar sin resolver)
 
@@ -198,3 +207,4 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp, 
   - El logotipo va sobre la foto con el mismo margen y tamaño que en el nav de la home (`top: 1.1rem`, `left: clamp(1rem, 2.4vw, 2.75rem)`, 26px, misma sombra).
   - `appearance.options.elevation: "flush"` (Clerk) quita el recuadro y la sombra de su tarjeta: la composición ya la pone `CuentaSplit`, y encima se veía como un widget pegado. El botón "Continuar con Google" se fuerza a blanco por CSS y no por `elements`, porque Clerk lo pinta con la superficie oscura en el alta y con el azul primario en el inicio de sesión — estilar solo `socialButtonsBlockButton` arreglaba una pantalla y dejaba la otra azul. También se apaga el aviso "Development mode" (`unsafe_disableDevelopmentModeWarnings`), naranja, color que no existe en la paleta desde 2026-08-29.
   - Verificado: `npm run lint`, `npx tsc --noEmit` y `npm run build` limpios, y capturas de Playwright (1440px y 390px) de la composición. **El formulario de Clerk renderizado no se pudo revisar en local**: el `CLERK_SECRET_KEY` del `.env.local` de la máquina lo rechaza la propia API de Clerk (`reason=secret-key-invalid`) y el middleware devuelve error antes de pintar la página; las capturas se tomaron con una página temporal que monta la composición sin Clerk. Queda como pendiente de revisión visual con llaves válidas.
+- **2026-10-06** — AR2GO pasa a ser una plataforma multi-producto: cada empresa contratante va sumando productos (el primero, HORIQ) y **cada producto despliega su propia infraestructura**; la administración por empresa se hace desde AR2GO. Se crea el repo principal [`Ar2Go/Ar2Go`](https://github.com/AR2GO/Ar2Go) con la arquitectura (plano de control + planos de datos), el contrato estándar de producto y el catálogo. Efecto en este repo: `/cuenta` y `/admin` pasan a ser la interfaz del plano de control (§3, §8); el servicio con su base de datos y su API vive fuera. No cambia nada del código todavía: esas pantallas siguen como andamiaje hasta que exista el servicio (etapa A de `docs/arquitectura.md` §8, disparada por el primer cliente de HORIQ).
