@@ -365,6 +365,9 @@
   background: transparent;
   border-color: var(--hair);
 }
+.ar-cuenta .cl-footerItem {
+  display: none !important;
+}
 .ar-cuenta .cl-footerActionLink {
   color: var(--color-azul-suave);
 }
