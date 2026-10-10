@@ -133,6 +133,21 @@ localhost y en su dominio `*.accounts.dev`: sobre un dominio propio su
 handshake falla en cada request y Vercel devuelve `500
 MIDDLEWARE_INVOCATION_FAILED` en las tres rutas de cuenta.
 
+### `/cuenta` conectada al plano de control (`ar2go-customers`)
+
+Con `AR2GO_CUSTOMERS_URL` y `AR2GO_CUSTOMERS_SECRETO` configuradas, `/cuenta`
+deja de ser un cascarón:
+
+1. La primera vez pide el nombre de la empresa y la da de alta en
+   `ar2go-customers` (plan Explorar).
+2. Después muestra el plan y los productos: **Activar** (p. ej. HORIQ) y
+   **Abrir**, que redirige al producto con un código de un solo uso (login único).
+
+Todo pasa por `lib/ar2go-customers.ts`, solo en el servidor, con llamadas firmadas.
+El secreto es el mismo que `SITIO_SECRETOS_VERIFICACION` en `ar2go-customers`.
+Para probar en local, corre `ar2go-customers` (`npm run dev`, puerto 9090) y HORIQ
+(ver el README de cada repo) y apunta `AR2GO_CUSTOMERS_URL=http://localhost:9090`.
+
 Si las variables faltan por completo, el middleware las detecta y deja pasar
 las rutas públicas (`/crear-cuenta`, `/iniciar-sesion`) en vez de tumbar el
 routing; `/cuenta` se manda al inicio, porque sin Clerk no hay forma de
