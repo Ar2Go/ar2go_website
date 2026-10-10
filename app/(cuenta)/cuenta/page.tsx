@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CuentaLanding } from "@/components/cuenta/CuentaLanding";
 import { AltaEmpresa } from "@/components/cuenta/AltaEmpresa";
-import { ProductosCuenta } from "@/components/cuenta/ProductosCuenta";
+import { CintaProductos } from "@/components/cuenta/CintaProductos";
 import { cuenta } from "@/content/cuenta";
 import { hayPlanoDeControl, misEmpresas, resumen, type Resumen } from "@/lib/ar2go-customers";
 import { personaActual } from "./persona";
@@ -27,7 +27,12 @@ export default async function CuentaPage({ searchParams }: Props) {
 
   if (!hayPlanoDeControl || !p) {
     return (
-      <CuentaLanding eyebrow={cuenta.panel.eyebrow} titulo={cuenta.panel.titulo} apoyo={cuenta.panel.apoyo}>
+      <CuentaLanding
+        eyebrow={cuenta.panel.eyebrow}
+        titulo={cuenta.panel.titulo}
+        apoyo={cuenta.panel.apoyo}
+        cinta={<CintaProductos productos={null} puedeActivar={false} />}
+      >
         {p && <p className="cuenta__correo">{p.persona.correo}</p>}
         <div className="cuenta__acciones">
           <Link href={cuenta.panel.volver.href} className="btn btn--primary">
@@ -67,12 +72,18 @@ export default async function CuentaPage({ searchParams }: Props) {
 
   const t = cuenta.tablero;
   return (
-    <CuentaLanding eyebrow={t.eyebrow} titulo={datos.empresa.nombre} apoyo={t.apoyo}>
+    <CuentaLanding
+      eyebrow={t.eyebrow}
+      titulo={datos.empresa.nombre}
+      apoyo={t.apoyo}
+      cinta={
+        <CintaProductos productos={datos.productos} puedeActivar={["PROPIETARIO", "ADMIN"].includes(datos.rol)} />
+      }
+    >
       <p className="cuenta__correo">
         {p.persona.correo} · {t.plan} {datos.empresa.plan_nombre}
       </p>
       {avisoNodo}
-      <ProductosCuenta productos={datos.productos} puedeActivar={["PROPIETARIO", "ADMIN"].includes(datos.rol)} />
     </CuentaLanding>
   );
 }

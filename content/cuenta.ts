@@ -48,11 +48,24 @@ export const cuenta = {
     activo: "Activo",
     suspendido: "Suspendido",
   },
-  // Descripción corta de cada producto del catálogo, por su slug en
-  // ar2go-customers. Un producto sin descripción aquí se muestra solo con su nombre.
+  // Cinta de argonautas en /cuenta (components/cuenta/CintaProductos.tsx).
+  cinta: {
+    titulo: "Tus argonautas",
+    apoyo: "Los que ya trabajan contigo y los que puedes sumar.",
+  },
+  // Cómo se presenta cada producto del catálogo de ar2go-customers, por su
+  // slug. Un producto sin entrada aquí se muestra con el nombre que trae.
   productos: {
-    horiq: "Registro electrónico de jornada para cumplir la LFT, con selfie, ubicación y paquete de inspección.",
-  } as Record<string, string>,
+    horiq: { nombre: "HorIQ", descripcion: "Argonautas para administrar la asistencia de tu equipo" },
+  } as Record<string, { nombre: string; descripcion: string }>,
+  // PLACEHOLDER: productos que todavía no existen. Se muestran como
+  // "Próximamente", sin botón de contratar, hasta que entren al catálogo de
+  // ar2go-customers.
+  porVenir: [
+    { slug: "nomina", nombre: "Nómina", descripcion: "Argonautas que administran tu nómina" },
+    { slug: "contabilidad", nombre: "Contabilidad", descripcion: "Argonautas que concilian tu contabilidad" },
+    { slug: "compras", nombre: "Compras", descripcion: "Argonautas que realizan tus compras" },
+  ],
   // Mensajes para los códigos de error de ar2go-customers que puede ver la persona.
   avisos: {
     CUOTA_PENDIENTE: "Tu plan todavía no incluye este producto. Te avisamos en cuanto esté disponible.",

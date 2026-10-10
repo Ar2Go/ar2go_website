@@ -7,17 +7,21 @@ type Props = {
   eyebrow: string;
   titulo: string;
   apoyo: string;
-  children: React.ReactNode;
+  // Tarjeta centrada bajo el titular (correo, avisos, alta de empresa).
+  children?: React.ReactNode;
+  // Franja ancha debajo, para la cinta de argonautas.
+  cinta?: React.ReactNode;
 };
 
 // Marco de /cuenta para quien ya inició sesión: foto a sangre con el nav
 // (logotipo + cerrar sesión) arriba y el contenido centrado encima de la
 // foto. Es la portada que trajo #19; adentro va lo que toque según el
-// estado de la cuenta (cascarón, alta de empresa o productos).
+// estado de la cuenta (cascarón, alta de empresa o productos), y abajo la
+// cinta de argonautas.
 //
 // La foto es la del hero de la home (public/home/), misma familia de
 // fiordos con licencia Pexels (CLAUDE.md §3).
-export function CuentaLanding({ eyebrow, titulo, apoyo, children }: Props) {
+export function CuentaLanding({ eyebrow, titulo, apoyo, children, cinta }: Props) {
   const t = cuenta.landing;
   return (
     <div className="ar-cuenta ar-cuenta--landing">
@@ -52,8 +56,9 @@ export function CuentaLanding({ eyebrow, titulo, apoyo, children }: Props) {
           <p className="landing__eyebrow">{eyebrow}</p>
           <h1>{titulo}</h1>
           <p className="landing__apoyo">{apoyo}</p>
-          <div className="landing__contenido">{children}</div>
+          {children && <div className="landing__contenido">{children}</div>}
         </div>
+        {cinta}
       </main>
     </div>
   );
