@@ -398,8 +398,7 @@
   color: var(--color-fondo);
 }
 .ar-cuenta .cl-lastAuthenticationStrategyBadge {
-  background-color: rgba(11, 15, 25, 0.08);
-  color: var(--color-fondo);
+  display: none;
 }
 
 /* ─── Landing provisional para usuarios autenticados ───────────────────── */
