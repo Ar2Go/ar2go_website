@@ -23,6 +23,7 @@ export default function IniciarSesionPage() {
         signUpUrl="/crear-cuenta"
         fallbackRedirectUrl="/cuenta"
         forceRedirectUrl="/cuenta"
+        withSignUp
       />
     </CuentaSplit>
   );
