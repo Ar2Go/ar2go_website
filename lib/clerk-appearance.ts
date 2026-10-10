@@ -43,6 +43,7 @@ export const apariencia: Apariencia = {
     // docs/brand.md §3 prohíbe sombras difusas.
     cardBox: { boxShadow: "none" },
     card: { boxShadow: "none" },
+    footerItem: { display: "none" },
     socialButtonsBlockButtonText: { fontWeight: 500 },
     lastAuthenticationStrategyBadge: { display: "none" },
     // El color del botón "Continuar con Google" (blanco, no la superficie
