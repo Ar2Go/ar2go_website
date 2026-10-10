@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SignOutButton } from "@clerk/nextjs";
-import { CuentaSplit } from "@/components/layout/CuentaSplit";
+import { CuentaLanding } from "@/components/cuenta/CuentaLanding";
 import { AltaEmpresa } from "@/components/cuenta/AltaEmpresa";
 import { ProductosCuenta } from "@/components/cuenta/ProductosCuenta";
 import { cuenta } from "@/content/cuenta";
@@ -20,30 +19,22 @@ type Props = { searchParams: Promise<{ aviso?: string }> };
 //   1. sin empresa todavía → se pide su nombre y se da de alta;
 //   2. con empresa → plan y productos, para activarlos y abrirlos.
 // Sin configurar, sigue siendo el cascarón honesto de antes.
+// Cerrar sesión vive en el nav de CuentaLanding, en los tres casos.
 export default async function CuentaPage({ searchParams }: Props) {
   const { aviso } = await searchParams;
   const p = await personaActual();
   const avisoTexto = aviso ? (cuenta.avisos[aviso] ?? cuenta.avisos.general) : null;
 
-  const cerrarSesion = (
-    <SignOutButton redirectUrl="/">
-      <button type="button" className="btn btn--ghost">
-        {cuenta.panel.cerrarSesion}
-      </button>
-    </SignOutButton>
-  );
-
   if (!hayPlanoDeControl || !p) {
     return (
-      <CuentaSplit eyebrow={cuenta.panel.eyebrow} titulo={cuenta.panel.titulo} apoyo={cuenta.panel.apoyo}>
+      <CuentaLanding eyebrow={cuenta.panel.eyebrow} titulo={cuenta.panel.titulo} apoyo={cuenta.panel.apoyo}>
         {p && <p className="cuenta__correo">{p.persona.correo}</p>}
         <div className="cuenta__acciones">
           <Link href={cuenta.panel.volver.href} className="btn btn--primary">
             {cuenta.panel.volver.label}
           </Link>
-          {cerrarSesion}
         </div>
-      </CuentaSplit>
+      </CuentaLanding>
     );
   }
 
@@ -58,35 +49,30 @@ export default async function CuentaPage({ searchParams }: Props) {
   }
 
   const avisoVisible = sinServicio ? cuenta.avisos.SIN_SERVICIO : avisoTexto;
+  const avisoNodo = avisoVisible && (
+    <p className="cuenta__aviso" role="alert">
+      {avisoVisible}
+    </p>
+  );
 
   if (!datos) {
     return (
-      <CuentaSplit eyebrow={cuenta.alta.eyebrow} titulo={cuenta.alta.titulo} apoyo={cuenta.alta.apoyo}>
+      <CuentaLanding eyebrow={cuenta.alta.eyebrow} titulo={cuenta.alta.titulo} apoyo={cuenta.alta.apoyo}>
         <p className="cuenta__correo">{p.persona.correo}</p>
-        {avisoVisible && (
-          <p className="cuenta__aviso" role="alert">
-            {avisoVisible}
-          </p>
-        )}
+        {avisoNodo}
         {!sinServicio && <AltaEmpresa />}
-        <div className="cuenta__acciones">{cerrarSesion}</div>
-      </CuentaSplit>
+      </CuentaLanding>
     );
   }
 
   const t = cuenta.tablero;
   return (
-    <CuentaSplit eyebrow={t.eyebrow} titulo={datos.empresa.nombre} apoyo={t.apoyo}>
+    <CuentaLanding eyebrow={t.eyebrow} titulo={datos.empresa.nombre} apoyo={t.apoyo}>
       <p className="cuenta__correo">
         {p.persona.correo} · {t.plan} {datos.empresa.plan_nombre}
       </p>
-      {avisoVisible && (
-        <p className="cuenta__aviso" role="alert">
-          {avisoVisible}
-        </p>
-      )}
+      {avisoNodo}
       <ProductosCuenta productos={datos.productos} puedeActivar={["PROPIETARIO", "ADMIN"].includes(datos.rol)} />
-      <div className="cuenta__acciones">{cerrarSesion}</div>
-    </CuentaSplit>
+    </CuentaLanding>
   );
 }

@@ -73,4 +73,9 @@ export const cuenta = {
     aviso: { label: "aviso de privacidad", href: "/aviso-de-privacidad" },
   },
   volverAlSitio: "Volver al sitio",
+  // Nav de /cuenta (components/cuenta/CuentaLanding.tsx).
+  landing: {
+    nav: "Navegación de tu cuenta",
+    inicio: "AR2GO, inicio",
+  },
 } as const;

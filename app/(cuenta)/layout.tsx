@@ -24,7 +24,9 @@ export default function CuentaLayout({ children }: { children: React.ReactNode }
       signInUrl="/iniciar-sesion"
       signUpUrl="/crear-cuenta"
       signInFallbackRedirectUrl="/cuenta"
+      signInForceRedirectUrl="/cuenta"
       signUpFallbackRedirectUrl="/cuenta"
+      signUpForceRedirectUrl="/cuenta"
     >
       <div className="ar-cuenta">
         {/* Mismo margen y tamaño que el logotipo del nav de la home

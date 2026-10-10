@@ -490,3 +490,223 @@
   color: var(--color-error);
   border-color: rgba(248, 113, 113, 0.35);
 }
+
+/* ─── Landing provisional para usuarios autenticados ───────────────────── */
+.ar-cuenta:has(.ar-cuenta--landing) {
+  display: block;
+  min-height: 100svh;
+}
+
+.ar-cuenta:has(.ar-cuenta--landing) > .cuenta__logo {
+  display: none;
+}
+
+.ar-cuenta--landing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100svh;
+  background: var(--color-fondo);
+  color: var(--color-papel);
+}
+
+.landing__nav {
+  position: absolute;
+  inset: 1.1rem 0 auto;
+  z-index: 20;
+  padding-inline: clamp(1rem, 2.4vw, 2.75rem);
+  pointer-events: none;
+}
+
+.landing__nav-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  pointer-events: auto;
+}
+
+.landing__logo {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-right: auto;
+}
+
+.landing__logo img {
+  display: block;
+  height: 26px;
+  width: auto;
+  opacity: 1;
+  filter: none;
+}
+
+.landing__menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.28rem;
+  justify-content: flex-end;
+  background: rgba(11, 15, 25, 0.5);
+  border: 1px solid rgba(230, 233, 239, 0.09);
+  border-radius: 11px;
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+.landing__menu a,
+.landing__signout {
+  font: inherit;
+  font-size: 0.8125rem;
+  color: rgba(230, 233, 239, 0.82);
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0.42rem 0.78rem;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.landing__menu a:hover,
+.landing__signout:hover {
+  color: var(--color-papel);
+  background: rgba(230, 233, 239, 0.08);
+}
+
+.landing__signout {
+  color: var(--color-papel);
+}
+
+.landing__hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--color-fondo);
+}
+
+.landing__image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 46%;
+}
+
+.landing__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(11, 15, 25, 0.38), rgba(11, 15, 25, 0.64)),
+    rgba(37, 99, 235, 0.34);
+}
+
+.landing__welcome {
+  width: min(100% - 2rem, 1120px);
+  padding: 8rem 0 5rem;
+  text-align: center;
+  text-shadow: 0 2px 28px rgba(11, 15, 25, 0.5);
+}
+
+.landing__eyebrow {
+  margin: 0 0 1rem;
+  color: rgba(230, 233, 239, 0.82);
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.landing__welcome h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 9vw, 6rem);
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+/* Texto de apoyo y contenido (alta de empresa, productos) bajo el titular.
+   El titular va centrado sobre la foto; el contenido se lee mejor alineado
+   a la izquierda, en una tarjeta con el mismo vidrio que el menú. */
+.landing__apoyo {
+  margin: 1.25rem auto 0;
+  max-width: 52ch;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  color: rgba(230, 233, 239, 0.86);
+}
+
+.landing__contenido {
+  width: min(100%, 560px);
+  margin: 2.25rem auto 0;
+  padding: 1.5rem;
+  text-align: left;
+  text-shadow: none;
+  background: rgba(11, 15, 25, 0.62);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+.landing__contenido > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .landing__nav-inner {
+    gap: 0.65rem;
+  }
+
+  .landing__logo img {
+    height: 22px;
+  }
+
+  .landing__menu a,
+  .landing__signout {
+    font-size: 0.75rem;
+    padding: 0.42rem 0.62rem;
+  }
+
+  .landing__hero {
+    min-height: 100svh;
+  }
+
+  .landing__welcome {
+    width: min(calc(100% - 1.5rem), 1120px);
+    padding: 8rem 0 4rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .landing__nav {
+    inset-block-start: 0.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  .landing__nav-inner {
+    gap: 0.4rem;
+  }
+
+  .landing__menu {
+    gap: 0.05rem;
+    padding: 0.2rem;
+  }
+
+  .landing__menu a,
+  .landing__signout {
+    padding: 0.4rem 0.48rem;
+    font-size: 0.7rem;
+  }
+
+  .landing__logo img {
+    height: 20px;
+  }
+}
