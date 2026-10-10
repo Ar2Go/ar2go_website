@@ -70,5 +70,11 @@ export default function middleware(req: NextRequest, event: NextFetchEvent) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/cuenta/:path*", "/crear-cuenta/:path*", "/iniciar-sesion/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/cuenta/:path*",
+    "/crear-cuenta/:path*",
+    "/iniciar-sesion/:path*",
+    "/__clerk/:path*",
+  ],
 };
