@@ -1,41 +1,48 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
-import { CuentaSplit } from "@/components/layout/CuentaSplit";
-import { cuenta } from "@/content/cuenta";
 
 export const metadata: Metadata = {
-  title: "Tu cuenta",
+  title: "Horiq Agentes",
   robots: { index: false, follow: false },
 };
 
-// Cascarón honesto, mismo criterio que /admin (CLAUDE.md §11): la consola
-// donde el cliente configura sus agentes vive en ar2go-platform y todavía no
-// existe, así que esta página lo dice en vez de simular un tablero. Aquí
-// aterriza el usuario después de crear su cuenta o iniciar sesión.
-export default async function CuentaPage() {
-  const usuario = await currentUser();
-  const correo = usuario?.primaryEmailAddress?.emailAddress ?? null;
-
+export default function CuentaPage() {
   return (
-    <CuentaSplit
-      eyebrow={cuenta.panel.eyebrow}
-      titulo={cuenta.panel.titulo}
-      apoyo={cuenta.panel.apoyo}
-    >
-      {correo && <p className="cuenta__correo">{correo}</p>}
+    <div className="ar-cuenta ar-cuenta--landing">
+      <nav className="landing__nav" aria-label="Navegación principal">
+        <div className="landing__nav-inner">
+          <Link href="/" className="landing__logo" aria-label="AR2GO, inicio">
+            <Image src="/brand/ar2go-logotipo-2026.png" alt="AR2GO" width={104} height={25} />
+          </Link>
 
-      <div className="cuenta__acciones">
-        <Link href={cuenta.panel.volver.href} className="btn btn--primary">
-          {cuenta.panel.volver.label}
-        </Link>
-        <SignOutButton redirectUrl="/">
-          <button type="button" className="btn btn--ghost">
-            {cuenta.panel.cerrarSesion}
-          </button>
-        </SignOutButton>
-      </div>
-    </CuentaSplit>
+          <div className="landing__menu">
+            <a href="#bienvenido">Horiq</a>
+            <SignOutButton redirectUrl="/">
+              <button type="button" className="landing__signout">
+                Cerrar sesión
+              </button>
+            </SignOutButton>
+          </div>
+        </div>
+      </nav>
+
+      <main className="landing__hero" id="bienvenido">
+        <Image
+          src="/home/hero.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          sizes="100vw"
+          className="landing__image"
+        />
+        <div className="landing__overlay" aria-hidden="true" />
+        <div className="landing__welcome">
+          <h1>Bienvenido</h1>
+        </div>
+      </main>
+    </div>
   );
 }

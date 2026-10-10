@@ -20,7 +20,12 @@ export default function CrearCuentaPage() {
       titulo={cuenta.crear.titulo}
       apoyo={cuenta.crear.apoyo}
     >
-      <SignUp path="/crear-cuenta" signInUrl="/iniciar-sesion" fallbackRedirectUrl="/cuenta" />
+      <SignUp
+        path="/crear-cuenta"
+        signInUrl="/iniciar-sesion"
+        fallbackRedirectUrl="/cuenta"
+        forceRedirectUrl="/cuenta"
+      />
 
       <p className="cuenta__legal">
         {cuenta.legal.prefijo} <Link href={cuenta.legal.terminos.href}>{cuenta.legal.terminos.label}</Link>{" "}

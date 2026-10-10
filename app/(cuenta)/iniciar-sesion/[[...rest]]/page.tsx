@@ -18,7 +18,12 @@ export default function IniciarSesionPage() {
       titulo={cuenta.iniciar.titulo}
       apoyo={cuenta.iniciar.apoyo}
     >
-      <SignIn path="/iniciar-sesion" signUpUrl="/crear-cuenta" fallbackRedirectUrl="/cuenta" />
+      <SignIn
+        path="/iniciar-sesion"
+        signUpUrl="/crear-cuenta"
+        fallbackRedirectUrl="/cuenta"
+        forceRedirectUrl="/cuenta"
+      />
     </CuentaSplit>
   );
 }
