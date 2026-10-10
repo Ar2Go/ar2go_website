@@ -44,6 +44,7 @@ export const apariencia: Apariencia = {
     cardBox: { boxShadow: "none" },
     card: { boxShadow: "none" },
     socialButtonsBlockButtonText: { fontWeight: 500 },
+    lastAuthenticationStrategyBadge: { display: "none" },
     // El color del botón "Continuar con Google" (blanco, no la superficie
     // oscura ni el azul primario que Clerk le pone en /iniciar-sesion) vive
     // en app/(cuenta)/cuenta.css: cambia según la pantalla y hay que
