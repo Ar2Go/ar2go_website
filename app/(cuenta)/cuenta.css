@@ -365,6 +365,9 @@
   background: transparent;
   border-color: var(--hair);
 }
+.ar-cuenta .cl-footerItem {
+  display: none !important;
+}
 .ar-cuenta .cl-footerActionLink {
   color: var(--color-azul-suave);
 }
@@ -398,8 +401,7 @@
   color: var(--color-fondo);
 }
 .ar-cuenta .cl-lastAuthenticationStrategyBadge {
-  background-color: rgba(11, 15, 25, 0.08);
-  color: var(--color-fondo);
+  display: none;
 }
 
 /* ─── /cuenta con el plano de control ─────────
