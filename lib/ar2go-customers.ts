@@ -42,11 +42,13 @@ const secreto = process.env.AR2GO_CUSTOMERS_SECRETO;
 // que AUTH_* y RESEND_API_KEY (CLAUDE.md §9).
 export const hayPlanoDeControl = Boolean(url && secreto);
 
-// AR2GO-Firma: t=<unix>,v1=HMAC-SHA256(secreto, "<t>.<cuerpo>").
-function firmar(cuerpo: string): string {
+// AR2GO-Firma: t=<unix>,v1=HMAC-SHA256(secreto, "<t>.<cuerpo>"). La usa
+// también lib/ar2go-customers-admin.ts, con su propio secreto.
+export function firmarCon(secretoFirma: string, cuerpo: string): string {
   const t = Math.floor(Date.now() / 1000);
-  return `t=${t},v1=${createHmac("sha256", secreto!).update(`${t}.${cuerpo}`).digest("hex")}`;
+  return `t=${t},v1=${createHmac("sha256", secretoFirma).update(`${t}.${cuerpo}`).digest("hex")}`;
 }
+const firmar = (cuerpo: string) => firmarCon(secreto!, cuerpo);
 
 async function llamar<T>(ruta: string, persona: Persona, datos: object = {}): Promise<T> {
   if (!hayPlanoDeControl) throw new ErrorCuenta("SIN_PLANO_DE_CONTROL", "ar2go-customers no está configurado.");
