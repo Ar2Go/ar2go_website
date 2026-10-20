@@ -5,9 +5,11 @@ import Google from "next-auth/providers/google";
 // consentimiento de Google Cloud esté abierto, nadie más entra a /admin.
 // Ver CLAUDE.md §11 (decisión del panel de administración) antes de tocar
 // este archivo — no es solo config, es la puerta de acceso.
-// Desde 2026-10-18 solo la cuenta admin de AR2GO (decisión de JD, ANCLA §4):
-// /admin ya muestra a los clientes reales y permite cambiarles el plan.
-const CORREOS_ADMIN = ["ar2gon.2026@gmail.com"];
+// La cuenta admin de AR2GO y, desde 2026-10-20, las cuentas de Google de JD y
+// Héctor (fase 0 de ar2go-customers): cada quien entra con la suya para que la
+// bitácora del plano de control diga quién cambió qué. /admin muestra a los
+// clientes reales y permite cambiarles el plan.
+const CORREOS_ADMIN = ["ar2gon.2026@gmail.com", "juand86@gmail.com", "h.gonzja@gmail.com"];
 
 // Se vuelve a revisar en cada página y acción de /admin (app/admin/operador.ts):
 // una sesión emitida antes de quitar a alguien de la lista sigue viva hasta

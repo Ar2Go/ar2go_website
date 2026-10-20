@@ -22,7 +22,7 @@ Reglas que no se negocian:
 - CTA primario: **"Empezar gratis"**. CTA secundario (hero): **"Ver cómo funciona"** (ancla a la sección de agentes). El plan Empresa usa "Hablar con ventas" como excepción, porque ese nivel sí requiere una conversación.
 - Cada sección responde a una industria o un caso de uso concreto, no describe arquitectura técnica.
 
-**Idioma:** español de México, tuteo, sin anglicismos innecesarios ("agente" no "AI agent", "proceso" no "workflow"). Cero contenido en inglés en el sitio público (los commits sí van en inglés, ver §4).
+**Idioma:** español de México, tuteo, sin anglicismos innecesarios ("agente" no "AI agent", "proceso" no "workflow"). Cero contenido en inglés en el sitio público (los commits van en español, ver §4).
 
 ## 3. Qué no hacer
 
@@ -37,7 +37,7 @@ Reglas que no se negocian:
 
 - Repo: `Ar2Go/ar2go_website`.
 - `main` se trata como protegida: todo el trabajo va en ramas `feat/*` o `fix/*`, un PR por entregable.
-- Commits en **conventional commits, en inglés**, con cuerpo breve explicando el porqué cuando la decisión no sea obvia.
+- Commits **en español** con prefijo (`feat:`, `fix:`, `docs:`, `infra:`), con cuerpo breve explicando el porqué cuando la decisión no sea obvia (ancla de `Ar2Go`, `docs/ANCLA.md` §6; hasta 2026-10-20 decía inglés).
 - `.gitignore` de Node, `.env.example` con todas las variables documentadas, `README.md` con cómo correr local, cómo desplegar, y dónde vive cada cosa.
 - Este archivo (`CLAUDE.md`) se actualiza con cada decisión relevante — ver §10 "Decisiones tomadas".
 
@@ -97,7 +97,7 @@ Detalle de copy y aceptación por sección del diseño original (ya no vigente):
 
 ### Panel de administración (`/admin`)
 
-Fuera de la home pública, con login de Google restringido a una lista blanca de correos (desde 2026-10-18 solo la cuenta admin `ar2gon.2026@gmail.com`, en `auth.ts`). Desde 2026-10-18 es el panel del equipo de AR2GO sobre sus **clientes** (ver §11): lista de empresas, detalle por empresa (`/admin/empresas/[id]`) y cambio de plan, leídos de la API de administración de `ar2go-customers`. Los agentes de la fábrica (`ar2go-platform`, etapa 0) salieron de la pantalla.
+Fuera de la home pública, con login de Google restringido a una lista blanca de correos (desde 2026-10-20: la cuenta admin `ar2gon.2026@gmail.com` y los Gmail de JD y Héctor, en `auth.ts`). Desde 2026-10-18 es el panel del equipo de AR2GO sobre sus **clientes** (ver §11): lista de empresas, detalle por empresa (`/admin/empresas/[id]`) y cambio de plan, leídos de la API de administración de `ar2go-customers`. Los agentes de la fábrica (`ar2go-platform`, etapa 0) salieron de la pantalla.
 
 - `lib/ar2go-customers-admin.ts` — único cliente de `/v1/admin/*`, firmado con `AR2GO_CUSTOMERS_SECRETO_ADMIN` (distinto del de `/cuenta`). Quién opera viaja en el cuerpo firmado y queda en la bitácora del plano de control.
 - `app/admin/operador.ts` — cada página y Server Action de `/admin` vuelve a revisar la lista blanca (`esCorreoAdmin`), no solo el middleware: una sesión emitida antes de quitar a alguien de la lista sigue viva hasta que expira.
@@ -225,5 +225,6 @@ Regla: **un solo lugar por placeholder**. Nunca repetir el número de WhatsApp, 
   - Lista de empresas (alta, plan, propietario, usuarios, productos, estado), conteo por plan y personas que entraron a `/cuenta` sin dar de alta empresa; detalle por empresa con miembros, productos (versión deseada contra aplicada, último error) y las últimas 50 entradas de bitácora. Única escritura: **cambiar plan**, con motivo obligatorio. Sin cobro (Stripe sigue pendiente); el plano de control reaprovisiona los productos con los límites del plan nuevo.
   - Lista blanca: solo `ar2gon.2026@gmail.com` (la cuenta admin de AR2GO), decisión de JD. Se exige además `email_verified` del perfil de Google.
   - Secreto propio (`AR2GO_CUSTOMERS_SECRETO_ADMIN`) en vez de reusar el de `/cuenta`: la API de admin lee a todos los clientes, y con el secreto del sitio cualquier llamada de `/cuenta` serviría para ella. `ar2go-customers` se niega a arrancar si se repiten.
-  - Commits en español con prefijo (`feat:`, `fix:`, `docs:`), según el ancla de `Ar2Go` (`docs/ANCLA.md` §6), que gana sobre §4 de este archivo; falta corregir §4.
+  - Commits en español con prefijo (`feat:`, `fix:`, `docs:`), según el ancla de `Ar2Go` (`docs/ANCLA.md` §6), que gana sobre §4 de este archivo (§4 corregido el 2026-10-20).
   - Verificado: `npx tsc --noEmit`, `npm run lint` y `npm run build` limpios. Recorrido con Playwright contra `ar2go-customers` real en local (PGlite) y una sesión de Auth.js de prueba: un correo fuera de la lista se rechaza, la lista y el detalle muestran los datos, el cambio de plan queda en bitácora como `admin:<correo>` y el producto simulado confirma la versión nueva; a 390 px no hay scroll horizontal de página. Falta probar el login real con Google (requiere el cliente OAuth "Auth.js admin").
+- **2026-10-20** — La lista blanca de `/admin` suma los Gmail de JD (`juand86@gmail.com`) y Héctor (`h.gonzja@gmail.com`) a la cuenta admin. Porqué: con una sola cuenta compartida, la bitácora de `ar2go-customers` decía `admin:ar2gon…` para cualquiera; ahora cada cambio de plan queda con el correo de quien lo hizo. §4 pasa a commits en español.
