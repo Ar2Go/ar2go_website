@@ -74,7 +74,33 @@ export const admin = {
     ejemplo: "Cliente piloto, acordado con dirección",
     enviar: "Cambiar plan",
   },
+  // Ciclo de vida de la empresa (ar2go-customers, src/cicloVida.ts). Las
+  // acciones que se ofrecen dependen del estado actual.
+  estado: {
+    titulo: "Estado de la cuenta",
+    apoyo:
+      "Se manda a cada producto como versión nueva y se aplica cuando lo confirma. Suspendida: solo lectura, sin Activar ni Abrir en /cuenta. Cerrada: sin acceso; los productos conservan los datos (HorIQ, 5 años) y se puede reabrir.",
+    motivo: "Motivo (queda en la bitácora)",
+    ejemplo: "Falta de pago de octubre",
+    confirmar: "Confirmo que es una empresa de prueba o que el cliente ya fue avisado.",
+    acciones: {
+      SUSPENDER: "Suspender",
+      REACTIVAR: "Reactivar",
+      CERRAR: "Cerrar cuenta",
+      REABRIR: "Reabrir cuenta",
+    } as Record<string, string>,
+    // Qué se puede hacer desde cada estado; lo mismo valida ar2go-customers.
+    disponibles: {
+      ACTIVA: ["SUSPENDER", "CERRAR"],
+      SUSPENDIDA: ["REACTIVAR", "CERRAR"],
+      CERRADA: ["REABRIR"],
+    } as Record<string, string[]>,
+  },
   avisos: {
+    ESTADO_CAMBIADO: "Estado cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
+    TRANSICION_INVALIDA: "Esa acción no aplica al estado actual de la empresa. Recarga la página.",
+    EMPRESA_CERRADA: "La empresa está cerrada: reábrela antes de cambiarle el plan.",
+    CONFIRMACION_FALTANTE: "Marca la casilla de confirmación antes de cambiar el estado.",
     PLAN_CAMBIADO: "Plan cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
     MOTIVO_INVALIDO: "Escribe un motivo de al menos 3 caracteres.",
     PLAN_INVALIDO: "Ese plan no existe.",
@@ -89,5 +115,9 @@ export const admin = {
     ACTIVAR_PRODUCTO: "Activó un producto",
     APROVISIONAR: "Aprovisionamiento al producto",
     CAMBIAR_PLAN: "Cambio de plan",
+    SUSPENDER_EMPRESA: "Suspendió la empresa",
+    REACTIVAR_EMPRESA: "Reactivó la empresa",
+    CERRAR_EMPRESA: "Cerró la cuenta",
+    REABRIR_EMPRESA: "Reabrió la cuenta",
   } as Record<string, string>,
 } as const;

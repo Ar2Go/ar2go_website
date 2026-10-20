@@ -7,13 +7,15 @@ type Props = {
   // producto; se muestran todos como "Próximamente".
   productos: Producto[] | null;
   puedeActivar: boolean;
+  // Texto en lugar de los botones cuando la empresa está suspendida o cerrada.
+  bloqueo?: string | null;
 };
 
 // Cinta de argonautas de /cuenta: primero los productos del catálogo de
 // ar2go-customers (hoy HorIQ), con lo que la persona puede hacer en cada uno
 // (abrirlo con login único o activarlo dentro de su plan); después los que
 // todavía no existen (content/cuenta.ts → porVenir), solo como "Próximamente".
-export function CintaProductos({ productos, puedeActivar }: Props) {
+export function CintaProductos({ productos, puedeActivar, bloqueo = null }: Props) {
   const t = cuenta.tablero;
   const catalogo: Producto[] =
     productos ??
@@ -44,11 +46,16 @@ export function CintaProductos({ productos, puedeActivar }: Props) {
                 {p.estado === "SUSPENDIDA" && (
                   <span className="cuenta__estado cuenta__estado--alerta">{t.suspendido}</span>
                 )}
+                {p.estado === "CANCELADA" && bloqueo && (
+                  <span className="cuenta__estado cuenta__estado--alerta">{t.sinAcceso}</span>
+                )}
               </p>
               {info && <p className="cinta__desc">{info.descripcion}</p>}
               <form action={p.puede_abrir ? abrirAccion : activarAccion} className="cinta__accion">
                 <input type="hidden" name="producto" value={p.slug} />
-                {p.puede_abrir ? (
+                {bloqueo && !p.puede_abrir ? (
+                  <span className="cinta__nota">{bloqueo}</span>
+                ) : p.puede_abrir ? (
                   <button type="submit" className="btn btn--primary">
                     {t.abrir}
                   </button>

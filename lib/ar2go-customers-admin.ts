@@ -34,6 +34,8 @@ export type DetalleEmpresa = {
     producto: string;
     producto_nombre: string;
     estado: string;
+    // Lo que recibió el producto: el estado de la empresa manda (desde ar2go-customers#8).
+    estado_efectivo?: string;
     limites: Record<string, number | null>;
     version: number;
     version_aplicada: number;
@@ -76,6 +78,11 @@ export const detalleEmpresa = (operador: string, empresaId: string) =>
 
 export const cambiarPlan = (operador: string, empresaId: string, plan: string, motivo: string) =>
   llamar<DetalleEmpresa>("/v1/admin/empresas/cambiar-plan", operador, { empresa_id: empresaId, plan, motivo });
+
+export type AccionEmpresa = "SUSPENDER" | "REACTIVAR" | "CERRAR" | "REABRIR";
+
+export const cambiarEstado = (operador: string, empresaId: string, accion: AccionEmpresa, motivo: string) =>
+  llamar<DetalleEmpresa>("/v1/admin/empresas/cambiar-estado", operador, { empresa_id: empresaId, accion, motivo });
 
 export const personasSinEmpresa = (operador: string) =>
   llamar<{ usuarios: PersonaSinEmpresa[] }>("/v1/admin/usuarios/sin-empresa", operador);
