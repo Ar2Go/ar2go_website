@@ -47,7 +47,22 @@ export const cuenta = {
     proximamente: "Próximamente",
     activo: "Activo",
     suspendido: "Suspendido",
+    sinAcceso: "Sin acceso",
   },
+  // Aviso de /cuenta cuando la empresa no está activa (ar2go-customers la
+  // suspende o la cierra desde /admin). Sin Activar ni Abrir mientras dure.
+  estadoEmpresa: {
+    SUSPENDIDA: {
+      aviso:
+        "Tu cuenta está suspendida. Mientras tanto no puedes activar ni abrir productos; tus datos siguen guardados. Escríbenos para resolverlo.",
+      nota: "Cuenta suspendida",
+    },
+    CERRADA: {
+      aviso:
+        "Tu cuenta está cerrada. Tus registros se conservan el tiempo que marca la ley. Escríbenos si quieres reabrirla.",
+      nota: "Cuenta cerrada",
+    },
+  } as Record<string, { aviso: string; nota: string }>,
   // Cinta de argonautas en /cuenta (components/cuenta/CintaProductos.tsx).
   cinta: {
     titulo: "Tus argonautas",
@@ -68,6 +83,8 @@ export const cuenta = {
   ],
   // Mensajes para los códigos de error de ar2go-customers que puede ver la persona.
   avisos: {
+    EMPRESA_SUSPENDIDA: "Tu cuenta está suspendida: no puedes activar ni abrir productos. Escríbenos para resolverlo.",
+    EMPRESA_CERRADA: "Tu cuenta está cerrada. Escríbenos si quieres reabrirla.",
     CUOTA_PENDIENTE: "Tu plan todavía no incluye este producto. Te avisamos en cuanto esté disponible.",
     PRODUCTO_NO_LISTO: "Estamos preparando el producto. Intenta abrirlo en unos minutos.",
     PRODUCTO_NO_DISPONIBLE: "Este producto todavía no está disponible.",

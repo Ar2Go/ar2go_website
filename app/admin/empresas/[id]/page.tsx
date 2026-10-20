@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CambiarEstado } from "@/components/admin/CambiarEstado";
 import { EncabezadoAdmin } from "@/components/admin/EncabezadoAdmin";
 import { claseEstado, fecha } from "@/components/admin/formato";
 import { Footer } from "@/components/layout/Footer";
@@ -51,7 +52,7 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
     throw e;
   }
   const textoAviso = aviso ? (admin.avisos[aviso] ?? admin.avisos.general) : null;
-  const esExito = aviso === "PLAN_CAMBIADO";
+  const esExito = aviso === "PLAN_CAMBIADO" || aviso === "ESTADO_CAMBIADO";
   const datos: [string, string, string?][] = [
     [admin.detalle.campos.alta, fecha(d.empresa.created_at)],
     [admin.detalle.campos.estado, d.empresa.estado, claseEstado(d.empresa.estado)],
@@ -127,6 +128,8 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
               </Button>
             </form>
           </Card>
+
+          <CambiarEstado empresaId={d.empresa.id} estado={d.empresa.estado} campo={campo} />
         </div>
 
         <h2 className={`mt-14 ${tipografia.h3}`}>{admin.detalle.miembros}</h2>
@@ -164,7 +167,9 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
                 {d.suscripciones.map((s) => (
                   <tr key={s.producto} className="border-t border-linea/10">
                     <td className={td}>{s.producto_nombre}</td>
-                    <td className={`${td} ${claseEstado(s.estado)}`}>{s.estado}</td>
+                    <td className={`${td} ${claseEstado(s.estado_efectivo ?? s.estado)}`}>
+                      {s.estado_efectivo ?? s.estado}
+                    </td>
                     <td className={`${td} font-mono`}>{limites(s.limites)}</td>
                     <td className={td}>
                       <span className="font-mono">

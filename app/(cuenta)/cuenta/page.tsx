@@ -71,18 +71,25 @@ export default async function CuentaPage({ searchParams }: Props) {
   }
 
   const t = cuenta.tablero;
+  const estadoEmpresa = cuenta.estadoEmpresa[datos.empresa.estado] ?? null;
+  const puedeActivar = !estadoEmpresa && ["PROPIETARIO", "ADMIN"].includes(datos.rol);
   return (
     <CuentaLanding
       eyebrow={t.eyebrow}
       titulo={datos.empresa.nombre}
       apoyo={t.apoyo}
       cinta={
-        <CintaProductos productos={datos.productos} puedeActivar={["PROPIETARIO", "ADMIN"].includes(datos.rol)} />
+        <CintaProductos productos={datos.productos} puedeActivar={puedeActivar} bloqueo={estadoEmpresa?.nota} />
       }
     >
       <p className="cuenta__correo">
         {p.persona.correo} · {t.plan} {datos.empresa.plan_nombre}
       </p>
+      {estadoEmpresa && (
+        <p className="cuenta__aviso" role="status">
+          {estadoEmpresa.aviso}
+        </p>
+      )}
       {avisoNodo}
     </CuentaLanding>
   );

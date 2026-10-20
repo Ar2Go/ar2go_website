@@ -16,6 +16,8 @@ export type Producto = {
   listo: boolean;
   disponible: boolean;
   puede_abrir: boolean;
+  // false si la empresa está suspendida o cerrada (desde ar2go-customers#8).
+  puede_activar?: boolean;
 };
 
 export type Resumen = {
