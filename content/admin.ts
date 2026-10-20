@@ -96,7 +96,28 @@ export const admin = {
       CERRADA: ["REABRIR"],
     } as Record<string, string[]>,
   },
+  pendientes: {
+    titulo: "Cambios pendientes de confirmar",
+    apoyo:
+      "Versiones que algún producto todavía no confirma. ar2go-customers las reintenta solo cada 15 minutos con espera creciente; a los 6 intentos, o si el producto las rechaza, se detiene y requieren que alguien las revise.",
+    vacio: "Todo confirmado.",
+    sinDatos: "No se pudieron leer los pendientes.",
+    columnas: {
+      empresa: "Empresa",
+      producto: "Producto",
+      version: "Versión (aplicada / deseada)",
+      estado: "Reintentos",
+      error: "Último error",
+      accion: "",
+    },
+    requiereAtencion: "Requiere atención",
+    siguiente: "Siguiente:",
+    intentos: "intentos",
+    reintentar: "Reintentar ahora",
+  },
   avisos: {
+    REINTENTADO: "Reintento hecho. Si el producto confirmó, ya no aparece en pendientes.",
+    SUSCRIPCION_NO_ENCONTRADA: "No existe esa suscripción.",
     ESTADO_CAMBIADO: "Estado cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
     TRANSICION_INVALIDA: "Esa acción no aplica al estado actual de la empresa. Recarga la página.",
     EMPRESA_CERRADA: "La empresa está cerrada: reábrela antes de cambiarle el plan.",
@@ -119,5 +140,7 @@ export const admin = {
     REACTIVAR_EMPRESA: "Reactivó la empresa",
     CERRAR_EMPRESA: "Cerró la cuenta",
     REABRIR_EMPRESA: "Reabrió la cuenta",
+    RECONCILIAR: "El producto ya tenía la versión",
+    REINTENTAR: "Reintento manual",
   } as Record<string, string>,
 } as const;
