@@ -42,9 +42,26 @@ export type DetalleEmpresa = {
     aplicado_at: string | null;
     ultimo_error: string | null;
     created_at: string;
+    // Reintentos (desde ar2go-customers#9).
+    intentos?: number;
+    requiere_atencion?: boolean;
   }[];
   bitacora: { actor: string; accion: string; detalle: Record<string, unknown>; created_at: string }[];
   planes: { slug: string; nombre: string; precio_mensual_centavos: number | null }[];
+};
+
+export type CambioPendiente = {
+  suscripcion_id: string;
+  empresa_id: string;
+  empresa: string;
+  empresa_estado: string;
+  producto: string;
+  version: number;
+  version_aplicada: number;
+  intentos: number;
+  proximo_intento_at: string | null;
+  requiere_atencion: boolean;
+  ultimo_error: string | null;
 };
 
 export type PersonaSinEmpresa = { correo: string; nombre: string; created_at: string };
@@ -83,6 +100,12 @@ export type AccionEmpresa = "SUSPENDER" | "REACTIVAR" | "CERRAR" | "REABRIR";
 
 export const cambiarEstado = (operador: string, empresaId: string, accion: AccionEmpresa, motivo: string) =>
   llamar<DetalleEmpresa>("/v1/admin/empresas/cambiar-estado", operador, { empresa_id: empresaId, accion, motivo });
+
+export const cambiosPendientes = (operador: string) =>
+  llamar<{ pendientes: CambioPendiente[] }>("/v1/admin/pendientes", operador);
+
+export const reintentar = (operador: string, suscripcionId: string) =>
+  llamar<DetalleEmpresa>("/v1/admin/suscripciones/reintentar", operador, { suscripcion_id: suscripcionId });
 
 export const personasSinEmpresa = (operador: string) =>
   llamar<{ usuarios: PersonaSinEmpresa[] }>("/v1/admin/usuarios/sin-empresa", operador);

@@ -176,7 +176,9 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
                         {s.version_aplicada} / {s.version}
                       </span>
                       {s.version_aplicada < s.version && (
-                        <span className="ml-2 text-error">{admin.detalle.pendiente}</span>
+                        <span className="ml-2 text-error">
+                          {s.requiere_atencion ? admin.pendientes.requiereAtencion : admin.detalle.pendiente}
+                        </span>
                       )}
                     </td>
                     <td className={`${td} break-all text-gris`}>{s.ultimo_error ?? "—"}</td>

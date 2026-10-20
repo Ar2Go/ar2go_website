@@ -6,7 +6,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ErrorCuenta } from "@/lib/ar2go-customers";
-import { cambiarEstado, cambiarPlan } from "@/lib/ar2go-customers-admin";
+import { cambiarEstado, cambiarPlan, reintentar } from "@/lib/ar2go-customers-admin";
 import { operadorActual } from "./operador";
 
 const datosCambioPlan = z.object({
@@ -54,4 +54,20 @@ export async function cambiarEstadoAccion(datos: FormData) {
     throw e; // redirect() de Next se propaga
   }
   destino("ESTADO_CAMBIADO");
+}
+
+// Reintenta ya una suscripción pendiente (GET al producto y, si hace falta,
+// PUT). Vuelve a /admin con el aviso; el detalle refleja el resultado.
+export async function reintentarAccion(datos: FormData) {
+  const operador = await operadorActual();
+  const id = z.uuid().safeParse(datos.get("suscripcion_id"));
+  const destino = (aviso: string) => redirect(`/admin?aviso=${encodeURIComponent(aviso)}#pendientes-titulo`);
+  if (!id.success) destino("general");
+  try {
+    await reintentar(operador, id.data!);
+  } catch (e) {
+    if (e instanceof ErrorCuenta) destino(e.code);
+    throw e; // redirect() de Next se propaga
+  }
+  destino("REINTENTADO");
 }

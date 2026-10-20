@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CambiosPendientes } from "@/components/admin/CambiosPendientes";
 import { EncabezadoAdmin } from "@/components/admin/EncabezadoAdmin";
 import { claseEstado, fecha } from "@/components/admin/formato";
 import { Footer } from "@/components/layout/Footer";
@@ -9,9 +10,11 @@ import { Section } from "@/components/ui/Section";
 import { admin } from "@/content/admin";
 import { ErrorCuenta } from "@/lib/ar2go-customers";
 import {
+  cambiosPendientes,
   hayAdminDePlanoDeControl,
   listarEmpresas,
   personasSinEmpresa,
+  type CambioPendiente,
   type EmpresaListada,
   type PersonaSinEmpresa,
 } from "@/lib/ar2go-customers-admin";
@@ -29,15 +32,29 @@ export const dynamic = "force-dynamic";
 const th = `px-3 py-2 text-left ${tipografia.eyebrow}`;
 const td = `px-3 py-3 align-top ${tipografia.cuerpoChico}`;
 
-export default async function AdminPage() {
+type Props = { searchParams: Promise<{ aviso?: string }> };
+
+export default async function AdminPage({ searchParams }: Props) {
   const operador = await operadorActual();
+  const { aviso } = await searchParams;
+  const textoAviso = aviso ? (admin.avisos[aviso] ?? admin.avisos.general) : null;
 
   let datos: { empresas: EmpresaListada[]; sinEmpresa: PersonaSinEmpresa[] } | null = null;
+  let pendientes: CambioPendiente[] | null = null;
   let error: string | null = null;
   if (hayAdminDePlanoDeControl) {
     try {
-      const [e, s] = await Promise.all([listarEmpresas(operador), personasSinEmpresa(operador)]);
+      // Los pendientes no tumban la página: si fallan, su sección lo dice.
+      const [e, s, p] = await Promise.all([
+        listarEmpresas(operador),
+        personasSinEmpresa(operador),
+        cambiosPendientes(operador).catch((err) => {
+          console.error("[admin] no se pudieron leer los pendientes:", err);
+          return null;
+        }),
+      ]);
       datos = { empresas: e.empresas, sinEmpresa: s.usuarios };
+      pendientes = p?.pendientes ?? null;
     } catch (e) {
       error = e instanceof ErrorCuenta ? (admin.avisos[e.code] ?? `${e.code}: ${e.message}`) : admin.avisos.general;
     }
@@ -51,6 +68,17 @@ export default async function AdminPage() {
       <Header />
       <Section background="fondo">
         <EncabezadoAdmin operador={operador} titulo={admin.empresas.titulo} />
+
+        {textoAviso && (
+          <p
+            role={aviso === "REINTENTADO" ? "status" : "alert"}
+            className={`mt-8 rounded-card border p-4 ${tipografia.cuerpoChico} ${
+              aviso === "REINTENTADO" ? "border-exito/40 bg-exito/10 text-exito" : "border-error/40 bg-error/10 text-error"
+            }`}
+          >
+            {textoAviso}
+          </p>
+        )}
 
         {!hayAdminDePlanoDeControl && (
           <Card className="mt-10">
@@ -140,6 +168,8 @@ export default async function AdminPage() {
                 </table>
               </div>
             )}
+
+            <CambiosPendientes pendientes={pendientes} />
 
             <h2 className={`mt-16 ${tipografia.h3}`}>{admin.sinEmpresa.titulo}</h2>
             <p className={`mt-2 ${medidaMaxima} ${tipografia.cuerpoChico} text-gris`}>{admin.sinEmpresa.apoyo}</p>
