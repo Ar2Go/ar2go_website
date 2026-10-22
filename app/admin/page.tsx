@@ -38,6 +38,7 @@ export default async function AdminPage({ searchParams }: Props) {
   const operador = await operadorActual();
   const { aviso } = await searchParams;
   const textoAviso = aviso ? (admin.avisos[aviso] ?? admin.avisos.general) : null;
+  const esExito = aviso === "REINTENTADO" || aviso === "EMPRESA_ELIMINADA";
 
   let datos: { empresas: EmpresaListada[]; sinEmpresa: PersonaSinEmpresa[] } | null = null;
   let pendientes: CambioPendiente[] | null = null;
@@ -71,9 +72,9 @@ export default async function AdminPage({ searchParams }: Props) {
 
         {textoAviso && (
           <p
-            role={aviso === "REINTENTADO" ? "status" : "alert"}
+            role={esExito ? "status" : "alert"}
             className={`mt-8 rounded-card border p-4 ${tipografia.cuerpoChico} ${
-              aviso === "REINTENTADO" ? "border-exito/40 bg-exito/10 text-exito" : "border-error/40 bg-error/10 text-error"
+              esExito ? "border-exito/40 bg-exito/10 text-exito" : "border-error/40 bg-error/10 text-error"
             }`}
           >
             {textoAviso}

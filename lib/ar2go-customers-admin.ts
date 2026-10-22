@@ -48,6 +48,8 @@ export type DetalleEmpresa = {
   }[];
   bitacora: { actor: string; accion: string; detalle: Record<string, unknown>; created_at: string }[];
   planes: { slug: string; nombre: string; precio_mensual_centavos: number | null }[];
+  // Si ar2go-customers permite el borrado total (ADMIN_PERMITE_ELIMINAR=si, solo en pruebas).
+  puede_eliminar?: boolean;
 };
 
 export type CambioPendiente = {
@@ -100,6 +102,10 @@ export type AccionEmpresa = "SUSPENDER" | "REACTIVAR" | "CERRAR" | "REABRIR";
 
 export const cambiarEstado = (operador: string, empresaId: string, accion: AccionEmpresa, motivo: string) =>
   llamar<DetalleEmpresa>("/v1/admin/empresas/cambiar-estado", operador, { empresa_id: empresaId, accion, motivo });
+
+// Borrado total (solo en pruebas): primero en cada producto, después en ar2go-customers.
+export const eliminarEmpresa = (operador: string, empresaId: string, confirmacion: string, motivo: string) =>
+  llamar<{ eliminada: true }>("/v1/admin/empresas/eliminar", operador, { empresa_id: empresaId, confirmacion, motivo });
 
 export const cambiosPendientes = (operador: string) =>
   llamar<{ pendientes: CambioPendiente[] }>("/v1/admin/pendientes", operador);
