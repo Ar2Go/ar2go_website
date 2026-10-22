@@ -6,7 +6,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ErrorCuenta } from "@/lib/ar2go-customers";
-import { cambiarEstado, cambiarPlan, reintentar } from "@/lib/ar2go-customers-admin";
+import { cambiarEstado, cambiarPlan, eliminarEmpresa, reintentar } from "@/lib/ar2go-customers-admin";
 import { operadorActual } from "./operador";
 
 const datosCambioPlan = z.object({
@@ -54,6 +54,31 @@ export async function cambiarEstadoAccion(datos: FormData) {
     throw e; // redirect() de Next se propaga
   }
   destino("ESTADO_CAMBIADO");
+}
+
+const datosEliminar = z.object({
+  empresa_id: z.uuid(),
+  confirmacion: z.string().trim().min(1).max(200),
+  motivo: z.string().trim().min(3).max(500),
+});
+
+// Borrado total de la empresa, solo en pruebas (ar2go-customers lo rechaza si
+// no tiene ADMIN_PERMITE_ELIMINAR=si). Si sale bien, la empresa ya no existe y
+// se vuelve a la lista.
+export async function eliminarEmpresaAccion(datos: FormData) {
+  const operador = await operadorActual();
+  const d = datosEliminar.safeParse(Object.fromEntries(datos));
+  const empresaId = String(datos.get("empresa_id") ?? "");
+  const destino = (aviso: string) =>
+    redirect(`/admin/empresas/${encodeURIComponent(empresaId)}?aviso=${encodeURIComponent(aviso)}`);
+  if (!d.success) destino(datos.get("confirmacion") ? "MOTIVO_INVALIDO" : "CONFIRMACION_INVALIDA");
+  try {
+    await eliminarEmpresa(operador, d.data!.empresa_id, d.data!.confirmacion, d.data!.motivo);
+  } catch (e) {
+    if (e instanceof ErrorCuenta) destino(e.code);
+    throw e; // redirect() de Next se propaga
+  }
+  redirect("/admin?aviso=EMPRESA_ELIMINADA");
 }
 
 // Reintenta ya una suscripción pendiente (GET al producto y, si hace falta,

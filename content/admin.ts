@@ -96,6 +96,18 @@ export const admin = {
       CERRADA: ["REABRIR"],
     } as Record<string, string[]>,
   },
+  // Borrado total de la empresa (components/admin/EliminarEmpresa.tsx). Solo
+  // aparece mientras ar2go-customers lo permite (ADMIN_PERMITE_ELIMINAR=si):
+  // es para limpiar cuentas de prueba y se apaga antes de tener clientes reales.
+  eliminar: {
+    titulo: "Eliminar cliente (solo en pruebas)",
+    apoyo:
+      "Borra todo y no se puede deshacer: en HorIQ, trabajadores, checadas, selfies y expedientes; en AR2GO, la empresa, su plan, productos y bitácora. Las personas conservan su cuenta y pueden dar de alta otra empresa.",
+    confirmacion: "Escribe el nombre exacto de la empresa",
+    motivo: "Motivo (queda en la bitácora general)",
+    ejemplo: "Cuenta de prueba",
+    enviar: "Eliminar para siempre",
+  },
   pendientes: {
     titulo: "Cambios pendientes de confirmar",
     apoyo:
@@ -116,6 +128,11 @@ export const admin = {
     reintentar: "Reintentar ahora",
   },
   avisos: {
+    EMPRESA_ELIMINADA: "Cliente eliminado por completo, en AR2GO y en sus productos.",
+    ELIMINAR_DESACTIVADO: "El borrado total está desactivado en ar2go-customers (ADMIN_PERMITE_ELIMINAR).",
+    CONFIRMACION_INVALIDA: "El nombre no coincide. Escribe el nombre exacto de la empresa para eliminarla.",
+    PRODUCTO_NO_ELIMINO:
+      "Un producto no confirmó el borrado y no se eliminó nada. El error quedó en la bitácora de abajo; revisa que el producto tenga AR2GO_PERMITE_ELIMINAR=si.",
     REINTENTADO: "Reintento hecho. Si el producto confirmó, ya no aparece en pendientes.",
     SUSCRIPCION_NO_ENCONTRADA: "No existe esa suscripción.",
     ESTADO_CAMBIADO: "Estado cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
@@ -142,5 +159,6 @@ export const admin = {
     REABRIR_EMPRESA: "Reabrió la cuenta",
     RECONCILIAR: "El producto ya tenía la versión",
     REINTENTAR: "Reintento manual",
+    ELIMINAR_EMPRESA_FALLIDO: "Intentó eliminar la empresa (un producto no confirmó)",
   } as Record<string, string>,
 } as const;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CambiarEstado } from "@/components/admin/CambiarEstado";
+import { EliminarEmpresa } from "@/components/admin/EliminarEmpresa";
 import { EncabezadoAdmin } from "@/components/admin/EncabezadoAdmin";
 import { claseEstado, fecha } from "@/components/admin/formato";
 import { Footer } from "@/components/layout/Footer";
@@ -131,6 +132,8 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
 
           <CambiarEstado empresaId={d.empresa.id} estado={d.empresa.estado} campo={campo} />
         </div>
+
+        {d.puede_eliminar && <EliminarEmpresa empresaId={d.empresa.id} nombre={d.empresa.nombre} campo={campo} />}
 
         <h2 className={`mt-14 ${tipografia.h3}`}>{admin.detalle.miembros}</h2>
         <div className="mt-4 overflow-x-auto rounded-card border border-linea/10">
