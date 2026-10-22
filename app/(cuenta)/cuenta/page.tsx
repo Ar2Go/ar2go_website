@@ -79,7 +79,12 @@ export default async function CuentaPage({ searchParams }: Props) {
       titulo={datos.empresa.nombre}
       apoyo={t.apoyo}
       cinta={
-        <CintaProductos productos={datos.productos} puedeActivar={puedeActivar} bloqueo={estadoEmpresa?.nota} />
+        <CintaProductos
+            productos={datos.productos}
+            puedeActivar={puedeActivar}
+            plan={datos.empresa.plan}
+            bloqueo={estadoEmpresa?.nota}
+          />
       }
     >
       <p className="cuenta__correo">

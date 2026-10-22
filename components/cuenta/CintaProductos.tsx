@@ -1,12 +1,15 @@
 import { abrirAccion, activarAccion } from "@/app/(cuenta)/cuenta/acciones";
 import { cuenta } from "@/content/cuenta";
 import type { Producto } from "@/lib/ar2go-customers";
+import { tienePago } from "@/lib/pagos";
 
 type Props = {
   // null: ar2go-customers no está configurado y no se sabe el estado de cada
   // producto; se muestran todos como "Próximamente".
   productos: Producto[] | null;
   puedeActivar: boolean;
+  // Plan de la empresa: solo en Explorar se ofrece elegir plan al activar.
+  plan?: string | null;
   // Texto en lugar de los botones cuando la empresa está suspendida o cerrada.
   bloqueo?: string | null;
 };
@@ -15,7 +18,7 @@ type Props = {
 // ar2go-customers (hoy HorIQ), con lo que la persona puede hacer en cada uno
 // (abrirlo con login único o activarlo dentro de su plan); después los que
 // todavía no existen (content/cuenta.ts → porVenir), solo como "Próximamente".
-export function CintaProductos({ productos, puedeActivar, bloqueo = null }: Props) {
+export function CintaProductos({ productos, puedeActivar, plan = null, bloqueo = null }: Props) {
   const t = cuenta.tablero;
   const catalogo: Producto[] =
     productos ??
@@ -64,11 +67,25 @@ export function CintaProductos({ productos, puedeActivar, bloqueo = null }: Prop
                 ) : p.estado && p.estado !== "CANCELADA" ? (
                   <span className="cinta__nota">{t.preparando}</span>
                 ) : (
-                  puedeActivar && (
+                  puedeActivar &&
+                  (plan === "explorar" && tienePago(p.slug) ? (
+                    <fieldset className="cinta__planes">
+                      <legend>{t.elegirPlan}</legend>
+                      <button type="submit" name="plan" value="explorar" className="btn btn--ghost">
+                        {t.planes.explorar.nombre}
+                        <span>{t.planes.explorar.detalle}</span>
+                      </button>
+                      <button type="submit" name="plan" value="equipo" className="btn btn--primary">
+                        {t.planes.equipo.nombre}
+                        <span>{t.planes.equipo.detalle}</span>
+                      </button>
+                      <small>{t.notaEquipo}</small>
+                    </fieldset>
+                  ) : (
                     <button type="submit" className="btn btn--ghost">
                       {t.activar}
                     </button>
-                  )
+                  ))
                 )}
               </form>
             </li>

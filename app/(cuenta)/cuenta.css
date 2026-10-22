@@ -718,6 +718,44 @@
   padding-top: 0.5rem;
 }
 
+.cinta__planes {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.cinta__planes legend {
+  padding: 0;
+  margin-bottom: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(230, 233, 239, 0.74);
+}
+
+.cinta__planes .btn {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  white-space: normal;
+  text-align: left;
+}
+
+.cinta__planes .btn span {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  opacity: 0.85;
+}
+
+.cinta__planes small {
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: rgba(230, 233, 239, 0.66);
+}
+
 .cinta__nota {
   display: inline-block;
   font-family: var(--font-mono);
