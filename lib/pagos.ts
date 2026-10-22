@@ -8,6 +8,11 @@ const linksPago: Record<string, string> = {
   horiq: "https://buy.stripe.com/test_6oU28r6ch6kX3Ng6OfdQQ00",
 };
 
+// Si el producto tiene link de pago (para ofrecer el plan Equipo al activarlo).
+export function tienePago(slug: string): boolean {
+  return Object.hasOwn(linksPago, slug);
+}
+
 // URL de pago del producto, o null si no tiene. client_reference_id lleva la
 // empresa para conciliar el pago cuando lleguen los webhooks; el correo se
 // prellena para que la persona no lo vuelva a escribir.

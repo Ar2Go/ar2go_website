@@ -42,6 +42,17 @@ export const cuenta = {
     apoyo: "Activa los productos que tu negocio necesita y entra a cada uno desde aquí, con tu misma cuenta.",
     productos: "Productos",
     activar: "Activar",
+    // Al activar un producto con link de pago (lib/pagos.ts), la empresa en
+    // Explorar elige plan. Explorar activa sin pago; Equipo activa con los
+    // mismos límites y manda a Stripe: el equipo de AR2GO sube el plan desde
+    // /admin al ver el pago (no hay webhooks hasta la fase 3). Los 10
+    // empleados los confirmó JD el 2026-10-21 (cuota de Explorar, D9).
+    elegirPlan: "Elige tu plan",
+    planes: {
+      explorar: { nombre: "Plan Explorar", detalle: "$0 · 10 empleados" },
+      equipo: { nombre: "Plan Equipo", detalle: "Con pago en línea" },
+    },
+    notaEquipo: "Empiezas con 10 empleados; subimos tu plan a Equipo al confirmar tu pago.",
     abrir: "Abrir",
     preparando: "Preparando…",
     proximamente: "Próximamente",
