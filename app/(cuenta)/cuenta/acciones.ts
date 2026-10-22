@@ -1,6 +1,7 @@
 "use server";
 
-// Acciones de /cuenta: alta de la empresa, activar un producto y abrirlo.
+// Acciones de /cuenta: alta de la empresa, activar un producto (y mandar a
+// su link de pago, si tiene) y abrirlo.
 // Todas llaman a ar2go-customers desde el servidor (lib/ar2go-customers.ts);
 // un error se muestra como aviso en la misma página (?aviso=<código>).
 import { redirect } from "next/navigation";
@@ -12,6 +13,7 @@ import {
   lanzarProducto,
   misEmpresas,
 } from "@/lib/ar2go-customers";
+import { urlPago } from "@/lib/pagos";
 import { personaActual } from "./persona";
 
 const nombreEmpresa = z.string().trim().min(2).max(120);
@@ -43,15 +45,18 @@ export async function crearEmpresaAccion(datos: FormData) {
 export async function activarAccion(datos: FormData) {
   const producto = slugProducto.safeParse(datos.get("producto"));
   if (!producto.success) conAviso("general");
+  let pago: string | null;
   try {
     const c = await contexto();
     if (!c.empresaId) redirect("/cuenta");
     await activarProducto(c.persona, c.empresaId, producto.data!);
+    pago = urlPago(producto.data!, c.empresaId, c.persona.correo);
   } catch (e) {
     if (e instanceof ErrorCuenta) conAviso(e.code);
     throw e; // redirect() de Next se propaga
   }
-  redirect("/cuenta");
+  // Con link de pago (lib/pagos.ts), la activación sigue en Stripe.
+  redirect(pago ?? "/cuenta");
 }
 
 export async function abrirAccion(datos: FormData) {
