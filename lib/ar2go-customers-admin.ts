@@ -66,6 +66,7 @@ export type DetalleEmpresa = {
       ip: string | null;
       created_at: string;
     }[];
+    // todo_legal: marcas TODO_LEGAL que le quedan; -1 si ar2go-customers no pudo leer el documento.
     documentos: { producto: string; slug: string; titulo: string; version: string; todo_legal: number }[];
   };
 };

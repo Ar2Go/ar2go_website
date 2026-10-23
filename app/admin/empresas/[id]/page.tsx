@@ -199,14 +199,16 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
               {admin.legal.apoyo} {d.legal.exigida ? admin.legal.exigida : admin.legal.noExigida}
             </p>
             {d.legal.documentos
-              .filter((doc) => doc.todo_legal > 0)
+              .filter((doc) => doc.todo_legal !== 0)
               .map((doc) => (
                 <p
                   key={doc.slug}
                   role="note"
                   className={`mt-3 rounded-card border border-error/40 bg-error/10 p-3 text-error ${tipografia.cuerpoChico}`}
                 >
-                  {admin.legal.todoLegal(doc.slug, doc.version, doc.todo_legal)}
+                  {doc.todo_legal < 0
+                    ? admin.legal.noLegible(doc.slug)
+                    : admin.legal.todoLegal(doc.slug, doc.version, doc.todo_legal)}
                 </p>
               ))}
             {d.legal.aceptaciones.length === 0 ? (

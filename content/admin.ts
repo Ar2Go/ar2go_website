@@ -75,6 +75,8 @@ export const admin = {
     // "terminos-horiq 0.2 tiene 9 marcas TODO_LEGAL"
     todoLegal: (doc: string, version: string, n: number) =>
       `${doc} ${version} tiene ${n} ${n === 1 ? "marca" : "marcas"} TODO_LEGAL: no se publica a clientes reales.`,
+    // ar2go-customers no pudo leer su copia del documento (todo_legal = -1): revisar sus logs.
+    noLegible: (doc: string) => `No se pudo leer ${doc} en ar2go-customers: revisa sus logs antes de exigir la aceptación.`,
     sinAceptaciones: "La empresa no ha aceptado ningún documento.",
     columnas: {
       fecha: "Fecha",
