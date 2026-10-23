@@ -92,6 +92,35 @@ export const cuenta = {
     { slug: "contabilidad", nombre: "Contabilidad", descripcion: "Argonautas que concilian tu contabilidad" },
     { slug: "compras", nombre: "Compras", descripcion: "Argonautas que realizan tus compras" },
   ],
+  // Aceptación de los documentos legales de la empresa antes de activar un
+  // producto (D25 de Ar2Go/Ar2Go): app/(cuenta)/cuenta/legal/[producto]. Los
+  // textos vienen de ar2go-customers (copia de Ar2Go/docs/legal), no de aquí.
+  legalEmpresa: {
+    eyebrow: "Antes de activar",
+    titulo: "Términos y contrato de datos",
+    apoyo:
+      "Para usar el producto, quien administra la cuenta acepta en nombre de la empresa sus términos de servicio y el contrato de encargo de datos personales.",
+    eyebrowNueva: "Versión nueva",
+    tituloNueva: "Revisa los documentos actualizados",
+    apoyoNueva:
+      "Actualizamos documentos que tu empresa ya había aceptado. Puedes seguir usando el producto; acepta la versión nueva para volver a activarlo si algún día lo cancelas.",
+    version: "Versión",
+    yaAceptado: "Ya aceptado",
+    // "Acepto los Términos de servicio de HorIQ en nombre de Panadería …"
+    casilla: (titulo: string, empresa: string) => `Acepto el documento «${titulo}» en nombre de ${empresa}.`,
+    constancia:
+      "Guardamos la constancia de tu aceptación: quién aceptó, la fecha, la dirección IP, la versión y la huella del texto.",
+    borrador:
+      "Borrador en revisión legal: este documento todavía tiene datos por completar y no es la versión definitiva.",
+    aceptarYActivar: "Aceptar y activar",
+    aceptar: "Aceptar",
+    cancelar: "Volver a tu cuenta",
+    leer: "Leer en otra pestaña",
+    soloAdmin: "Solo quien administra la cuenta puede aceptar estos documentos.",
+    nadaPendiente: "Tu empresa ya aceptó la versión vigente de estos documentos.",
+    // En la tarjeta del producto activo con una versión nueva pendiente.
+    nuevaVersion: "Documentos nuevos por aceptar",
+  },
   // Mensajes para los códigos de error de ar2go-customers que puede ver la persona.
   avisos: {
     EMPRESA_SUSPENDIDA: "Tu cuenta está suspendida: no puedes activar ni abrir productos. Escríbenos para resolverlo.",
@@ -103,6 +132,10 @@ export const cuenta = {
     ROL_INSUFICIENTE: "Solo quien administra la cuenta puede activar productos.",
     NOMBRE_INVALIDO: "Escribe el nombre de tu empresa (2 a 120 caracteres).",
     SIN_SERVICIO: "No pudimos cargar tu cuenta. Intenta de nuevo en unos minutos.",
+    ACEPTACION_PENDIENTE: "Antes de activar el producto, acepta sus términos y el contrato de encargo de datos.",
+    DOCUMENTO_DESACTUALIZADO: "El documento cambió mientras lo leías. Revisa la versión vigente antes de aceptar.",
+    FALTA_CASILLA: "Marca la casilla de cada documento para aceptarlo.",
+    DOCUMENTO_NO_ENCONTRADO: "Ese documento no es de este producto.",
     general: "No pudimos completar la acción. Intenta de nuevo.",
   } as Record<string, string>,
   // Aviso de consentimiento: el alta es tratamiento de datos personales

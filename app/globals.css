@@ -49,3 +49,59 @@ body {
   color: var(--color-niebla);
   font-family: var(--font-sans);
 }
+
+/* Texto legal (components/legal/TextoLegal.tsx): en /cuenta/legal y en /legal. */
+.texto-legal {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+.texto-legal > * + * {
+  margin-top: 0.75rem;
+}
+.texto-legal h2 {
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+.texto-legal h3 {
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.texto-legal h4 {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.texto-legal ul,
+.texto-legal ol {
+  padding-left: 1.25rem;
+}
+.texto-legal ul {
+  list-style: disc;
+}
+.texto-legal ol {
+  list-style: decimal;
+}
+.texto-legal blockquote {
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--color-error);
+}
+.texto-legal hr {
+  border: 0;
+  border-top: 1px solid rgba(230, 233, 239, 0.09);
+}
+.texto-legal__tabla {
+  overflow-x: auto;
+}
+.texto-legal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.texto-legal th,
+.texto-legal td {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid rgba(230, 233, 239, 0.09);
+}

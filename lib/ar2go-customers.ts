@@ -18,7 +18,25 @@ export type Producto = {
   puede_abrir: boolean;
   // false si la empresa está suspendida o cerrada (desde ar2go-customers#8).
   puede_activar?: boolean;
+  // Documentos legales de la empresa que faltan por aceptar (D25, desde
+  // ar2go-customers#11). Con `exigida`, Activar responde ACEPTACION_PENDIENTE.
+  legal?: { exigida: boolean; pendientes: { slug: string; titulo: string; version: string }[] };
 };
+
+// Documento legal tal como lo acepta la persona: texto con el nombre de la
+// empresa y de quien acepta ya sustituidos, y su huella SHA-256.
+export type DocumentoLegal = {
+  slug: string;
+  titulo: string;
+  version: string;
+  aceptado: boolean;
+  todo_legal: number;
+  texto: string;
+  sha256: string;
+};
+
+// Lectura pública: sin empresa, las variables se ven como marcadores.
+export type DocumentoPublico = Pick<DocumentoLegal, "slug" | "titulo" | "version" | "todo_legal" | "texto">;
 
 export type Resumen = {
   empresa: { id: string; nombre: string; estado: string; plan: string; plan_nombre: string };
@@ -52,9 +70,9 @@ export function firmarCon(secretoFirma: string, cuerpo: string): string {
 }
 const firmar = (cuerpo: string) => firmarCon(secreto!, cuerpo);
 
-async function llamar<T>(ruta: string, persona: Persona, datos: object = {}): Promise<T> {
+async function llamar<T>(ruta: string, persona: Persona | null, datos: object = {}): Promise<T> {
   if (!hayPlanoDeControl) throw new ErrorCuenta("SIN_PLANO_DE_CONTROL", "ar2go-customers no está configurado.");
-  const cuerpo = JSON.stringify({ usuario: persona, ...datos });
+  const cuerpo = JSON.stringify(persona ? { usuario: persona, ...datos } : datos);
   const res = await fetch(`${url!.replace(/\/$/, "")}${ruta}`, {
     method: "POST",
     headers: { "content-type": "application/json", "ar2go-firma": firmar(cuerpo) },
@@ -85,3 +103,23 @@ export const activarProducto = (p: Persona, empresaId: string, producto: string)
 
 export const lanzarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<{ url: string }>("/v1/cuenta/productos/lanzar", p, { empresa_id: empresaId, producto });
+
+export const documentosLegales = (p: Persona, empresaId: string, producto: string) =>
+  llamar<{ exigida: boolean; documentos: DocumentoLegal[] }>("/v1/cuenta/legal/documentos", p, {
+    empresa_id: empresaId,
+    producto,
+  });
+
+// La IP y el navegador los toma el sitio de la solicitud de la persona:
+// ar2go-customers solo ve la IP de Vercel.
+export const aceptarLegal = (
+  p: Persona,
+  empresaId: string,
+  producto: string,
+  documentos: { slug: string; version: string; sha256: string }[],
+  origen: { ip: string | null; user_agent: string | null },
+) =>
+  llamar<Resumen>("/v1/cuenta/legal/aceptar", p, { empresa_id: empresaId, producto, documentos, ...origen });
+
+export const documentosPublicos = (producto: string) =>
+  llamar<{ documentos: DocumentoPublico[] }>("/v1/legal/documentos", null, { producto });

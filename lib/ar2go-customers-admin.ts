@@ -50,6 +50,24 @@ export type DetalleEmpresa = {
   planes: { slug: string; nombre: string; precio_mensual_centavos: number | null }[];
   // Si ar2go-customers permite el borrado total (ADMIN_PERMITE_ELIMINAR=si, solo en pruebas).
   puede_eliminar?: boolean;
+  // Documentos legales de la empresa (D25, desde ar2go-customers#11):
+  // constancias de aceptación y versión vigente de cada documento con sus
+  // marcas TODO_LEGAL.
+  legal?: {
+    exigida: boolean;
+    aceptaciones: {
+      producto: string;
+      documento: string;
+      version: string;
+      sha256_texto: string;
+      sha256_plantilla: string;
+      aceptante: string;
+      correo: string;
+      ip: string | null;
+      created_at: string;
+    }[];
+    documentos: { producto: string; slug: string; titulo: string; version: string; todo_legal: number }[];
+  };
 };
 
 export type CambioPendiente = {

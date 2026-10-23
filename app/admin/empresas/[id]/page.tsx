@@ -192,6 +192,59 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
           </div>
         )}
 
+        {d.legal && (
+          <>
+            <h2 className={`mt-14 ${tipografia.h3}`}>{admin.legal.titulo}</h2>
+            <p className={`mt-2 ${medidaMaxima} ${tipografia.cuerpoChico} text-gris`}>
+              {admin.legal.apoyo} {d.legal.exigida ? admin.legal.exigida : admin.legal.noExigida}
+            </p>
+            {d.legal.documentos
+              .filter((doc) => doc.todo_legal > 0)
+              .map((doc) => (
+                <p
+                  key={doc.slug}
+                  role="note"
+                  className={`mt-3 rounded-card border border-error/40 bg-error/10 p-3 text-error ${tipografia.cuerpoChico}`}
+                >
+                  {admin.legal.todoLegal(doc.slug, doc.version, doc.todo_legal)}
+                </p>
+              ))}
+            {d.legal.aceptaciones.length === 0 ? (
+              <p className={`mt-4 ${tipografia.cuerpoChico} text-gris`}>{admin.legal.sinAceptaciones}</p>
+            ) : (
+              <div className="mt-4 overflow-x-auto rounded-card border border-linea/10">
+                <table className="w-full min-w-[720px] border-collapse">
+                  <thead className="bg-superficie">
+                    <tr>
+                      {Object.values(admin.legal.columnas).map((c) => (
+                        <th key={c} scope="col" className={th}>
+                          {c}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {d.legal.aceptaciones.map((a) => (
+                      <tr key={`${a.documento}-${a.version}-${a.created_at}`} className="border-t border-linea/10">
+                        <td className={`${td} whitespace-nowrap text-gris`}>{fecha(a.created_at)}</td>
+                        <td className={td}>{a.documento}</td>
+                        <td className={`${td} font-mono`}>{a.version}</td>
+                        <td className={`${td} break-all`}>
+                          {a.aceptante} · {a.correo}
+                        </td>
+                        <td className={`${td} font-mono text-gris`}>{a.ip ?? "—"}</td>
+                        <td className={`${td} break-all font-mono text-gris`} title={a.sha256_texto}>
+                          {a.sha256_texto.slice(0, 16)}…
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
+        )}
+
         <h2 className={`mt-14 ${tipografia.h3}`}>{admin.detalle.bitacora}</h2>
         <p className={`mt-2 ${medidaMaxima} ${tipografia.cuerpoChico} text-gris`}>{admin.detalle.bitacoraApoyo}</p>
         <div className="mt-4 overflow-x-auto rounded-card border border-linea/10">
