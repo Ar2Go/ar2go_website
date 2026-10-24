@@ -83,6 +83,7 @@ export const cuenta = {
   // slug. Un producto sin entrada aquí se muestra con el nombre que trae.
   productos: {
     horiq: { nombre: "HorIQ", descripcion: "Argonautas para administrar la asistencia de tu equipo" },
+    postio: { nombre: "Postio", descripcion: "Argonautas que crean y publican el contenido de tus redes" },
   } as Record<string, { nombre: string; descripcion: string }>,
   // PLACEHOLDER: productos que todavía no existen. Se muestran como
   // "Próximamente", sin botón de contratar, hasta que entren al catálogo de
