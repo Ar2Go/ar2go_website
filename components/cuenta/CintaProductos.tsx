@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { abrirAccion, activarAccion } from "@/app/(cuenta)/cuenta/acciones";
 import { cuenta } from "@/content/cuenta";
 import type { Producto } from "@/lib/ar2go-customers";
@@ -88,6 +89,13 @@ export function CintaProductos({ productos, puedeActivar, plan = null, bloqueo =
                   ))
                 )}
               </form>
+              {/* Versión nueva de sus documentos en un producto que ya se usa: no
+                  corta Abrir (D29), solo se avisa. */}
+              {p.puede_abrir && puedeActivar && p.legal?.exigida && p.legal.pendientes.length > 0 && (
+                <Link href={`/cuenta/legal/${p.slug}`} className="cinta__legal">
+                  {cuenta.legalEmpresa.nuevaVersion}
+                </Link>
+              )}
             </li>
           );
         })}

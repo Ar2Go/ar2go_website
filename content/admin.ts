@@ -65,6 +65,28 @@ export const admin = {
     bitacoraApoyo: "Últimas 50 entradas. Solo inserción: nada de aquí se edita ni se borra.",
     columnasBitacora: { fecha: "Fecha", actor: "Quién", accion: "Acción", detalle: "Detalle" },
   },
+  // Documentos legales de la empresa (D25): constancias de aceptación en /cuenta.
+  legal: {
+    titulo: "Documentos legales",
+    apoyo:
+      "Términos y contrato de encargo que la empresa acepta en /cuenta antes de activar un producto. Cada constancia guarda la huella del texto que vio la persona.",
+    exigida: "Activar exige aceptarlos (LEGAL_EXIGE_ACEPTACION encendida).",
+    noExigida: "Activar todavía no exige aceptarlos (LEGAL_EXIGE_ACEPTACION apagada).",
+    // "terminos-horiq 0.2 tiene 9 marcas TODO_LEGAL"
+    todoLegal: (doc: string, version: string, n: number) =>
+      `${doc} ${version} tiene ${n} ${n === 1 ? "marca" : "marcas"} TODO_LEGAL: no se publica a clientes reales.`,
+    // ar2go-customers no pudo leer su copia del documento (todo_legal = -1): revisar sus logs.
+    noLegible: (doc: string) => `No se pudo leer ${doc} en ar2go-customers: revisa sus logs antes de exigir la aceptación.`,
+    sinAceptaciones: "La empresa no ha aceptado ningún documento.",
+    columnas: {
+      fecha: "Fecha",
+      documento: "Documento",
+      version: "Versión",
+      quien: "Quién aceptó",
+      ip: "IP",
+      huella: "Huella del texto",
+    },
+  },
   cambiarPlan: {
     titulo: "Cambiar plan",
     apoyo:
@@ -160,5 +182,6 @@ export const admin = {
     RECONCILIAR: "El producto ya tenía la versión",
     REINTENTAR: "Reintento manual",
     ELIMINAR_EMPRESA_FALLIDO: "Intentó eliminar la empresa (un producto no confirmó)",
+    ACEPTAR_DOCUMENTO_LEGAL: "Aceptó un documento legal",
   } as Record<string, string>,
 } as const;
