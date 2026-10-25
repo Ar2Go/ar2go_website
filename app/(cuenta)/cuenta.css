@@ -1477,6 +1477,16 @@
   overflow: hidden;
 }
 
+/* Líneas entre las secciones de Seguridad (contraseña, dispositivos activos,
+   eliminar cuenta): el mismo color que las de Perfil. */
+.ar-cuenta .cl-profileSection {
+  border-color: var(--hair);
+}
+
+.ar-cuenta .cl-profileSection + .cl-profileSection {
+  border-top: 1px solid var(--hair);
+}
+
 /* Seguridad → dispositivos activos: la etiqueta "Este dispositivo" de Clerk
    en verde, con un punto de conexión, para que se distinga del gris. */
 .ar-cuenta .cl-activeDevice .cl-badge,
