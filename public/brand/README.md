@@ -7,6 +7,10 @@ como PNG por el dueño del proyecto — no hay SVG fuente todavía. `app/icon.sv
 (el favicon) sí es SVG real, tomado del `<head>` de la maqueta de home
 aprobada.
 
+`ar2go-logotipo-2026-claro.png` (1189×282) es la versión para fondo blanco
+(letras negras, guion azul), entregada por Héctor el 2026-10-25. La usa el
+encabezado de `/cuenta` cuando no se ve la foto lateral.
+
 ## Histórico (v1/v2, marino) — sin uso activo
 
 Los 4 SVG (`ar2go-logotipo.svg`, `ar2go-logotipo-negativo.svg`,

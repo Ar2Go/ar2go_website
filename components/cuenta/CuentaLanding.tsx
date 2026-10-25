@@ -36,7 +36,7 @@ type Props = {
 export function CuentaLanding({ eyebrow, titulo, apoyo, children, cinta, plan = null, empresa = null, anuncio, ancho = false }: Props) {
   const t = cuenta.landing;
   return (
-    <div className="ar-cuenta ar-cuenta--landing">
+    <div className={ancho ? "ar-cuenta ar-cuenta--landing ar-cuenta--ancha" : "ar-cuenta ar-cuenta--landing"}>
       <aside className="landing__foto">
         <Image
           src="/acceso/landing.webp"
@@ -44,7 +44,7 @@ export function CuentaLanding({ eyebrow, titulo, apoyo, children, cinta, plan = 
           aria-hidden="true"
           fill
           priority
-          sizes="(max-width: 959px) 100vw, 32vw"
+          sizes="(max-width: 767px) 100vw, 32vw"
           className="landing__image"
         />
         <div className="landing__overlay" aria-hidden="true" />

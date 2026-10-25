@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { UserProfile } from "@clerk/nextjs";
 import { cuenta } from "@/content/cuenta";
 import { PerfilEmpresa } from "@/components/cuenta/PerfilEmpresa";
@@ -18,15 +19,64 @@ type Props = {
 // del resto de los formularios de Clerk (lib/clerk-appearance.ts).
 const GRIS = "#2a2e35";
 
+// Mismo corte que Clerk usa para cambiar su menú lateral por el de celular.
+const MOVIL = "(max-width: 768px)";
+
+function suscribirMovil(avisar: () => void) {
+  const mq = window.matchMedia(MOVIL);
+  mq.addEventListener("change", avisar);
+  return () => mq.removeEventListener("change", avisar);
+}
+
+function useMovil() {
+  return useSyncExternalStore(
+    suscribirMovil,
+    () => window.matchMedia(MOVIL).matches,
+    () => false,
+  );
+}
+
 // Perfil de Clerk con las secciones en este orden: Perfil, Suscripción y
 // Seguridad. Perfil y Suscripción son nuestras; Seguridad es la de Clerk.
 // La página "account" de Clerk (nombre, apellido e imagen) se oculta del
 // menú: la cuenta se identifica por la empresa, no por la persona. Ruteo por
 // path bajo /cuenta/configuracion (de ahí el catch-all de la página); la
 // primera sección es la raíz.
+//
+// En celular no hay menú: Perfil, Suscripción y Seguridad van una debajo de
+// otra. Seguridad es un perfil de Clerk con solo esa página y sin menú, con
+// ruteo por hash para no chocar con las subrutas de la vista de escritorio.
 export function ConfiguracionCuenta({ empresa, puedeEditar, suscripcion }: Props) {
   const p = cuenta.landing.configuracion.perfil;
   const t = cuenta.landing.configuracion.suscripcion;
+  const movil = useMovil();
+
+  if (movil) {
+    return (
+      <div className="config-apilado">
+        <section className="config-apilado__seccion">
+          <PerfilEmpresa empresa={empresa} puedeEditar={puedeEditar} />
+        </section>
+        <section className="config-apilado__seccion">{suscripcion}</section>
+        <section className="config-apilado__seccion config-apilado__seccion--clerk">
+          <UserProfile
+            routing="hash"
+            appearance={{
+              variables: { colorBackground: GRIS, colorInput: "#22252b" },
+              elements: {
+                navbar: { display: "none" },
+                navbarMobileMenuRow: { display: "none" },
+              },
+            }}
+          >
+            <UserProfile.Page label="security" />
+            <UserProfile.Page label="account" />
+          </UserProfile>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <UserProfile
       path="/cuenta/configuracion"

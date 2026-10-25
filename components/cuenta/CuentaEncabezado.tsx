@@ -50,9 +50,9 @@ export function CuentaEncabezado({ plan = null, empresa = null }: Props) {
 
   return (
     <header className="encabezado">
-      {/* Solo sin la foto lateral (menos de 1200 px; ver cuenta.css). */}
+      {/* Solo sin la foto lateral (menos de 768 px, o de 1200 px en Configuración; ver cuenta.css). */}
       <Link href="/" className="encabezado__logo" aria-label={cuenta.landing.inicio}>
-        <Image src="/brand/ar2go-logotipo-2026.png" alt="AR2GO" width={104} height={25} />
+        <Image src="/brand/ar2go-logotipo-2026-claro.png" alt="AR2GO" width={1189} height={282} />
       </Link>
       <nav className="encabezado__opciones" aria-label={t.titulo}>
         {!enInicio && (
