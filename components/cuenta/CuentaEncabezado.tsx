@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
@@ -49,6 +50,10 @@ export function CuentaEncabezado({ plan = null, empresa = null }: Props) {
 
   return (
     <header className="encabezado">
+      {/* Solo sin la foto lateral (menos de 1200 px; ver cuenta.css). */}
+      <Link href="/" className="encabezado__logo" aria-label={cuenta.landing.inicio}>
+        <Image src="/brand/ar2go-logotipo-2026.png" alt="AR2GO" width={104} height={25} />
+      </Link>
       <nav className="encabezado__opciones" aria-label={t.titulo}>
         {!enInicio && (
           <Link href="/cuenta" className="encabezado__opcion">
