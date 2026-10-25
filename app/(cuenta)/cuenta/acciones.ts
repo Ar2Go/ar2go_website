@@ -1,11 +1,12 @@
 "use server";
 
-// Acciones de /cuenta: alta de la empresa, activar un producto (y mandar a
-// su link de pago si se eligió el plan Equipo), aceptar sus documentos
-// legales (D25) y abrirlo.
+// Acciones de /cuenta: alta de la empresa, cambiarle el nombre (desde
+// /cuenta/configuracion), activar un producto (y mandar a su link de pago si
+// se eligió el plan Equipo), aceptar sus documentos legales (D25) y abrirlo.
 // Todas llaman a ar2go-customers desde el servidor (lib/ar2go-customers.ts);
 // un error se muestra como aviso en la misma página (?aviso=<código>).
 import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import {
@@ -15,6 +16,7 @@ import {
   crearEmpresa,
   lanzarProducto,
   misEmpresas,
+  renombrarEmpresa,
 } from "@/lib/ar2go-customers";
 import { urlPago } from "@/lib/pagos";
 import { personaActual } from "./persona";
@@ -64,6 +66,32 @@ export async function crearEmpresaAccion(datos: FormData) {
     conAviso(codigoDe(e));
   }
   redirect("/cuenta");
+}
+
+// Cambiar el nombre de la empresa (Configuración → Perfil). A diferencia de
+// las demás, regresa el resultado en vez de redirigir: el formulario se queda
+// en la misma sección y muestra el error ahí.
+export type ResultadoRenombrar = { ok: boolean; error: string | null };
+
+export async function renombrarEmpresaAccion(
+  _previo: ResultadoRenombrar,
+  datos: FormData,
+): Promise<ResultadoRenombrar> {
+  const nombre = nombreEmpresa.safeParse(datos.get("nombre"));
+  if (!nombre.success) return { ok: false, error: "NOMBRE_INVALIDO" };
+  // Fuera del try: redirect() avisa lanzando, y el catch lo convertiría en error.
+  const p = await personaActual();
+  if (!p) redirect("/iniciar-sesion");
+  try {
+    const { empresas } = await misEmpresas(p.persona);
+    if (!empresas[0]) return { ok: false, error: "general" };
+    await renombrarEmpresa(p.persona, empresas[0].id, nombre.data);
+  } catch (e) {
+    return { ok: false, error: codigoDe(e) };
+  }
+  // El nombre sale también en el encabezado y en /cuenta.
+  revalidatePath("/cuenta", "layout");
+  return { ok: true, error: null };
 }
 
 export async function activarAccion(datos: FormData) {

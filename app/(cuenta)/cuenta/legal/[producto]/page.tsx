@@ -72,6 +72,7 @@ export default async function AceptarLegalPage({ params, searchParams }: Props) 
       eyebrow={nueva ? t.eyebrowNueva : t.eyebrow}
       titulo={nueva ? t.tituloNueva : t.titulo}
       apoyo={nueva ? t.apoyoNueva : t.apoyo}
+      empresa={empresa || null}
     >
       <div className="legal-aceptar">
         {avisoTexto && (

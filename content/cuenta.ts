@@ -16,11 +16,8 @@ export const cuenta = {
   // Sin plano de control configurado (AR2GO_CUSTOMERS_*), /cuenta sigue siendo
   // un cascarón honesto, igual que /admin: lo dice en vez de simular un tablero.
   panel: {
-    eyebrow: "Cuenta creada",
-    titulo: "Tu cuenta ya está lista",
     apoyo:
       "Estamos terminando de conectar la consola donde configuras tus agentes. Te avisamos a este correo en cuanto puedas entrar.",
-    volver: { label: "Volver al inicio", href: "/" },
     cerrarSesion: "Cerrar sesión",
   },
   // Con el plano de control conectado (ar2go-customers, CLAUDE.md §8): la
@@ -36,10 +33,10 @@ export const cuenta = {
     enviar: "Continuar",
   },
   tablero: {
-    eyebrow: "Tu cuenta",
+    titulo: "Panel de control",
     // "Plan Explorar"
     plan: "Plan",
-    apoyo: "Activa los productos que tu negocio necesita y entra a cada uno desde aquí, con tu misma cuenta.",
+    apoyo: "Aquí activas y abres tus argonautas y argotipos.",
     productos: "Productos",
     activar: "Activar",
     // Al activar un producto con link de pago (lib/pagos.ts), la empresa en
@@ -75,24 +72,22 @@ export const cuenta = {
     },
   } as Record<string, { aviso: string; nota: string }>,
   // Cinta de argonautas en /cuenta (components/cuenta/CintaProductos.tsx).
+  // Dos familias de productos en /cuenta: argonautas (agentes que trabajan
+  // solos) y argotipos (herramientas que usa el equipo).
   cinta: {
-    titulo: "Tus argonautas",
-    apoyo: "Los que ya trabajan contigo y los que puedes sumar.",
+    argonautas: { titulo: "Argonautas", apoyo: "Agentes autónomos" },
+    argotipos: { titulo: "Argotipos", apoyo: "Herramientas inteligentes" },
   },
   // Cómo se presenta cada producto del catálogo de ar2go-customers, por su
   // slug. Un producto sin entrada aquí se muestra con el nombre que trae.
   productos: {
-    horiq: { nombre: "HorIQ", descripcion: "Argonautas para administrar la asistencia de tu equipo" },
-    postio: { nombre: "Postio", descripcion: "Argonautas que crean y publican el contenido de tus redes" },
-  } as Record<string, { nombre: string; descripcion: string }>,
-  // PLACEHOLDER: productos que todavía no existen. Se muestran como
-  // "Próximamente", sin botón de contratar, hasta que entren al catálogo de
-  // ar2go-customers.
-  porVenir: [
-    { slug: "nomina", nombre: "Nómina", descripcion: "Argonautas que administran tu nómina" },
-    { slug: "contabilidad", nombre: "Contabilidad", descripcion: "Argonautas que concilian tu contabilidad" },
-    { slug: "compras", nombre: "Compras", descripcion: "Argonautas que realizan tus compras" },
-  ],
+    horiq: { nombre: "HorIQ", tipo: "argotipo", descripcion: "Administra la asistencia de tu equipo" },
+    postio: {
+      nombre: "Postio",
+      tipo: "argonauta",
+      descripcion: "Argonautas que crean y publican el contenido de tus redes",
+    },
+  } as Record<string, { nombre: string; tipo: "argonauta" | "argotipo"; descripcion: string }>,
   // Aceptación de los documentos legales de la empresa antes de activar un
   // producto (D25 de Ar2Go/Ar2Go): app/(cuenta)/cuenta/legal/[producto]. Los
   // textos vienen de ar2go-customers (copia de Ar2Go/docs/legal), no de aquí.
@@ -150,7 +145,52 @@ export const cuenta = {
   volverAlSitio: "Volver al sitio",
   // Nav de /cuenta (components/cuenta/CuentaLanding.tsx).
   landing: {
-    nav: "Navegación de tu cuenta",
     inicio: "AR2GO, inicio",
+    lema: "Todos tus argonautas en un solo lugar.",
+    lemaApoyo: "Una sola cuenta para activar y abrir cada producto de AR2GO.",
+    cerrarAviso: "Cerrar aviso",
+    menu: {
+      titulo: "Mi cuenta",
+      plan: "Plan",
+      configuracion: "Configuración",
+      volver: "Inicio",
+    },
+    // /cuenta/configuracion: perfil y seguridad son de Clerk; suscripción es
+    // nuestra (plan de la empresa y productos contratados).
+    configuracion: {
+      titulo: "Configuración",
+      apoyo: "Tu perfil, la suscripción de tu empresa y la seguridad de tu cuenta.",
+      perfil: {
+        etiqueta: "Perfil",
+        titulo: "Perfil",
+        empresa: "Empresa",
+        sinEmpresa: "Todavía sin empresa",
+        correo: "Correo",
+        editar: "Editar",
+        guardar: "Guardar",
+        guardando: "Guardando…",
+        cancelar: "Cancelar",
+        nombreEmpresa: "Nombre de la empresa",
+        guardado: "Nombre actualizado.",
+        ayudaImagen: "Imagen o logotipo de tu cuenta. PNG, JPG o WebP.",
+        subir: "Subir imagen",
+        subiendo: "Subiendo…",
+        quitar: "Quitar",
+        errorImagen: "No se pudo guardar la imagen. Intenta con otro archivo.",
+      },
+      suscripcion: {
+        etiqueta: "Suscripción",
+        titulo: "Suscripción",
+        empresa: "Empresa",
+        plan: "Plan",
+        productos: "Productos",
+        sinProductos: "Todavía no activas ningún producto.",
+        sinEmpresa:
+          "Cuando tu empresa esté conectada a AR2GO, aquí verás tu plan y los productos que tienes activos.",
+        verArgonautas: "Ver tus argonautas",
+      },
+    },
+    // Pie de la foto, abajo a la derecha.
+    coordenadas: [`6°14'39"N 75°34'25"W`, `25°32'38"N 103°25'08"W`],
   },
 } as const;

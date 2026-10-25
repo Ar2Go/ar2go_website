@@ -95,6 +95,11 @@ export const misEmpresas = (p: Persona) =>
 export const crearEmpresa = (p: Persona, nombre: string, clerkOrgId: string) =>
   llamar<Resumen>("/v1/cuenta/empresas/crear", p, { empresa: { nombre, clerk_org_id: clerkOrgId } });
 
+// Solo PROPIETARIO o ADMIN; el nombre nuevo viaja a los productos en el
+// estado deseado (ar2go-customers sube la versión de cada suscripción viva).
+export const renombrarEmpresa = (p: Persona, empresaId: string, nombre: string) =>
+  llamar<Resumen>("/v1/cuenta/empresas/renombrar", p, { empresa_id: empresaId, nombre });
+
 export const resumen = (p: Persona, empresaId: string) =>
   llamar<Resumen>("/v1/cuenta/resumen", p, { empresa_id: empresaId });
 
