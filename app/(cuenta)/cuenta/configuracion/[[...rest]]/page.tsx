@@ -54,6 +54,7 @@ export default async function ConfiguracionPage() {
             productos={datos?.productos ?? []}
             puedeEditar={puedeEditar}
             empresaActiva={datos?.empresa.estado === "ACTIVA"}
+            fijaHasta={datos?.empresa.seleccion_fijada_hasta ?? null}
           />
         }
       />

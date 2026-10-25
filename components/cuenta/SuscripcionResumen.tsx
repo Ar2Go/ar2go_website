@@ -22,21 +22,32 @@ type Props = {
   puedeEditar?: boolean;
   // Empresa activa (ni suspendida ni cerrada): puede activar y desactivar.
   empresaActiva?: boolean;
+  // Hasta cuándo la selección de productos está fija (D38); null = no lo está.
+  fijaHasta?: string | null;
 };
 
 // Sección "Suscripción" de /cuenta/configuracion: administra la suscripción.
 // Arriba el plan de la empresa con cuántos productos incluye; abajo cada
 // argonauta o argotipo disponible con su interruptor, para elegir cuáles
 // tener activos dentro del límite del plan (Explorador 1, Navegante 5,
-// Timonel todos; D37). "Cambiar plan" ofrece los planes superiores: los que
+// Timonel todos; D37). Al llenar los lugares, la selección queda fija hasta
+// el día 1 del mes siguiente (D38): los encendidos no se pueden apagar. "Cambiar plan" ofrece los planes superiores: los que
 // tienen link de pago (lib/pagos.ts) mandan a Stripe y el equipo de AR2GO
 // sube el plan desde /admin al ver el pago (D36; no hay webhooks hasta la
 // fase 3). Abrir productos sigue en /cuenta.
-export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false, empresaActiva = true }: Props) {
+export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false, empresaActiva = true, fijaHasta = null }: Props) {
   const t = cuenta.landing.configuracion.suscripcion;
   const e = cuenta.tablero;
   const contratados = productos.filter((p) => p.estado && p.estado !== "CANCELADA");
   const enLimite = maxProductos !== null && contratados.length >= maxProductos;
+  // Fechas en la Ciudad de México, donde se cuenta el mes (D38).
+  const fecha = (d: Date) =>
+    d.toLocaleDateString("es-MX", { day: "numeric", month: "long", timeZone: "America/Mexico_City" });
+  const fija = fijaHasta ? fecha(new Date(fijaHasta)) : null;
+  // Día 1 del mes siguiente, para avisar al activar el que llena el plan.
+  const hoy = new Date(Date.now() - 6 * 3600_000);
+  const proximoMes = fecha(new Date(Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth() + 1, 1, 12)));
+  const llenaria = maxProductos !== null && contratados.length + 1 === maxProductos;
   const elegibles = productos.filter((p) => p.disponible || (p.estado && p.estado !== "CANCELADA"));
   const superiores = plan ? PLANES.slice(PLANES.indexOf(plan) + 1) : [];
 
@@ -52,6 +63,7 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
             <div className="suscripcion__producto">
               <span>{planNombre}</span>
               <small>{t.productosIncluidos(contratados.length, maxProductos)}</small>
+              {fija && <small>{t.fijaHasta(fija)}</small>}
             </div>
           </div>
 
@@ -110,8 +122,11 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
                         producto={p.slug}
                         nombre={nombre}
                         activo={activo}
-                        disabled={!puedeEditar || !empresaActiva || (!activo && (enLimite || !p.disponible))}
+                        disabled={
+                          !puedeEditar || !empresaActiva || (activo ? !!fija : enLimite || !p.disponible)
+                        }
                         confirmar={t.confirmarDesactivar(nombre)}
+                        confirmarActivar={llenaria ? t.confirmarLlenar(nombre, proximoMes) : null}
                       />
                     </div>
                   </li>

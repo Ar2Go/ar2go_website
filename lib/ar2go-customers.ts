@@ -40,8 +40,17 @@ export type DocumentoPublico = Pick<DocumentoLegal, "slug" | "titulo" | "version
 
 export type Resumen = {
   // max_productos: cuántos productos puede tener activos según su plan (D37);
-  // null = sin límite.
-  empresa: { id: string; nombre: string; estado: string; plan: string; plan_nombre: string; max_productos?: number | null };
+  // null = sin límite. seleccion_fijada_hasta: hasta cuándo no puede
+  // desactivar ninguno porque llenó su plan (D38); null = puede cambiar.
+  empresa: {
+    id: string;
+    nombre: string;
+    estado: string;
+    plan: string;
+    plan_nombre: string;
+    max_productos?: number | null;
+    seleccion_fijada_hasta?: string | null;
+  };
   rol: string;
   productos: Producto[];
 };

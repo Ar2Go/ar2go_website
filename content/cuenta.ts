@@ -120,6 +120,7 @@ export const cuenta = {
   avisos: {
     EMPRESA_SUSPENDIDA: "Tu cuenta está suspendida: no puedes activar ni abrir productos. Escríbenos para resolverlo.",
     EMPRESA_CERRADA: "Tu cuenta está cerrada. Escríbenos si quieres reabrirla.",
+    SELECCION_FIJADA: "Tu selección de productos queda fija hasta el próximo mes; después podrás cambiarla.",
     LIMITE_PRODUCTOS: "Tu plan ya no incluye más productos. Cambia de plan en Configuración para activar otro.",
     CUOTA_PENDIENTE: "Tu plan todavía no incluye este producto. Te avisamos en cuanto esté disponible.",
     PRODUCTO_NO_LISTO: "Estamos preparando el producto. Intenta abrirlo en unos minutos.",
@@ -184,6 +185,11 @@ export const cuenta = {
         empresa: "Empresa",
         plan: "Plan",
         productos: "Tus argonautas y argotipos",
+        // Selección fija (D38): al llenar los lugares del plan no se puede
+        // desactivar nada hasta el día 1 del mes siguiente.
+        fijaHasta: (fecha: string) => `Selección fija hasta el ${fecha}`,
+        confirmarLlenar: (nombre: string, fecha: string) =>
+          `Con ${nombre} llenas los lugares de tu plan: tu selección queda fija hasta el ${fecha} y no podrás desactivar ninguno antes.`,
         confirmarDesactivar: (nombre: string) =>
           `¿Desactivar ${nombre}? Tu equipo deja de tener acceso; los datos se conservan y puedes activarlo otra vez.`,
         tipos: { argonauta: "Argonauta", argotipo: "Argotipo" },
