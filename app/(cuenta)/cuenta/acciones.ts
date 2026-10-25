@@ -151,6 +151,18 @@ export async function aceptarAccion(datos: FormData) {
   redirect(pago ?? "/cuenta");
 }
 
+// "Cambiar plan" en Configuración → Suscripción. Hoy solo se sube a Equipo y
+// con pago en línea: manda al link de pago del producto y el equipo de AR2GO
+// sube el plan desde /admin al ver el pago (lib/pagos.ts).
+export async function cambiarPlanAccion(datos: FormData) {
+  const producto = slugProducto.safeParse(datos.get("producto"));
+  if (!producto.success || planElegido.parse(datos.get("plan")) !== "equipo") conAviso("general");
+  const c = await contexto();
+  if (!c.empresaId) redirect("/cuenta");
+  const pago = urlPago(producto.data!, c.empresaId, c.persona.correo);
+  redirect(pago ?? "/cuenta/configuracion/suscripcion");
+}
+
 export async function abrirAccion(datos: FormData) {
   const producto = slugProducto.safeParse(datos.get("producto"));
   if (!producto.success) conAviso("general");

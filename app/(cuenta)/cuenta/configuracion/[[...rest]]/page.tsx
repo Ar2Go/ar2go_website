@@ -48,8 +48,10 @@ export default async function ConfiguracionPage() {
         suscripcion={
           <SuscripcionResumen
             empresa={datos?.empresa.nombre ?? null}
-            plan={datos?.empresa.plan_nombre ?? null}
+            plan={datos?.empresa.plan ?? null}
+            planNombre={datos?.empresa.plan_nombre ?? null}
             productos={datos?.productos ?? []}
+            puedeEditar={puedeEditar}
           />
         }
       />

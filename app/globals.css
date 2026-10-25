@@ -44,7 +44,10 @@
   --radius-pill: 999px;
 }
 
+/* Ancho mínimo: el del iPhone más angosto que se vende (SE, mini: 375 px).
+   Una ventana más chica ya no encoge el diseño; sale scroll horizontal. */
 body {
+  min-width: 375px;
   background: var(--color-fondo);
   color: var(--color-niebla);
   font-family: var(--font-sans);

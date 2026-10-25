@@ -484,12 +484,23 @@
   background: var(--color-papel);
   color: var(--tinta);
 }
-/* La foto lateral solo se muestra con espacio de sobra (1200 px): debajo, el
-   contenido ocupa todo el ancho. Así el perfil de Clerk de Configuración, que
-   decide su diseño por el ancho de la ventana, nunca queda apretado. */
+/* La foto lateral se muestra desde tableta (768 px), más angosta hasta
+   1200 px; debajo, el contenido ocupa todo el ancho. Configuración
+   (`--ancha`) la muestra solo desde 1200 px: el perfil de Clerk decide su
+   diseño por el ancho de la ventana y con la foto quedaría apretado. */
+@media (min-width: 768px) {
+  .ar-cuenta--landing {
+    grid-template-columns: minmax(240px, 30%) 1fr;
+  }
+}
 @media (min-width: 1200px) {
   .ar-cuenta--landing {
     grid-template-columns: minmax(320px, 30%) 1fr;
+  }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .ar-cuenta--ancha {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -505,12 +516,17 @@
   background: var(--color-fondo);
   color: var(--color-papel);
 }
-@media (max-width: 1199px) {
+@media (max-width: 767px) {
   .landing__foto {
     display: none;
   }
 }
-@media (min-width: 1200px) {
+@media (min-width: 768px) and (max-width: 1199px) {
+  .ar-cuenta--ancha .landing__foto {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
   .landing__foto {
     position: sticky;
     top: 0;
@@ -604,7 +620,7 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
-@media (min-width: 1200px) {
+@media (min-width: 768px) {
   .landing__lema {
     margin-top: 32svh;
   }
@@ -1105,6 +1121,10 @@
   gap: 0.5rem;
 }
 
+.perfil-imagen__botones .btn {
+  padding: 0.38rem 0.85rem;
+}
+
 @media (max-width: 520px) {
   .perfil-imagen {
     align-items: flex-start;
@@ -1123,13 +1143,111 @@
 }
 
 .suscripcion__productos li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.6rem 0;
+  padding: 0.75rem 0;
   font-size: var(--fs-sm);
   border-top: 1px solid var(--hair);
+}
+
+.suscripcion__productos li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Producto (con su familia), plan y estado en una línea. */
+.suscripcion__fila {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.suscripcion__producto {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  min-width: 0;
+}
+
+.suscripcion__producto small {
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+}
+
+.suscripcion__plan {
+  font-size: var(--fs-xs);
+  color: var(--color-niebla);
+  white-space: nowrap;
+}
+
+.suscripcion__cambiar {
+  margin-top: 0.6rem;
+}
+
+.suscripcion__cambiar summary {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  color: var(--color-azul-suave);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.suscripcion__cambiar summary::-webkit-details-marker {
+  display: none;
+}
+
+.suscripcion__planes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  max-width: 30rem;
+}
+
+.suscripcion__planes .suscripcion__nota {
+  grid-column: 1 / -1;
+}
+
+.suscripcion__opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.55rem 0.85rem;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  text-align: left;
+  white-space: normal;
+  border-radius: var(--radius-btn);
+}
+
+.suscripcion__opcion span,
+.suscripcion__opcion small {
+  font-weight: 400;
+  font-size: 0.6875rem;
+  opacity: 0.8;
+}
+
+.suscripcion__opcion--actual {
+  color: var(--color-niebla);
+  border: 1px solid var(--hair-strong);
+}
+
+.suscripcion__opcion--actual small {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-exito);
+  opacity: 1;
+}
+
+@media (max-width: 520px) {
+  .suscripcion__fila {
+    flex-wrap: wrap;
+  }
+
+  .suscripcion__planes {
+    grid-template-columns: 1fr;
+  }
 }
 
 .suscripcion__nota {
@@ -1285,26 +1403,29 @@
   color: rgba(230, 233, 239, 0.74);
 }
 
-/* Sin la foto (menos de 1200 px), el logotipo va en el encabezado, en oscuro
-   sobre el blanco. */
+/* Sin la foto (menos de 768 px; en Configuración, menos de 1200 px), el
+   logotipo va en el encabezado, en su versión para fondo blanco. */
 .encabezado__logo {
   display: none;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-right: auto;
 }
 
-@media (max-width: 1199px) {
+.encabezado__logo img {
+  display: block;
+  height: 22px;
+  width: auto;
+}
+
+@media (max-width: 767px) {
   .encabezado__logo {
     display: inline-flex;
-    align-items: center;
-    flex: 0 0 auto;
-    margin-right: auto;
   }
-
-  .encabezado__logo img {
-    display: block;
-    height: 22px;
-    width: auto;
-    /* El logotipo es blanco (para la foto): aquí se pinta negro. */
-    filter: brightness(0);
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .ar-cuenta--ancha .encabezado__logo {
+    display: inline-flex;
   }
 }
 
@@ -1403,4 +1524,18 @@
   color: var(--color-azul-suave);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Configuración en celular (ConfiguracionCuenta.tsx): sin menú, Perfil,
+   Suscripción y Seguridad una debajo de otra dentro de la tarjeta gris. */
+.config-apilado__seccion {
+  padding: 1.5rem 1.25rem;
+}
+
+.config-apilado__seccion + .config-apilado__seccion {
+  border-top: 1px solid rgba(230, 233, 239, 0.12);
+}
+
+.config-apilado__seccion--clerk {
+  padding: 0;
 }

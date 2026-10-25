@@ -184,6 +184,10 @@ export const cuenta = {
         empresa: "Empresa",
         plan: "Plan",
         productos: "Productos",
+        tipos: { argonauta: "Argonauta", argotipo: "Argotipo" },
+        cambiarPlan: "Cambiar plan",
+        actual: "Actual",
+        notaEquipo: "Subimos tu plan a Equipo al confirmar tu pago.",
         sinProductos: "Todavía no activas ningún producto.",
         sinEmpresa:
           "Cuando tu empresa esté conectada a AR2GO, aquí verás tu plan y los productos que tienes activos.",
