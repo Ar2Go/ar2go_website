@@ -23,7 +23,7 @@ export const precio = {
       monto: "US$499",
       periodo: "al mes",
       para: "Para la empresa que ya opera con AR2GO y quiere sumar otro frente.",
-      incluye: ["2 argonautas o argotipos activos", "HorIQ sin límite de trabajadores"],
+      incluye: ["Hasta 5 argonautas o argotipos activos", "HorIQ sin límite de trabajadores"],
       cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
     {

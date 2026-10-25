@@ -43,7 +43,7 @@ export const cuenta = {
     // activos. Se cambian en Configuración → Suscripción (lib/pagos.ts).
     planes: {
       explorador: { nombre: "Plan Explorador", detalle: "Gratis · 1 producto" },
-      navegante: { nombre: "Plan Navegante", detalle: "US$499 al mes · 2 productos" },
+      navegante: { nombre: "Plan Navegante", detalle: "US$499 al mes · hasta 5 productos" },
       timonel: { nombre: "Plan Timonel", detalle: "US$999 al mes · sin límite" },
     } as Record<string, { nombre: string; detalle: string }>,
     // Ya tiene activos todos los productos que incluye su plan.
