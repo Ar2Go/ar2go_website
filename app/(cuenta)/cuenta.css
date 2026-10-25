@@ -484,7 +484,10 @@
   background: var(--color-papel);
   color: var(--tinta);
 }
-@media (min-width: 960px) {
+/* La foto lateral solo se muestra con espacio de sobra (1200 px): debajo, el
+   contenido ocupa todo el ancho. Así el perfil de Clerk de Configuración, que
+   decide su diseño por el ancho de la ventana, nunca queda apretado. */
+@media (min-width: 1200px) {
   .ar-cuenta--landing {
     grid-template-columns: minmax(320px, 30%) 1fr;
   }
@@ -502,7 +505,12 @@
   background: var(--color-fondo);
   color: var(--color-papel);
 }
-@media (min-width: 960px) {
+@media (max-width: 1199px) {
+  .landing__foto {
+    display: none;
+  }
+}
+@media (min-width: 1200px) {
   .landing__foto {
     position: sticky;
     top: 0;
@@ -596,7 +604,7 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
-@media (min-width: 960px) {
+@media (min-width: 1200px) {
   .landing__lema {
     margin-top: 32svh;
   }
@@ -1277,18 +1285,62 @@
   color: rgba(230, 233, 239, 0.74);
 }
 
-/* En pantallas angostas la foto va arriba como banda y la columna arranca
-   pegada a ella. */
-@media (max-width: 959px) {
-  .landing__columna {
-    padding-top: 1.75rem;
+/* Sin la foto (menos de 1200 px), el logotipo va en el encabezado, en oscuro
+   sobre el blanco. */
+.encabezado__logo {
+  display: none;
+}
+
+@media (max-width: 1199px) {
+  .encabezado__logo {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    margin-right: auto;
+  }
+
+  .encabezado__logo img {
+    display: block;
+    height: 22px;
+    width: auto;
+    /* El logotipo es blanco (para la foto): aquí se pinta negro. */
+    filter: brightness(0);
   }
 }
 
-@media (max-width: 520px) {
-  .landing__logo img {
-    height: 22px;
+@media (max-width: 640px) {
+  .landing__columna {
+    padding-top: 1.5rem;
   }
+
+  .encabezado__logo img {
+    height: 18px;
+  }
+}
+
+/* Muy angosto: en la tarjeta de la cuenta solo la imagen o inicial y la
+   flecha; el nombre recortado a una letra no dice nada. */
+@media (max-width: 400px) {
+  .encabezado__datos {
+    display: none;
+  }
+
+  .encabezado__usuario {
+    padding-right: 0.55rem;
+  }
+}
+
+/* Perfil de Clerk (Configuración): siempre al ancho de la columna, sin
+   salirse aunque Clerk calcule su tamaño por la ventana. */
+.landing__columna--ancha .cl-rootBox,
+.landing__columna--ancha .cl-cardBox {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.landing__columna--ancha .cl-cardBox {
+  overflow: hidden;
 }
 
 /* ─── Aceptación de documentos legales (app/(cuenta)/cuenta/legal) ──────
