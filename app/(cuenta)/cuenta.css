@@ -1477,6 +1477,31 @@
   overflow: hidden;
 }
 
+/* Seguridad → dispositivos activos: la etiqueta "Este dispositivo" de Clerk
+   en verde, con un punto de conexión, para que se distinga del gris. */
+.ar-cuenta .cl-activeDevice .cl-badge,
+.ar-cuenta .cl-activeDeviceListItem .cl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.55rem;
+  color: var(--color-exito);
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  border-radius: var(--radius-pill);
+  box-shadow: none;
+}
+
+.ar-cuenta .cl-activeDevice .cl-badge::before,
+.ar-cuenta .cl-activeDeviceListItem .cl-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-exito);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+}
+
 /* ─── Aceptación de documentos legales (app/(cuenta)/cuenta/legal) ──────
    Dentro de la tarjeta centrada de la portada. Cada documento se lee en una
    caja con su propio scroll para que las casillas queden a la vista. */
