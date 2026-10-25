@@ -50,8 +50,11 @@ export default async function ConfiguracionPage() {
             empresa={datos?.empresa.nombre ?? null}
             plan={datos?.empresa.plan ?? null}
             planNombre={datos?.empresa.plan_nombre ?? null}
+            maxProductos={datos?.empresa.max_productos ?? null}
             productos={datos?.productos ?? []}
             puedeEditar={puedeEditar}
+            empresaActiva={datos?.empresa.estado === "ACTIVA"}
+            fijaHasta={datos?.empresa.seleccion_fijada_hasta ?? null}
           />
         }
       />

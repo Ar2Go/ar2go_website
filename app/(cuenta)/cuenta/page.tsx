@@ -74,7 +74,7 @@ export default async function CuentaPage({ searchParams }: Props) {
         <CintaProductos
             productos={datos.productos}
             puedeActivar={puedeActivar}
-            plan={datos.empresa.plan}
+            maxProductos={datos.empresa.max_productos ?? null}
             bloqueo={estadoEmpresa?.nota}
           />
       }

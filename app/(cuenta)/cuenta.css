@@ -1172,14 +1172,63 @@
   color: var(--color-gris);
 }
 
-.suscripcion__plan {
-  font-size: var(--fs-xs);
-  color: var(--color-niebla);
-  white-space: nowrap;
+.suscripcion__resumen {
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-sm);
+}
+
+/* Interruptor de cada producto (components/cuenta/InterruptorProducto.tsx),
+   el mismo de HorIQ: encendido = activo. */
+.interruptor {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(230, 233, 239, 0.22);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.interruptor::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-papel);
+  box-shadow: 0 1px 3px rgba(11, 15, 25, 0.25);
+  transition: transform 0.15s;
+}
+
+.interruptor[aria-checked="true"] {
+  background: var(--color-azul);
+}
+
+.interruptor[aria-checked="true"]::after {
+  transform: translateX(20px);
+}
+
+.interruptor:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.interruptor:focus-visible {
+  outline: 2px solid var(--color-azul);
+  outline-offset: 2px;
 }
 
 .suscripcion__cambiar {
   margin-top: 0.6rem;
+}
+
+.suscripcion__opcion--actual .suscripcion__pronto {
+  color: var(--color-gris);
 }
 
 .suscripcion__cambiar summary {
@@ -1197,10 +1246,10 @@
 
 .suscripcion__planes {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
   margin-top: 0.6rem;
-  max-width: 30rem;
+  max-width: 40rem;
 }
 
 .suscripcion__planes .suscripcion__nota {
@@ -1255,15 +1304,6 @@
   max-width: 52ch;
   font-size: var(--fs-xs);
   color: var(--color-gris);
-}
-
-.suscripcion__enlace {
-  display: inline-block;
-  margin-top: 1.5rem;
-  font-size: var(--fs-xs);
-  color: var(--color-azul-suave);
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 /* ─── Argonautas y argotipos (components/cuenta/CintaProductos.tsx) ───
@@ -1353,42 +1393,15 @@
   padding: 0.45rem 0.85rem;
 }
 
-.cinta__planes {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.cinta__planes legend {
-  padding: 0;
-  margin-bottom: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.cinta__limite {
+  font-size: var(--fs-xs);
   color: rgba(230, 233, 239, 0.74);
 }
 
-.cinta__planes .btn {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  white-space: normal;
-  text-align: left;
-}
-
-.cinta__planes .btn span {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  opacity: 0.85;
-}
-
-.cinta__planes small {
-  font-size: 0.6875rem;
-  line-height: 1.45;
-  color: rgba(230, 233, 239, 0.66);
+.cinta__limite a {
+  color: var(--color-azul-suave);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .cinta__nota {
@@ -1462,6 +1475,50 @@
 
 .landing__columna--ancha .cl-cardBox {
   overflow: hidden;
+}
+
+/* Líneas entre las secciones de Seguridad (contraseña, dispositivos activos,
+   eliminar cuenta): el mismo color que las de Perfil. */
+.ar-cuenta .cl-profileSection {
+  border-color: var(--hair);
+}
+
+.ar-cuenta .cl-profileSection + .cl-profileSection {
+  border-top: 1px solid var(--hair);
+}
+
+/* Seguridad → dispositivos activos: la etiqueta "Este dispositivo" de Clerk
+   en verde, con un punto de conexión, para que se distinga del gris. */
+.ar-cuenta .cl-activeDevice .cl-badge,
+.ar-cuenta .cl-activeDeviceListItem .cl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.55rem;
+  color: var(--color-exito);
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  border-radius: var(--radius-pill);
+  box-shadow: none;
+  margin-left: auto;
+}
+
+/* La fila del nombre del dispositivo ocupa todo el ancho para que la
+   etiqueta quede a la derecha, separada del nombre. */
+.ar-cuenta .cl-activeDevice :has(> .cl-badge),
+.ar-cuenta .cl-activeDeviceListItem :has(> .cl-badge) {
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.ar-cuenta .cl-activeDevice .cl-badge::before,
+.ar-cuenta .cl-activeDeviceListItem .cl-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-exito);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
 }
 
 /* ─── Aceptación de documentos legales (app/(cuenta)/cuenta/legal) ──────

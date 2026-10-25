@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 type Props = {
   params: Promise<{ producto: string }>;
-  searchParams: Promise<{ plan?: string; aviso?: string }>;
+  searchParams: Promise<{ aviso?: string }>;
 };
 
 // Aceptación de los documentos legales de la empresa (D25 de Ar2Go/Ar2Go):
@@ -31,7 +31,7 @@ type Props = {
 // de un producto ya activo con una versión nueva. Una casilla por documento;
 // la constancia la guarda ar2go-customers con la huella del texto mostrado.
 export default async function AceptarLegalPage({ params, searchParams }: Props) {
-  const [{ producto }, { plan, aviso }] = await Promise.all([params, searchParams]);
+  const [{ producto }, { aviso }] = await Promise.all([params, searchParams]);
   if (!/^[a-z0-9-]{2,40}$/.test(producto) || !hayPlanoDeControl) notFound();
   const p = await personaActual();
   if (!p) redirect("/iniciar-sesion");
@@ -63,7 +63,6 @@ export default async function AceptarLegalPage({ params, searchParams }: Props) 
   const pendientes = documentos.filter((d) => !d.aceptado);
   const puedeAceptar = ["PROPIETARIO", "ADMIN"].includes(rol);
   const avisoTexto = aviso ? (cuenta.avisos[aviso] ?? cuenta.avisos.general) : null;
-  const planValido = plan === "explorar" || plan === "equipo" ? plan : null;
 
   // "Versión nueva" solo si el producto ya se usa y hay algo por aceptar.
   const nueva = activo && pendientes.length > 0;
@@ -85,7 +84,6 @@ export default async function AceptarLegalPage({ params, searchParams }: Props) 
         ) : (
           <form action={aceptarAccion}>
             <input type="hidden" name="producto" value={producto} />
-            {planValido && <input type="hidden" name="plan" value={planValido} />}
             {activo && <input type="hidden" name="solo_aceptar" value="si" />}
             {documentos.map((d) => (
               <section key={d.slug} className="legal-aceptar__doc" aria-labelledby={`doc-${d.slug}`}>

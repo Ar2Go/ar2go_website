@@ -1,8 +1,8 @@
 "use server";
 
-// Acciones de /cuenta: alta de la empresa, cambiarle el nombre (desde
-// /cuenta/configuracion), activar un producto (y mandar a su link de pago si
-// se eligió el plan Equipo), aceptar sus documentos legales (D25) y abrirlo.
+// Acciones de /cuenta: alta de la empresa, cambiarle el nombre y el plan
+// (desde /cuenta/configuracion), activar un producto, aceptar sus documentos
+// legales (D25) y abrirlo.
 // Todas llaman a ar2go-customers desde el servidor (lib/ar2go-customers.ts);
 // un error se muestra como aviso en la misma página (?aviso=<código>).
 import { headers } from "next/headers";
@@ -14,6 +14,7 @@ import {
   aceptarLegal,
   activarProducto,
   crearEmpresa,
+  desactivarProducto,
   lanzarProducto,
   misEmpresas,
   renombrarEmpresa,
@@ -23,20 +24,20 @@ import { personaActual } from "./persona";
 
 const nombreEmpresa = z.string().trim().min(2).max(120);
 const slugProducto = z.string().regex(/^[a-z0-9-]{2,40}$/);
-// Plan elegido al activar; sin elegir (producto sin link de pago) no hay pago.
-const planElegido = z.enum(["explorar", "equipo"]).nullable().catch(null);
+// Planes de pago a los que se puede subir desde Configuración (D37).
+const planDePago = z.enum(["navegante", "timonel"]);
 
 const huella = z.string().regex(/^[0-9a-f]{64}$/);
 const documentoAceptado = z.object({ slug: z.string().min(1).max(80), version: z.string().min(1).max(20), sha256: huella });
 
 const conAviso = (code: string): never => redirect(`/cuenta?aviso=${encodeURIComponent(code)}`);
-// Pantalla de aceptación del producto, conservando el plan que se eligió.
-const aAceptar = (producto: string, plan: string | null, aviso?: string): never => {
-  const q = new URLSearchParams();
-  if (plan) q.set("plan", plan);
-  if (aviso) q.set("aviso", aviso);
-  return redirect(`/cuenta/legal/${producto}${q.size ? `?${q}` : ""}`);
-};
+// A dónde regresa activar o desactivar: /cuenta, o Configuración → Suscripción
+// si se hizo desde sus interruptores.
+const SUSCRIPCION = "/cuenta/configuracion/suscripcion";
+const destino = (datos: FormData) => (datos.get("volver") === "suscripcion" ? SUSCRIPCION : "/cuenta");
+// Pantalla de aceptación del producto.
+const aAceptar = (producto: string, aviso?: string): never =>
+  redirect(`/cuenta/legal/${producto}${aviso ? `?aviso=${encodeURIComponent(aviso)}` : ""}`);
 
 // IP y navegador de quien acepta, para la constancia. La IP la pone Vercel en
 // x-forwarded-for (la primera es la del cliente); si no parece IP, no se manda.
@@ -97,31 +98,26 @@ export async function renombrarEmpresaAccion(
 export async function activarAccion(datos: FormData) {
   const producto = slugProducto.safeParse(datos.get("producto"));
   if (!producto.success) conAviso("general");
-  const plan = planElegido.parse(datos.get("plan"));
-  let pago: string | null = null;
   try {
     const c = await contexto();
     if (!c.empresaId) redirect("/cuenta");
     await activarProducto(c.persona, c.empresaId, producto.data!);
-    if (plan === "equipo") pago = urlPago(producto.data!, c.empresaId, c.persona.correo);
   } catch (e) {
     // Con la regla encendida en ar2go-customers, primero se aceptan los documentos.
-    if (e instanceof ErrorCuenta && e.code === "ACEPTACION_PENDIENTE") aAceptar(producto.data!, plan);
+    if (e instanceof ErrorCuenta && e.code === "ACEPTACION_PENDIENTE") aAceptar(producto.data!);
     if (e instanceof ErrorCuenta) conAviso(e.code);
     throw e; // redirect() de Next se propaga
   }
-  // Plan Equipo con link de pago (lib/pagos.ts): la activación sigue en Stripe.
-  redirect(pago ?? "/cuenta");
+  redirect(destino(datos));
 }
 
 // "Aceptar y activar": registra la aceptación de cada documento (una casilla
 // por documento, todas obligatorias) y, si se pidió, activa el producto en
-// seguida con el plan elegido. Con `solo_aceptar` (versión nueva de un
+// seguida. Con `solo_aceptar` (versión nueva de un
 // producto ya activo) regresa a /cuenta sin activar.
 export async function aceptarAccion(datos: FormData) {
   const producto = slugProducto.safeParse(datos.get("producto"));
   if (!producto.success) conAviso("general");
-  const plan = planElegido.parse(datos.get("plan"));
   const documentos = z.array(documentoAceptado).min(1).safeParse(
     datos.getAll("documento").map((d) => {
       const [slug, version, sha256] = String(d).split("|");
@@ -130,37 +126,49 @@ export async function aceptarAccion(datos: FormData) {
   );
   if (!documentos.success) conAviso("general");
   const marcados = new Set(datos.getAll("acepto").map(String));
-  if (!documentos.data!.every((d) => marcados.has(d.slug))) aAceptar(producto.data!, plan, "FALTA_CASILLA");
+  if (!documentos.data!.every((d) => marcados.has(d.slug))) aAceptar(producto.data!, "FALTA_CASILLA");
 
   const soloAceptar = datos.get("solo_aceptar") === "si";
-  let pago: string | null = null;
   try {
     const c = await contexto();
     if (!c.empresaId) redirect("/cuenta");
     await aceptarLegal(c.persona, c.empresaId, producto.data!, documentos.data!, await origen());
-    if (!soloAceptar) {
-      await activarProducto(c.persona, c.empresaId, producto.data!);
-      if (plan === "equipo") pago = urlPago(producto.data!, c.empresaId, c.persona.correo);
-    }
+    if (!soloAceptar) await activarProducto(c.persona, c.empresaId, producto.data!);
   } catch (e) {
     // El texto cambió mientras se leía: se vuelve a mostrar el vigente.
-    if (e instanceof ErrorCuenta && e.code === "DOCUMENTO_DESACTUALIZADO") aAceptar(producto.data!, plan, e.code);
+    if (e instanceof ErrorCuenta && e.code === "DOCUMENTO_DESACTUALIZADO") aAceptar(producto.data!, e.code);
     if (e instanceof ErrorCuenta) conAviso(e.code);
     throw e;
   }
-  redirect(pago ?? "/cuenta");
+  redirect("/cuenta");
 }
 
-// "Cambiar plan" en Configuración → Suscripción. Hoy solo se sube a Equipo y
-// con pago en línea: manda al link de pago del producto y el equipo de AR2GO
-// sube el plan desde /admin al ver el pago (lib/pagos.ts).
-export async function cambiarPlanAccion(datos: FormData) {
+// Interruptor de Configuración → Suscripción: desactiva el producto (queda
+// sin acceso y conserva sus datos) y libera su lugar en el plan (D37).
+export async function desactivarAccion(datos: FormData) {
   const producto = slugProducto.safeParse(datos.get("producto"));
-  if (!producto.success || planElegido.parse(datos.get("plan")) !== "equipo") conAviso("general");
+  if (!producto.success) conAviso("general");
+  try {
+    const c = await contexto();
+    if (!c.empresaId) redirect("/cuenta");
+    await desactivarProducto(c.persona, c.empresaId, producto.data!);
+  } catch (e) {
+    if (e instanceof ErrorCuenta) conAviso(e.code);
+    throw e;
+  }
+  redirect(SUSCRIPCION);
+}
+
+// "Cambiar plan" en Configuración → Suscripción. Solo se sube a un plan de
+// pago con link (lib/pagos.ts): manda al pago y el equipo de AR2GO sube el
+// plan desde /admin al verlo (D36).
+export async function cambiarPlanAccion(datos: FormData) {
+  const plan = planDePago.safeParse(datos.get("plan"));
+  if (!plan.success) conAviso("general");
   const c = await contexto();
   if (!c.empresaId) redirect("/cuenta");
-  const pago = urlPago(producto.data!, c.empresaId, c.persona.correo);
-  redirect(pago ?? "/cuenta/configuracion/suscripcion");
+  const pago = urlPago(plan.data!, c.empresaId, c.persona.correo);
+  redirect(pago ?? SUSCRIPCION);
 }
 
 export async function abrirAccion(datos: FormData) {

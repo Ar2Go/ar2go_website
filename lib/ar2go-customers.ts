@@ -39,7 +39,18 @@ export type DocumentoLegal = {
 export type DocumentoPublico = Pick<DocumentoLegal, "slug" | "titulo" | "version" | "todo_legal" | "texto">;
 
 export type Resumen = {
-  empresa: { id: string; nombre: string; estado: string; plan: string; plan_nombre: string };
+  // max_productos: cuántos productos puede tener activos según su plan (D37);
+  // null = sin límite. seleccion_fijada_hasta: hasta cuándo no puede
+  // desactivar ninguno porque llenó su plan (D38); null = puede cambiar.
+  empresa: {
+    id: string;
+    nombre: string;
+    estado: string;
+    plan: string;
+    plan_nombre: string;
+    max_productos?: number | null;
+    seleccion_fijada_hasta?: string | null;
+  };
   rol: string;
   productos: Producto[];
 };
@@ -105,6 +116,9 @@ export const resumen = (p: Persona, empresaId: string) =>
 
 export const activarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<Resumen>("/v1/cuenta/productos/activar", p, { empresa_id: empresaId, producto });
+
+export const desactivarProducto = (p: Persona, empresaId: string, producto: string) =>
+  llamar<Resumen>("/v1/cuenta/productos/desactivar", p, { empresa_id: empresaId, producto });
 
 export const lanzarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<{ url: string }>("/v1/cuenta/productos/lanzar", p, { empresa_id: empresaId, producto });
