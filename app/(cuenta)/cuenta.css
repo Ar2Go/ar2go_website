@@ -1490,6 +1490,15 @@
   border: 1px solid rgba(52, 211, 153, 0.45);
   border-radius: var(--radius-pill);
   box-shadow: none;
+  margin-left: auto;
+}
+
+/* La fila del nombre del dispositivo ocupa todo el ancho para que la
+   etiqueta quede a la derecha, separada del nombre. */
+.ar-cuenta .cl-activeDevice :has(> .cl-badge),
+.ar-cuenta .cl-activeDeviceListItem :has(> .cl-badge) {
+  width: 100%;
+  gap: 0.75rem;
 }
 
 .ar-cuenta .cl-activeDevice .cl-badge::before,
