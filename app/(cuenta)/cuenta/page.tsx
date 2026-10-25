@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CuentaLanding } from "@/components/cuenta/CuentaLanding";
 import { AltaEmpresa } from "@/components/cuenta/AltaEmpresa";
 import { CintaProductos } from "@/components/cuenta/CintaProductos";
@@ -19,7 +18,7 @@ type Props = { searchParams: Promise<{ aviso?: string }> };
 //   1. sin empresa todavía → se pide su nombre y se da de alta;
 //   2. con empresa → plan y productos, para activarlos y abrirlos.
 // Sin configurar, sigue siendo el cascarón honesto de antes.
-// Cerrar sesión vive en el nav de CuentaLanding, en los tres casos.
+// Cerrar sesión vive en el menú "Mi cuenta" de CuentaLanding, en los tres casos.
 export default async function CuentaPage({ searchParams }: Props) {
   const { aviso } = await searchParams;
   const p = await personaActual();
@@ -28,18 +27,11 @@ export default async function CuentaPage({ searchParams }: Props) {
   if (!hayPlanoDeControl || !p) {
     return (
       <CuentaLanding
-        eyebrow={cuenta.panel.eyebrow}
-        titulo={cuenta.panel.titulo}
-        apoyo={cuenta.panel.apoyo}
+        titulo={cuenta.tablero.titulo}
+        apoyo={cuenta.tablero.apoyo}
+        anuncio={cuenta.panel.apoyo}
         cinta={<CintaProductos productos={null} puedeActivar={false} />}
-      >
-        {p && <p className="cuenta__correo">{p.persona.correo}</p>}
-        <div className="cuenta__acciones">
-          <Link href={cuenta.panel.volver.href} className="btn btn--primary">
-            {cuenta.panel.volver.label}
-          </Link>
-        </div>
-      </CuentaLanding>
+      />
     );
   }
 
@@ -63,7 +55,6 @@ export default async function CuentaPage({ searchParams }: Props) {
   if (!datos) {
     return (
       <CuentaLanding eyebrow={cuenta.alta.eyebrow} titulo={cuenta.alta.titulo} apoyo={cuenta.alta.apoyo}>
-        <p className="cuenta__correo">{p.persona.correo}</p>
         {avisoNodo}
         {!sinServicio && <AltaEmpresa />}
       </CuentaLanding>
@@ -75,9 +66,10 @@ export default async function CuentaPage({ searchParams }: Props) {
   const puedeActivar = !estadoEmpresa && ["PROPIETARIO", "ADMIN"].includes(datos.rol);
   return (
     <CuentaLanding
-      eyebrow={t.eyebrow}
-      titulo={datos.empresa.nombre}
+      titulo={t.titulo}
       apoyo={t.apoyo}
+      plan={datos.empresa.plan_nombre}
+      empresa={datos.empresa.nombre}
       cinta={
         <CintaProductos
             productos={datos.productos}
@@ -87,9 +79,7 @@ export default async function CuentaPage({ searchParams }: Props) {
           />
       }
     >
-      <p className="cuenta__correo">
-        {p.persona.correo} · {t.plan} {datos.empresa.plan_nombre}
-      </p>
+      {/* Correo y plan viven en la tarjeta "Mi cuenta"; aquí solo avisos. */}
       {estadoEmpresa && (
         <p className="cuenta__aviso" role="status">
           {estadoEmpresa.aviso}

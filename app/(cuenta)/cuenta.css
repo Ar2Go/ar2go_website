@@ -456,7 +456,11 @@
   border-color: rgba(248, 113, 113, 0.35);
 }
 
-/* ─── Landing provisional para usuarios autenticados ───────────────────── */
+/* ─── Portada de /cuenta con sesión (components/cuenta/CuentaLanding.tsx) ──
+   Pantalla partida: foto a la izquierda (logotipo, lema y pie) y, a la
+   derecha, fondo blanco con una sola columna (titular, tarjeta de la cuenta
+   y cinta de argonautas). Las tarjetas conservan su color oscuro de marca,
+   algo translúcidas sobre el blanco. */
 .ar-cuenta:has(.ar-cuenta--landing) {
   display: block;
   min-height: 100svh;
@@ -467,92 +471,44 @@
 }
 
 .ar-cuenta--landing {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  --tinta: var(--color-fondo);
+  --tinta-suave: rgba(11, 15, 25, 0.62);
+  --linea-clara: rgba(11, 15, 25, 0.12);
+  /* Vidrio azul marino: translúcido sin verse gris sobre el blanco. */
+  --vidrio: rgba(12, 22, 48, 0.86);
+
+  display: grid;
+  grid-template-columns: 1fr;
   width: 100%;
   min-height: 100svh;
-  background: var(--color-fondo);
-  color: var(--color-papel);
+  background: var(--color-papel);
+  color: var(--tinta);
+}
+@media (min-width: 960px) {
+  .ar-cuenta--landing {
+    grid-template-columns: minmax(320px, 30%) 1fr;
+  }
 }
 
-.landing__nav {
-  position: absolute;
-  inset: 1.1rem 0 auto;
-  z-index: 20;
-  padding-inline: clamp(1rem, 2.4vw, 2.75rem);
-  pointer-events: none;
-}
-
-.landing__nav-inner {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  pointer-events: auto;
-}
-
-.landing__logo {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  margin-right: auto;
-}
-
-.landing__logo img {
-  display: block;
-  height: 26px;
-  width: auto;
-  opacity: 1;
-  filter: none;
-}
-
-.landing__menu {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0.28rem;
-  justify-content: flex-end;
-  background: rgba(11, 15, 25, 0.5);
-  border: 1px solid rgba(230, 233, 239, 0.09);
-  border-radius: 11px;
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-}
-
-.landing__menu a,
-.landing__signout {
-  font: inherit;
-  font-size: 0.8125rem;
-  color: rgba(230, 233, 239, 0.82);
-  text-decoration: none;
-  background: transparent;
-  border: 0;
-  padding: 0.42rem 0.78rem;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.landing__menu a:hover,
-.landing__signout:hover {
-  color: var(--color-papel);
-  background: rgba(230, 233, 239, 0.08);
-}
-
-.landing__signout {
-  color: var(--color-papel);
-}
-
-.landing__hero {
+/* ─── Foto ───────────────────────────────── */
+.landing__foto {
   position: relative;
   isolation: isolate;
-  display: grid;
-  place-items: center;
-  flex: 1;
-  min-height: 100svh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 42svh;
+  padding: 1.5rem clamp(1.25rem, 3vw, 3rem);
   background: var(--color-fondo);
+  color: var(--color-papel);
+}
+@media (min-width: 960px) {
+  .landing__foto {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding-block: 2.75rem 2.25rem;
+  }
 }
 
 .landing__image {
@@ -562,112 +518,667 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 46%;
+  object-position: 50% 46%;
 }
 
+/* Tinta arriba (logotipo) y abajo (lema y pie) para legibilidad, más la
+   viñeta azul de marca del resto de las fotos del sitio. */
 .landing__overlay {
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(11, 15, 25, 0.38), rgba(11, 15, 25, 0.64)),
-    rgba(37, 99, 235, 0.34);
+    linear-gradient(
+      180deg,
+      rgba(11, 15, 25, 0.55) 0%,
+      rgba(11, 15, 25, 0.12) 28%,
+      rgba(11, 15, 25, 0.38) 60%,
+      rgba(11, 15, 25, 0.86) 100%
+    ),
+    rgba(37, 99, 235, 0.22);
 }
 
-.landing__welcome {
-  width: min(100% - 2rem, 1120px);
-  padding: 8rem 0 5rem;
-  text-align: center;
+.landing__logo {
+  display: inline-flex;
+  align-self: flex-start;
+}
+
+.landing__logo img {
+  display: block;
+  height: 26px;
+  width: auto;
+}
+
+.landing__lema {
+  margin-top: auto;
+  padding-top: 2rem;
   text-shadow: 0 2px 28px rgba(11, 15, 25, 0.5);
 }
 
-.landing__eyebrow {
-  margin: 0 0 1rem;
-  color: rgba(230, 233, 239, 0.82);
+.landing__lema-titulo {
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.landing__lema-apoyo {
+  margin: 0.85rem 0 0;
+  max-width: 36ch;
+  font-size: var(--fs-sm);
+  color: rgba(230, 233, 239, 0.86);
+}
+
+/* Pie: derechos a la izquierda y coordenadas a la derecha, alineados abajo. */
+.landing__pie {
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
   font-family: var(--font-mono);
-  font-size: clamp(0.65rem, 2vw, 0.75rem);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: rgba(230, 233, 239, 0.62);
+}
+
+.landing__pie p {
+  margin: 0;
+}
+
+.landing__coords {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 0.5625rem;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+@media (min-width: 960px) {
+  .landing__lema {
+    margin-top: 32svh;
+  }
+
+  .landing__pie {
+    display: flex;
+    margin-top: auto;
+  }
+}
+
+/* ─── Panel blanco ───────────────────────── */
+.landing__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem) 4rem;
+}
+
+/* ─── Aviso de entrada (components/cuenta/Anuncio.tsx) ─────────────────
+   Sale al entrar encima del encabezado, translúcido, sin desplazar nada, y
+   se cierra con la X; no queda fijo. */
+.anuncio {
+  position: absolute;
+  top: 0.75rem;
+  left: clamp(1.25rem, 3vw, 2.5rem);
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  /* Encima del encabezado fijo (z-index 15). */
+  z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem 0.75rem 1rem;
+  color: var(--tinta);
+  /* Gris neutro (sin tinte azul), casi opaco. */
+  background: rgba(228, 228, 228, 0.97);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-btn);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: ar-anuncio-entra 0.35s cubic-bezier(0.2, 0.6, 0.25, 1) both;
+}
+
+@keyframes ar-anuncio-entra {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anuncio__texto {
+  flex: 1;
+  margin: 0;
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+}
+
+.anuncio__cerrar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: var(--tinta-suave);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+}
+
+.anuncio__cerrar:hover {
+  color: var(--tinta);
+  background: rgba(11, 15, 25, 0.06);
+}
+
+.anuncio__cerrar svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* ─── Encabezado de la cuenta (components/cuenta/CuentaEncabezado.tsx) ──
+   "Mis suscripciones" a la izquierda; a la derecha la tarjeta del usuario
+   (empresa, persona y plan), que al hacer clic despliega configuración y
+   cerrar sesión en un menú opaco. */
+/* Fijo arriba al hacer scroll: "Inicio" y "Mi cuenta" siempre a la vista. */
+.encabezado {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1.25rem 0 1.1rem;
+  background: var(--color-papel);
+  border-bottom: 1px solid var(--linea-clara);
+}
+
+.encabezado__cuenta {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.encabezado__usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.4rem 0.75rem 0.4rem 0.4rem;
+  font: inherit;
+  text-align: left;
+  color: var(--tinta);
+  background: var(--color-papel);
+  border: 1px solid var(--linea-clara);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.encabezado__usuario:hover,
+.encabezado__usuario[aria-expanded="true"] {
+  background: rgba(11, 15, 25, 0.03);
+  border-color: rgba(11, 15, 25, 0.24);
+}
+
+.encabezado__flecha {
+  flex: 0 0 auto;
+  width: 0.75rem;
+  height: 0.75rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.encabezado__usuario[aria-expanded="true"] .encabezado__flecha {
+  transform: rotate(180deg);
+}
+
+/* Menú opaco bajo la tarjeta, alineado a la derecha. */
+.encabezado__menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 20;
+  min-width: 100%;
+  padding: 0.35rem;
+  background: var(--color-papel);
+  border: 1px solid rgba(11, 15, 25, 0.16);
+  border-radius: 12px;
+}
+
+.encabezado__menu-opcion {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  text-decoration: none;
+  color: var(--tinta);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+}
+
+.encabezado__menu-opcion:hover,
+.encabezado__menu-opcion:focus-visible {
+  background: rgba(11, 15, 25, 0.05);
+}
+
+.encabezado__menu-opcion--salir {
+  color: #dc2626;
+}
+
+.encabezado__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-azul);
+  color: var(--color-papel);
+  font-size: 0.875rem;
+}
+
+.encabezado__avatar--imagen {
+  object-fit: cover;
+  background: var(--color-papel);
+  border: 1px solid var(--linea-clara);
+}
+
+.encabezado__datos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.encabezado__nombre,
+.encabezado__persona {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.encabezado__nombre {
+  font-size: 0.875rem;
+  color: var(--tinta);
+}
+
+.encabezado__persona {
+  font-size: 0.75rem;
+  color: var(--tinta-suave);
+}
+
+.encabezado__plan {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-azul);
+  border: 1px solid rgba(37, 99, 235, 0.35);
+  border-radius: var(--radius-pill);
+}
+
+.encabezado__opciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: -0.75rem;
+}
+
+.encabezado__opcion {
+  padding: 0.45rem 0.75rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  color: var(--tinta-suave);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.encabezado__opcion:hover,
+.encabezado__opcion:focus-visible {
+  color: var(--tinta);
+  background: rgba(11, 15, 25, 0.05);
+}
+
+/* En pantallas angostas el encabezado fijo se queda en un renglón: sin la
+   etiqueta del plan (se ve en Configuración → Suscripción) y con el nombre
+   recortado si no cabe. */
+@media (max-width: 640px) {
+  .encabezado {
+    flex-wrap: nowrap;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .encabezado__cuenta {
+    min-width: 0;
+  }
+
+  .encabezado__plan {
+    display: none;
+  }
+
+  .encabezado__opciones {
+    flex-wrap: nowrap;
+    margin-left: -0.6rem;
+  }
+
+  .encabezado__opcion {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+.landing__columna {
+  width: min(100%, 880px);
+  margin: 0 auto;
+  padding-top: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.landing__welcome {
+  margin-bottom: 1.25rem;
+}
+
+.landing__eyebrow {
+  margin: 0 0 0.6rem;
+  color: var(--tinta-suave);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .landing__welcome h1 {
   margin: 0;
-  font-size: clamp(2.75rem, 9vw, 6rem);
+  font-size: clamp(1.875rem, 3.4vw, 2.5rem);
   font-weight: 300;
-  letter-spacing: -0.055em;
-  line-height: 1;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--tinta);
 }
 
-/* Texto de apoyo y contenido (alta de empresa, productos) bajo el titular.
-   El titular va centrado sobre la foto; el contenido se lee mejor alineado
-   a la izquierda, en una tarjeta con el mismo vidrio que el menú. */
 .landing__apoyo {
-  margin: 1.25rem auto 0;
+  margin: 0.6rem 0 0;
   max-width: 52ch;
-  font-size: clamp(1rem, 2.2vw, 1.125rem);
-  color: rgba(230, 233, 239, 0.86);
+  font-size: var(--fs-sm);
+  color: var(--tinta-suave);
 }
 
 .landing__contenido {
-  width: min(100%, 560px);
-  margin: 2.25rem auto 0;
-  padding: 1.5rem;
-  text-align: left;
-  text-shadow: none;
-  background: rgba(11, 15, 25, 0.62);
-  border: 1px solid var(--hair);
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.25rem;
+  color: var(--color-niebla);
+  background: var(--vidrio);
+  border: 1px solid var(--hair-strong);
   border-radius: var(--radius-card);
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+/* Sin avisos ni pasos pendientes, la tarjeta no se pinta. */
+.landing__contenido:empty {
+  display: none;
 }
 
 .landing__contenido > :first-child {
   margin-top: 0;
 }
 
-/* ─── Cinta de argonautas (components/cuenta/CintaProductos.tsx) ───────
-   Debajo del titular, sobre la misma foto. En escritorio, cuatro tarjetas
-   en fila; en pantallas angostas, una cinta que se desliza de lado. */
-.ar-cuenta--landing .landing__hero {
+/* ─── Configuración (app/(cuenta)/cuenta/configuracion) ────────────────
+   Columna ancha para el perfil de Clerk (menú lateral + página), en una
+   tarjeta gris oscuro (el mismo gris que ConfiguracionCuenta le pasa a
+   Clerk), menos pesada que el vidrio marino de /cuenta. */
+.landing__columna--ancha {
+  width: min(100%, 880px);
+}
+
+.landing__columna--ancha .landing__contenido {
+  padding: 0;
+  overflow: hidden;
+  background: #2a2e35;
+  border-color: rgba(230, 233, 239, 0.12);
+}
+
+/* Secciones propias dentro del perfil de Clerk (Perfil y Suscripción), con
+   la misma escala que las páginas de Clerk que las rodean. */
+.config-seccion {
+  color: var(--color-niebla);
+}
+
+.config-seccion__titulo {
+  margin: 0 0 1.25rem;
+  padding-bottom: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--color-papel);
+  border-bottom: 1px solid var(--hair);
+}
+
+.suscripcion__subtitulo {
+  margin: 1.5rem 0 0.6rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-papel);
+}
+
+.config-datos {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.config-datos > div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+}
+
+.config-datos dt {
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+}
+
+.config-datos dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--fs-sm);
+}
+
+/* Valor con "Editar" al lado y su formulario (nombre de la empresa). */
+.config-valor {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+}
+
+.config-valor__editar {
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-xs);
+  color: var(--color-azul-suave);
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.config-valor__ok {
+  font-size: var(--fs-xs);
+  color: var(--color-exito);
+}
+
+.config-editar {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 26rem;
+}
+
+.config-editar__campo {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-size: var(--fs-sm);
+  color: var(--color-papel);
+  background: #22252b;
+  border: 1px solid var(--hair-strong);
+  border-radius: var(--radius-btn);
+}
+
+.config-editar__campo:focus {
+  outline: 2px solid var(--color-azul);
+  outline-offset: 1px;
+}
+
+.config-editar__botones {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Imagen de la cuenta (components/cuenta/PerfilEmpresa.tsx). */
+.perfil-imagen {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding-bottom: 4rem;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--hair);
 }
 
-.ar-cuenta--landing .landing__welcome {
-  padding-bottom: 2.5rem;
+.perfil-imagen__foto {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hair-strong);
 }
 
+.perfil-imagen__foto--inicial {
+  display: grid;
+  place-items: center;
+  background: var(--color-azul);
+  color: var(--color-papel);
+  font-size: 1.5rem;
+}
+
+.perfil-imagen__ayuda {
+  margin: 0 0 0.6rem;
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+}
+
+.perfil-imagen__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 520px) {
+  .perfil-imagen {
+    align-items: flex-start;
+  }
+
+  .config-datos > div {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}
+
+.suscripcion__productos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.suscripcion__productos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  font-size: var(--fs-sm);
+  border-top: 1px solid var(--hair);
+}
+
+.suscripcion__nota {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--fs-xs);
+  color: var(--color-gris);
+}
+
+.suscripcion__enlace {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: var(--fs-xs);
+  color: var(--color-azul-suave);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Argonautas y argotipos (components/cuenta/CintaProductos.tsx) ───
+   Un grupo por tipo; en cada uno, tarjetas oscuras en cuadrícula con el
+   nombre y el estado arriba, la descripción y la acción abajo. */
+/* Un grupo debajo del otro: primero argonautas, después argotipos. Cada
+   grupo es un panel gris oscuro (el de Configuración) con su título, la
+   descripción debajo y sus tarjetas translúcidas. */
 .cinta {
-  width: min(100% - 2rem, 1120px);
+  width: 100%;
   text-align: left;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.cinta__grupo {
+  padding: 1.1rem;
+  background: #2a2e35;
+  border-radius: var(--radius-card);
 }
 
 .cinta__encabezado {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  margin-bottom: 1rem;
+  margin: 0 0.1rem 0.85rem;
 }
 
 .cinta__encabezado h2 {
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(230, 233, 239, 0.82);
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-papel);
 }
 
 .cinta__encabezado p {
-  margin: 0;
-  font-size: var(--fs-xs);
-  color: rgba(230, 233, 239, 0.7);
+  margin: 0.15rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(230, 233, 239, 0.6);
 }
 
 .cinta__lista {
@@ -675,26 +1186,20 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: 0.6rem;
 }
 
+/* Tarjeta compacta: nombre y estado, descripción corta y la acción. */
 .cinta__tarjeta {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-height: 11rem;
-  padding: 1.15rem 1.15rem 1.1rem;
-  background: rgba(11, 15, 25, 0.62);
-  border: 1px solid var(--hair-strong);
-  border-radius: var(--radius-card);
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-}
-
-.cinta__tarjeta--por-venir {
-  border-color: var(--hair);
-  background: rgba(11, 15, 25, 0.45);
+  gap: 0.35rem;
+  padding: 0.9rem 1rem 1rem;
+  color: var(--color-niebla);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }
 
 .cinta__nombre {
@@ -702,7 +1207,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
   color: var(--color-papel);
 }
 
@@ -716,6 +1221,10 @@
 .cinta__accion {
   margin-top: auto;
   padding-top: 0.5rem;
+}
+
+.cinta__accion .btn {
+  padding: 0.45rem 0.85rem;
 }
 
 .cinta__planes {
@@ -768,77 +1277,17 @@
   color: rgba(230, 233, 239, 0.74);
 }
 
-@media (max-width: 960px) {
-  .cinta {
-    width: 100%;
-  }
-
-  .cinta__encabezado {
-    padding-inline: 1rem;
-  }
-
-  .cinta__lista {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 0 1rem 0.5rem;
-    scroll-padding-inline: 1rem;
-  }
-
-  .cinta__tarjeta {
-    flex: 0 0 min(78%, 280px);
-    scroll-snap-align: start;
-  }
-}
-
-@media (max-width: 760px) {
-  .landing__nav-inner {
-    gap: 0.65rem;
-  }
-
-  .landing__logo img {
-    height: 22px;
-  }
-
-  .landing__menu a,
-  .landing__signout {
-    font-size: 0.75rem;
-    padding: 0.42rem 0.62rem;
-  }
-
-  .landing__hero {
-    min-height: 100svh;
-  }
-
-  .landing__welcome {
-    width: min(calc(100% - 1.5rem), 1120px);
-    padding: 8rem 0 4rem;
+/* En pantallas angostas la foto va arriba como banda y la columna arranca
+   pegada a ella. */
+@media (max-width: 959px) {
+  .landing__columna {
+    padding-top: 1.75rem;
   }
 }
 
 @media (max-width: 520px) {
-  .landing__nav {
-    inset-block-start: 0.75rem;
-    padding-inline: 0.75rem;
-  }
-
-  .landing__nav-inner {
-    gap: 0.4rem;
-  }
-
-  .landing__menu {
-    gap: 0.05rem;
-    padding: 0.2rem;
-  }
-
-  .landing__menu a,
-  .landing__signout {
-    padding: 0.4rem 0.48rem;
-    font-size: 0.7rem;
-  }
-
   .landing__logo img {
-    height: 20px;
+    height: 22px;
   }
 }
 
