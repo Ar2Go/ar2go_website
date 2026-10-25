@@ -183,7 +183,9 @@ export const cuenta = {
         titulo: "Suscripción",
         empresa: "Empresa",
         plan: "Plan",
-        productos: "Productos",
+        productos: "Tus argonautas y argotipos",
+        confirmarDesactivar: (nombre: string) =>
+          `¿Desactivar ${nombre}? Tu equipo deja de tener acceso; los datos se conservan y puedes activarlo otra vez.`,
         tipos: { argonauta: "Argonauta", argotipo: "Argotipo" },
         cambiarPlan: "Cambiar plan",
         actual: "Actual",
@@ -194,7 +196,6 @@ export const cuenta = {
         sinProductos: "Todavía no activas ningún producto.",
         sinEmpresa:
           "Cuando tu empresa esté conectada a AR2GO, aquí verás tu plan y los productos que tienes activos.",
-        verArgonautas: "Ver tus argonautas",
       },
     },
     // Pie de la foto, abajo a la derecha.

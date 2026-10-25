@@ -108,6 +108,9 @@ export const resumen = (p: Persona, empresaId: string) =>
 export const activarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<Resumen>("/v1/cuenta/productos/activar", p, { empresa_id: empresaId, producto });
 
+export const desactivarProducto = (p: Persona, empresaId: string, producto: string) =>
+  llamar<Resumen>("/v1/cuenta/productos/desactivar", p, { empresa_id: empresaId, producto });
+
 export const lanzarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<{ url: string }>("/v1/cuenta/productos/lanzar", p, { empresa_id: empresaId, producto });
 

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { cuenta } from "@/content/cuenta";
 import type { Producto } from "@/lib/ar2go-customers";
 import { tienePago } from "@/lib/pagos";
 import { cambiarPlanAccion } from "@/app/(cuenta)/cuenta/acciones";
+import { InterruptorProducto } from "@/components/cuenta/InterruptorProducto";
 
 // Orden de los planes de AR2GO (D37): solo se sube a uno posterior.
 const PLANES = ["explorador", "navegante", "timonel"];
@@ -20,18 +20,24 @@ type Props = {
   productos: Producto[];
   // PROPIETARIO o ADMIN con la empresa sin cerrar: puede cambiar el plan.
   puedeEditar?: boolean;
+  // Empresa activa (ni suspendida ni cerrada): puede activar y desactivar.
+  empresaActiva?: boolean;
 };
 
-// Sección "Suscripción" de /cuenta/configuracion: el plan de la empresa con
-// cuántos productos incluye, y cada argonauta o argotipo contratado con su
-// plan y su estado. "Cambiar plan" ofrece los planes superiores: los que
+// Sección "Suscripción" de /cuenta/configuracion: administra la suscripción.
+// Arriba el plan de la empresa con cuántos productos incluye; abajo cada
+// argonauta o argotipo disponible con su interruptor, para elegir cuáles
+// tener activos dentro del límite del plan (Explorador 1, Navegante 5,
+// Timonel todos; D37). "Cambiar plan" ofrece los planes superiores: los que
 // tienen link de pago (lib/pagos.ts) mandan a Stripe y el equipo de AR2GO
 // sube el plan desde /admin al ver el pago (D36; no hay webhooks hasta la
-// fase 3). Activar o abrir productos sigue en /cuenta.
-export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false }: Props) {
+// fase 3). Abrir productos sigue en /cuenta.
+export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false, empresaActiva = true }: Props) {
   const t = cuenta.landing.configuracion.suscripcion;
   const e = cuenta.tablero;
   const contratados = productos.filter((p) => p.estado && p.estado !== "CANCELADA");
+  const enLimite = maxProductos !== null && contratados.length >= maxProductos;
+  const elegibles = productos.filter((p) => p.disponible || (p.estado && p.estado !== "CANCELADA"));
   const superiores = plan ? PLANES.slice(PLANES.indexOf(plan) + 1) : [];
 
   return (
@@ -80,27 +86,33 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
           )}
 
           <h2 className="suscripcion__subtitulo">{t.productos}</h2>
-          {contratados.length === 0 ? (
+          {elegibles.length === 0 ? (
             <p className="suscripcion__nota">{t.sinProductos}</p>
           ) : (
             <ul className="suscripcion__productos">
-              {contratados.map((p) => {
+              {elegibles.map((p) => {
                 const info = cuenta.productos[p.slug];
+                const nombre = info?.nombre ?? p.nombre;
+                const activo = !!p.estado && p.estado !== "CANCELADA";
                 return (
                   <li key={p.slug}>
                     <div className="suscripcion__fila">
                       <div className="suscripcion__producto">
-                        <span>{info?.nombre ?? p.nombre}</span>
+                        <span>{nombre}</span>
                         {info && <small>{t.tipos[info.tipo]}</small>}
                       </div>
-                      <span className="suscripcion__plan">{planNombre}</span>
-                      <span
-                        className={
-                          p.estado === "ACTIVA" ? "cuenta__estado" : "cuenta__estado cuenta__estado--alerta"
-                        }
-                      >
-                        {p.estado === "ACTIVA" ? e.activo : p.estado === "SUSPENDIDA" ? e.suspendido : e.preparando}
-                      </span>
+                      {activo && p.estado !== "ACTIVA" && (
+                        <span className="cuenta__estado cuenta__estado--alerta">
+                          {p.estado === "SUSPENDIDA" ? e.suspendido : e.preparando}
+                        </span>
+                      )}
+                      <InterruptorProducto
+                        producto={p.slug}
+                        nombre={nombre}
+                        activo={activo}
+                        disabled={!puedeEditar || !empresaActiva || (!activo && (enLimite || !p.disponible))}
+                        confirmar={t.confirmarDesactivar(nombre)}
+                      />
                     </div>
                   </li>
                 );
@@ -109,10 +121,6 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
           )}
         </>
       )}
-
-      <Link href="/cuenta" className="suscripcion__enlace">
-        {t.verArgonautas}
-      </Link>
     </div>
   );
 }

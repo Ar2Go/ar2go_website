@@ -53,6 +53,7 @@ export default async function ConfiguracionPage() {
             maxProductos={datos?.empresa.max_productos ?? null}
             productos={datos?.productos ?? []}
             puedeEditar={puedeEditar}
+            empresaActiva={datos?.empresa.estado === "ACTIVA"}
           />
         }
       />

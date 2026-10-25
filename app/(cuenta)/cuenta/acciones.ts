@@ -14,6 +14,7 @@ import {
   aceptarLegal,
   activarProducto,
   crearEmpresa,
+  desactivarProducto,
   lanzarProducto,
   misEmpresas,
   renombrarEmpresa,
@@ -30,6 +31,10 @@ const huella = z.string().regex(/^[0-9a-f]{64}$/);
 const documentoAceptado = z.object({ slug: z.string().min(1).max(80), version: z.string().min(1).max(20), sha256: huella });
 
 const conAviso = (code: string): never => redirect(`/cuenta?aviso=${encodeURIComponent(code)}`);
+// A dónde regresa activar o desactivar: /cuenta, o Configuración → Suscripción
+// si se hizo desde sus interruptores.
+const SUSCRIPCION = "/cuenta/configuracion/suscripcion";
+const destino = (datos: FormData) => (datos.get("volver") === "suscripcion" ? SUSCRIPCION : "/cuenta");
 // Pantalla de aceptación del producto.
 const aAceptar = (producto: string, aviso?: string): never =>
   redirect(`/cuenta/legal/${producto}${aviso ? `?aviso=${encodeURIComponent(aviso)}` : ""}`);
@@ -103,7 +108,7 @@ export async function activarAccion(datos: FormData) {
     if (e instanceof ErrorCuenta) conAviso(e.code);
     throw e; // redirect() de Next se propaga
   }
-  redirect("/cuenta");
+  redirect(destino(datos));
 }
 
 // "Aceptar y activar": registra la aceptación de cada documento (una casilla
@@ -138,6 +143,22 @@ export async function aceptarAccion(datos: FormData) {
   redirect("/cuenta");
 }
 
+// Interruptor de Configuración → Suscripción: desactiva el producto (queda
+// sin acceso y conserva sus datos) y libera su lugar en el plan (D37).
+export async function desactivarAccion(datos: FormData) {
+  const producto = slugProducto.safeParse(datos.get("producto"));
+  if (!producto.success) conAviso("general");
+  try {
+    const c = await contexto();
+    if (!c.empresaId) redirect("/cuenta");
+    await desactivarProducto(c.persona, c.empresaId, producto.data!);
+  } catch (e) {
+    if (e instanceof ErrorCuenta) conAviso(e.code);
+    throw e;
+  }
+  redirect(SUSCRIPCION);
+}
+
 // "Cambiar plan" en Configuración → Suscripción. Solo se sube a un plan de
 // pago con link (lib/pagos.ts): manda al pago y el equipo de AR2GO sube el
 // plan desde /admin al verlo (D36).
@@ -147,7 +168,7 @@ export async function cambiarPlanAccion(datos: FormData) {
   const c = await contexto();
   if (!c.empresaId) redirect("/cuenta");
   const pago = urlPago(plan.data!, c.empresaId, c.persona.correo);
-  redirect(pago ?? "/cuenta/configuracion/suscripcion");
+  redirect(pago ?? SUSCRIPCION);
 }
 
 export async function abrirAccion(datos: FormData) {
