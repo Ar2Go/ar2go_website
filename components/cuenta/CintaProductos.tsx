@@ -2,15 +2,15 @@ import Link from "next/link";
 import { abrirAccion, activarAccion } from "@/app/(cuenta)/cuenta/acciones";
 import { cuenta } from "@/content/cuenta";
 import type { Producto } from "@/lib/ar2go-customers";
-import { tienePago } from "@/lib/pagos";
 
 type Props = {
   // null: ar2go-customers no está configurado y no se sabe el estado de cada
   // producto; se muestran todos como "Próximamente".
   productos: Producto[] | null;
   puedeActivar: boolean;
-  // Plan de la empresa: solo en Explorar se ofrece elegir plan al activar.
-  plan?: string | null;
+  // Cuántos productos puede tener activos la empresa según su plan (D37);
+  // null = sin límite. Al llegar, Activar cede su lugar a Cambiar plan.
+  maxProductos?: number | null;
   // Texto en lugar de los botones cuando la empresa está suspendida o cerrada.
   bloqueo?: string | null;
 };
@@ -23,7 +23,7 @@ type Props = {
 export function CintaProductos({
   productos,
   puedeActivar,
-  plan = null,
+  maxProductos = null,
   bloqueo = null,
 }: Props) {
   const t = cuenta.tablero;
@@ -37,6 +37,9 @@ export function CintaProductos({
       disponible: false,
       puede_abrir: false,
     }));
+
+  const activos = catalogo.filter((p) => p.estado && p.estado !== "CANCELADA").length;
+  const enLimite = maxProductos !== null && activos >= maxProductos;
 
   // Sin tipo en content/cuenta.ts, un producto nuevo cuenta como argonauta.
   const tipoDe = (p: Producto) => cuenta.productos[p.slug]?.tipo ?? "argonauta";
@@ -109,29 +112,11 @@ export function CintaProductos({
             <span className="cinta__nota">{t.preparando}</span>
           ) : (
             puedeActivar &&
-            (plan === "explorar" && tienePago(p.slug) ? (
-              <fieldset className="cinta__planes">
-                <legend>{t.elegirPlan}</legend>
-                <button
-                  type="submit"
-                  name="plan"
-                  value="explorar"
-                  className="btn btn--ghost"
-                >
-                  {t.planes.explorar.nombre}
-                  <span>{t.planes.explorar.detalle}</span>
-                </button>
-                <button
-                  type="submit"
-                  name="plan"
-                  value="equipo"
-                  className="btn btn--primary"
-                >
-                  {t.planes.equipo.nombre}
-                  <span>{t.planes.equipo.detalle}</span>
-                </button>
-                <small>{t.notaEquipo}</small>
-              </fieldset>
+            (enLimite ? (
+              <span className="cinta__limite">
+                {t.limite}{" "}
+                <Link href="/cuenta/configuracion/suscripcion">{t.cambiarPlan}</Link>
+              </span>
             ) : (
               <button type="submit" className="btn btn--ghost">
                 {t.activar}

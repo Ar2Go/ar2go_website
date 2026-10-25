@@ -6,7 +6,7 @@ export const cuenta = {
     eyebrow: "Empezar gratis",
     titulo: "Crea tu cuenta",
     apoyo:
-      "Da de alta tu cuenta con tu correo de trabajo o con Google. Configuras tu primer agente en el plan Explorar, sin tarjeta.",
+      "Da de alta tu cuenta con tu correo de trabajo o con Google. Configuras tu primer argonauta o argotipo en el plan Explorador, sin tarjeta.",
   },
   iniciar: {
     eyebrow: "Tu cuenta",
@@ -34,22 +34,21 @@ export const cuenta = {
   },
   tablero: {
     titulo: "Panel de control",
-    // "Plan Explorar"
+    // "Plan Explorador"
     plan: "Plan",
     apoyo: "Aquí activas y abres tus argonautas y argotipos.",
     productos: "Productos",
     activar: "Activar",
-    // Al activar un producto con link de pago (lib/pagos.ts), la empresa en
-    // Explorar elige plan. Explorar activa sin pago; Equipo activa con los
-    // mismos límites y manda a Stripe: el equipo de AR2GO sube el plan desde
-    // /admin al ver el pago (no hay webhooks hasta la fase 3). Los 10
-    // empleados los confirmó JD el 2026-10-21 (cuota de Explorar, D9).
-    elegirPlan: "Elige tu plan",
+    // Planes de AR2GO (D37), de la empresa: limitan cuántos productos tiene
+    // activos. Se cambian en Configuración → Suscripción (lib/pagos.ts).
     planes: {
-      explorar: { nombre: "Plan Explorar", detalle: "$0 · 10 empleados" },
-      equipo: { nombre: "Plan Equipo", detalle: "Con pago en línea" },
-    },
-    notaEquipo: "Empiezas con 10 empleados; subimos tu plan a Equipo al confirmar tu pago.",
+      explorador: { nombre: "Plan Explorador", detalle: "Gratis · 1 producto" },
+      navegante: { nombre: "Plan Navegante", detalle: "US$499 al mes · 2 productos" },
+      timonel: { nombre: "Plan Timonel", detalle: "US$999 al mes · sin límite" },
+    } as Record<string, { nombre: string; detalle: string }>,
+    // Ya tiene activos todos los productos que incluye su plan.
+    limite: "Tu plan ya no incluye más productos.",
+    cambiarPlan: "Cambiar plan",
     abrir: "Abrir",
     preparando: "Preparando…",
     proximamente: "Próximamente",
@@ -121,6 +120,7 @@ export const cuenta = {
   avisos: {
     EMPRESA_SUSPENDIDA: "Tu cuenta está suspendida: no puedes activar ni abrir productos. Escríbenos para resolverlo.",
     EMPRESA_CERRADA: "Tu cuenta está cerrada. Escríbenos si quieres reabrirla.",
+    LIMITE_PRODUCTOS: "Tu plan ya no incluye más productos. Cambia de plan en Configuración para activar otro.",
     CUOTA_PENDIENTE: "Tu plan todavía no incluye este producto. Te avisamos en cuanto esté disponible.",
     PRODUCTO_NO_LISTO: "Estamos preparando el producto. Intenta abrirlo en unos minutos.",
     PRODUCTO_NO_DISPONIBLE: "Este producto todavía no está disponible.",
@@ -187,7 +187,10 @@ export const cuenta = {
         tipos: { argonauta: "Argonauta", argotipo: "Argotipo" },
         cambiarPlan: "Cambiar plan",
         actual: "Actual",
-        notaEquipo: "Subimos tu plan a Equipo al confirmar tu pago.",
+        notaPago: "Subimos tu plan al confirmar tu pago.",
+        sinPago: "Pago en línea pronto",
+        productosIncluidos: (activos: number, max: number | null) =>
+          max === null ? `${activos} productos activos · sin límite` : `${activos} de ${max} productos activos`,
         sinProductos: "Todavía no activas ningún producto.",
         sinEmpresa:
           "Cuando tu empresa esté conectada a AR2GO, aquí verás tu plan y los productos que tienes activos.",

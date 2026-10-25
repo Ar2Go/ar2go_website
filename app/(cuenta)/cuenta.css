@@ -1178,8 +1178,18 @@
   white-space: nowrap;
 }
 
+.suscripcion__resumen {
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-sm);
+}
+
 .suscripcion__cambiar {
   margin-top: 0.6rem;
+}
+
+.suscripcion__opcion--actual .suscripcion__pronto {
+  color: var(--color-gris);
 }
 
 .suscripcion__cambiar summary {
@@ -1197,10 +1207,10 @@
 
 .suscripcion__planes {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
   margin-top: 0.6rem;
-  max-width: 30rem;
+  max-width: 40rem;
 }
 
 .suscripcion__planes .suscripcion__nota {
@@ -1353,42 +1363,15 @@
   padding: 0.45rem 0.85rem;
 }
 
-.cinta__planes {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.cinta__planes legend {
-  padding: 0;
-  margin-bottom: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.cinta__limite {
+  font-size: var(--fs-xs);
   color: rgba(230, 233, 239, 0.74);
 }
 
-.cinta__planes .btn {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  white-space: normal;
-  text-align: left;
-}
-
-.cinta__planes .btn span {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  opacity: 0.85;
-}
-
-.cinta__planes small {
-  font-size: 0.6875rem;
-  line-height: 1.45;
-  color: rgba(230, 233, 239, 0.66);
+.cinta__limite a {
+  color: var(--color-azul-suave);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .cinta__nota {

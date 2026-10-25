@@ -139,7 +139,7 @@ Con `AR2GO_CUSTOMERS_URL` y `AR2GO_CUSTOMERS_SECRETO` configuradas, `/cuenta`
 deja de ser un cascarón:
 
 1. La primera vez pide el nombre de la empresa y la da de alta en
-   `ar2go-customers` (plan Explorar).
+   `ar2go-customers` (plan Explorador).
 2. Después muestra el plan y los productos: **Activar** (p. ej. HORIQ) y
    **Abrir**, que redirige al producto con un código de un solo uso (login único).
 

@@ -56,18 +56,18 @@ export default function MuestraPage() {
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Explorar</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Explorador</p>
             <p className={`mt-1 ${tipografia.precio}`}>$0</p>
           </Card>
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Equipo</p>
-            <p className={`mt-1 ${tipografia.precio}`}>$4,900</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Navegante</p>
+            <p className={`mt-1 ${tipografia.precio}`}>US$499</p>
           </Card>
           <Card>
             <p className={tipografia.eyebrow}>Tarjeta</p>
-            <p className={`mt-2 ${tipografia.h3}`}>Empresa</p>
-            <p className={`mt-1 ${tipografia.precio}`}>A medida</p>
+            <p className={`mt-2 ${tipografia.h3}`}>Timonel</p>
+            <p className={`mt-1 ${tipografia.precio}`}>US$999</p>
           </Card>
         </div>
       </Section>

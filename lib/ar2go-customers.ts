@@ -39,7 +39,9 @@ export type DocumentoLegal = {
 export type DocumentoPublico = Pick<DocumentoLegal, "slug" | "titulo" | "version" | "todo_legal" | "texto">;
 
 export type Resumen = {
-  empresa: { id: string; nombre: string; estado: string; plan: string; plan_nombre: string };
+  // max_productos: cuántos productos puede tener activos según su plan (D37);
+  // null = sin límite.
+  empresa: { id: string; nombre: string; estado: string; plan: string; plan_nombre: string; max_productos?: number | null };
   rol: string;
   productos: Producto[];
 };

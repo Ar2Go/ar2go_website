@@ -13,7 +13,7 @@ export const admin = {
   resumen: {
     empresas: "Empresas",
     sinEmpresa: "Sin empresa",
-    // "Explorar · 3"
+    // "Explorador · 3"
     porPlan: "Por plan",
   },
   empresas: {

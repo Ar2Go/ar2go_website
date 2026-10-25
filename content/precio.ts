@@ -1,56 +1,40 @@
-// Modelo de precios de autoservicio (Explorar/Equipo/Empresa) — reemplaza el
-// modelo anterior de implementación + renta de un solo proceso (CLAUDE.md
-// §1, decisión 2026-09-06, pivote de negocio). Montos confirmados como
-// reales por el dueño del proyecto, no son TODO_PRECIO.
+// Planes de AR2GO (D37, 2026-10-25, pedido de Héctor): Explorador, Navegante y
+// Timonel reemplazan a Explorar/Equipo/Empresa. El plan es de la empresa y
+// limita cuántos argonautas o argotipos tiene activos (ar2go-customers,
+// migración 0008). Montos confirmados por el dueño del proyecto.
 export const precio = {
   eyebrow: "Precios",
   titulo: "Precios claros, sin sorpresas al final del mes",
-  apoyo: "Empieza gratis con un agente. Cambias de plan cuando el consumo lo pida, no antes.",
+  apoyo: "Empieza gratis con un argonauta o argotipo. Cambias de plan cuando lo necesites, no antes.",
   planes: [
     {
-      nombre: "Explorar",
+      nombre: "Explorador",
       destacado: false,
       monto: "$0",
-      periodo: "para siempre",
-      para: "Para probar con un caso real antes de comprometer presupuesto.",
-      incluye: [
-        "1 agente activo",
-        "500 ejecuciones al mes",
-        "Conectores estándar",
-        "Historial de 7 días",
-      ],
+      periodo: "MXN, para siempre",
+      para: "Para probar AR2GO con un caso real antes de comprometer presupuesto.",
+      incluye: ["1 argonauta o argotipo activo", "HorIQ con hasta 10 trabajadores"],
       cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
     {
-      nombre: "Equipo",
+      nombre: "Navegante",
       destacado: true,
       badge: "El más elegido",
-      monto: "$4,900",
-      periodo: "MXN al mes",
-      para: "Para el área que ya tiene un proceso identificado y quiere escalarlo.",
-      incluye: [
-        "Hasta 10 agentes activos",
-        "25,000 ejecuciones al mes",
-        "Todos los conectores, incluido tu ERP",
-        "Ambientes de prueba y producción",
-        "Soporte en horario hábil",
-      ],
-      cta: { label: "Empezar 14 días gratis", href: "/crear-cuenta" },
+      monto: "US$499",
+      periodo: "al mes",
+      para: "Para la empresa que ya opera con AR2GO y quiere sumar otro frente.",
+      incluye: ["2 argonautas o argotipos activos", "HorIQ sin límite de trabajadores"],
+      cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
     {
-      nombre: "Empresa",
+      nombre: "Timonel",
       destacado: false,
-      monto: "A medida",
-      periodo: null,
-      para: "Para operaciones con requisitos regulatorios o despliegue en tu propia nube.",
-      incluye: [
-        "Agentes y ejecuciones sin límite",
-        "Despliegue en tu nube o en sitio",
-        "Inicio de sesión único y control de accesos",
-        "Acuerdo de nivel de servicio e ingeniero asignado",
-      ],
-      cta: { label: "Hablar con ventas", href: "#contacto" },
+      monto: "US$999",
+      periodo: "al mes",
+      para: "Para llevar toda la operación con AR2GO.",
+      incluye: ["Todos los argonautas y argotipos", "Sin límites de uso"],
+      cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
   ],
-  notaMeta: "Precios en pesos mexicanos, sin IVA. Una ejecución es cada vez que un agente completa una tarea.",
+  notaMeta: "Precios sin IVA. Explorador en pesos mexicanos; Navegante y Timonel en dólares estadounidenses.",
 } as const;

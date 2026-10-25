@@ -50,6 +50,7 @@ export default async function ConfiguracionPage() {
             empresa={datos?.empresa.nombre ?? null}
             plan={datos?.empresa.plan ?? null}
             planNombre={datos?.empresa.plan_nombre ?? null}
+            maxProductos={datos?.empresa.max_productos ?? null}
             productos={datos?.productos ?? []}
             puedeEditar={puedeEditar}
           />
