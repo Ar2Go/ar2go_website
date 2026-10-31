@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
+import { PantallaNavegando } from "@/components/cuenta/PantallaNavegando";
 import { apariencia } from "@/lib/clerk-appearance";
 import { cuenta } from "@/content/cuenta";
 import "./cuenta.css";
@@ -29,6 +30,10 @@ export default function CuentaLayout({ children }: { children: React.ReactNode }
       signUpForceRedirectUrl="/cuenta"
     >
       <div className="ar-cuenta">
+        {/* Vive en el layout y no en la página: Clerk cambia la URL en cada
+            paso (/iniciar-sesion/factor-one…) y la página se vuelve a montar;
+            el layout no, así que el barco solo sale al entrar. */}
+        <PantallaNavegando />
         {/* Mismo margen y tamaño que el logotipo del nav de la home
             (app/home.css §Navegación), sobre la foto igual que ahí. */}
         <Link href="/" className="cuenta__logo" aria-label={cuenta.volverAlSitio}>

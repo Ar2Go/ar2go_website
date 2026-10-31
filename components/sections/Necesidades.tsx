@@ -6,6 +6,8 @@ import { necesidades } from "@/content/necesidades";
 const { tabs } = necesidades;
 
 export function Necesidades() {
+  // El cursor sobre un tab lo elige igual que un clic, y se queda elegido
+  // aunque el cursor se vaya.
   const [activoId, setActivoId] = useState<(typeof tabs)[number]["id"]>(tabs[0].id);
   const idBase = useId();
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -53,6 +55,7 @@ export function Necesidades() {
                 aria-selected={activo}
                 tabIndex={activo ? 0 : -1}
                 onClick={() => setActivoId(tab.id)}
+                onMouseEnter={() => setActivoId(tab.id)}
                 onKeyDown={(evento) => alPresionarTecla(evento, indice)}
               >
                 {tab.tab}

@@ -87,10 +87,10 @@ Una sola página larga (`/`) más dos páginas legales (`/aviso-de-privacidad`, 
 3. 01 La tripulación (`Tripulacion.tsx`, `#agentes`): foto a sangre de fondo (`public/home/tripulacion.webp`, gradada con la receta de `public/acceso/landing.webp` y fundida arriba y abajo) con tarjetas de argonautas y argotipos; la tarjeta en foco (Argonautas de entrada, la que tiene el cursor o la elegida con clic, como Precios) lleva tinte y borde azules, sin bloque de azul sólido. Client component.
 4. 02 A bordo hoy (`ABordo.tsx`): fichas de Postio y Horiq con su mockup (cola de publicación, expediente digital).
 5. 03 En astillero (`Astillero.tsx`): foto a sangre de fondo (`public/acceso/landing.webp`, fundida arriba y abajo) y cuadrícula translúcida de 8 argonautas por zarpar, sin formulario.
-6. 04 Para cualquier negocio (`Necesidades.tsx`, client component): tabs por necesidad, sin nombrar productos ni industrias.
+6. 04 Para cualquier negocio (`Necesidades.tsx`, client component): tabs por necesidad, sin nombrar productos ni industrias. Tab y panel activos con tinte y borde azules; el cursor sobre un tab lo elige igual que un clic y se queda elegido aunque el cursor se vaya.
 7. 05 Nosotros (`Nosotros.tsx`, `#nosotros`): foto a sangre, "Software que no se usa. Trabaja." y las 4 etapas (Elige/Configura/Entrena/Zarpa) en `Etapas.tsx` (client component: la etapa en foco sigue al cursor o al clic, como Precios).
 8. 06 Precios (`Precios.tsx`, `#precios`), visible: Explorador $0 MXN, Navegante US$499 y Timonel US$999 al mes. La tarjeta en foco (Navegante de entrada, la que tiene el cursor o la elegida con clic) lleva borde y halo azules y su botón en azul sólido; client component.
-9. CTA final (`CtaFinal.tsx`): foto a sangre fundida con el fondo arriba y abajo, "Empezar gratis" y "Hablar con el equipo" (correo).
+9. CTA final (`CtaFinal.tsx`): foto a sangre fundida con el fondo arriba y abajo, "Empezar gratis".
 10. Pie (`HomeFooter.tsx`): logo, tagline, Producto/Empresa/Contacto (correo, ciudad, Instagram), ligas legales.
 
 Las secciones del modelo de negocio anterior (Problema, Producto, Control, Cómo empezamos, Próximos procesos, FAQ, formulario de demo) se retiraron de la home en el pivote — ver §11 para qué pasó con su código.

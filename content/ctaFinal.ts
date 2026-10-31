@@ -1,5 +1,3 @@
-import { site } from "@/content/site";
-
 export const ctaFinal = {
   eyebrow: "Listos para zarpar",
   titulo: "Tu primer tripulante empieza hoy.",
@@ -8,6 +6,5 @@ export const ctaFinal = {
   apoyo:
     "Crea tu cuenta gratis, elige a Postio o a Horiq y ponlo a trabajar en minutos. Sin tarjeta, sin implementación.",
   ctaPrimario: { label: "Empezar gratis", href: "/crear-cuenta" },
-  ctaSecundario: { label: "Hablar con el equipo", href: `mailto:${site.contacto.correo}` },
   imagen: "/home/cta.webp",
 } as const;
