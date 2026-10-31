@@ -26,7 +26,6 @@ export const footer = {
       titulo: "Empresa",
       enlaces: [
         { label: "Nosotros", href: "#nosotros" },
-        { label: "Seguridad", href: "#" },
       ],
     },
   ],

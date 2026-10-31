@@ -20,12 +20,6 @@ export function CtaFinal() {
             className="btn btn--primary btn--lg"
             icon
           />
-          <HomeCtaLink
-            href={ctaFinal.ctaSecundario.href}
-            section="cta_final"
-            label={ctaFinal.ctaSecundario.label}
-            className="btn btn--ghost btn--lg"
-          />
         </div>
       </div>
     </section>

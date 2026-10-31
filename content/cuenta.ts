@@ -144,6 +144,8 @@ export const cuenta = {
     aviso: { label: "aviso de privacidad", href: "/aviso-de-privacidad" },
   },
   volverAlSitio: "Volver al sitio",
+  // Pantalla de entrada de /iniciar-sesion y /crear-cuenta (PantallaNavegando).
+  navegando: "Navegando",
   // Nav de /cuenta (components/cuenta/CuentaLanding.tsx).
   landing: {
     inicio: "AR2GO, inicio",

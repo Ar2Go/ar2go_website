@@ -45,21 +45,42 @@
 }
 
 /* ─── Logotipo ───────────────────────────────
-   Mismo margen que el nav de la home (app/home.css: .nav con
-   inset 1.1rem y padding-inline clamp(1rem, 2.4vw, 2.75rem), logo de 26px
-   con la misma sombra). Va sobre la foto, como en el hero. */
-.ar-cuenta .cuenta__logo {
+   Mismo lugar y tamaño que el logo del nav de la home (app/home.css): la
+   barra empieza a 1.1rem del borde, con margen lateral clamp(1rem, 2.4vw,
+   2.75rem), y el logo va centrado en su alto (45px; 39px abajo de 900 px,
+   donde el logo baja a 23px). Lo comparten el logo de iniciar sesión y crear
+   cuenta, el de la pantalla "Navegando" y el de /cuenta. */
+.ar-cuenta {
+  --logo-arriba: 1.1rem;
+  --logo-lado: clamp(1rem, 2.4vw, 2.75rem);
+  --logo-caja: 45px;
+  --logo-alto: 26px;
+}
+@media (max-width: 900px) {
+  .ar-cuenta {
+    --logo-caja: 39px;
+    --logo-alto: 23px;
+  }
+}
+.ar-cuenta .cuenta__logo,
+.ar-cuenta .navegando-pantalla__logo,
+.ar-cuenta .landing__logo {
   position: absolute;
-  top: 1.1rem;
-  left: clamp(1rem, 2.4vw, 2.75rem);
+  top: var(--logo-arriba);
+  left: var(--logo-lado);
   z-index: 3;
   display: flex;
   align-items: center;
+  height: var(--logo-caja);
+}
+.ar-cuenta .cuenta__logo img,
+.ar-cuenta .navegando-pantalla__logo img,
+.ar-cuenta .landing__logo img {
+  display: block;
+  height: var(--logo-alto);
+  width: auto;
 }
 .ar-cuenta .cuenta__logo img {
-  display: block;
-  height: 26px;
-  width: auto;
   filter: drop-shadow(0 1px 12px rgba(11, 15, 25, 0.7));
 }
 
@@ -232,6 +253,72 @@
 .ar-cuenta .cuenta__legal a:hover {
   color: var(--color-papel);
 }
+/* Pantalla "Navegando" al entrar a /iniciar-sesion y /crear-cuenta: tapa
+   toda la página (logo, foto, textos y formulario) y se desvanece al irse. */
+.ar-cuenta .navegando-pantalla {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-fondo);
+  transition: opacity 0.4s ease;
+}
+.ar-cuenta .navegando-pantalla--sale {
+  opacity: 0;
+  pointer-events: none;
+}
+.ar-cuenta .navegando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-azul-suave);
+}
+.ar-cuenta .navegando svg {
+  width: 96px;
+  height: auto;
+  overflow: hidden;
+}
+.ar-cuenta .navegando__barco {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: navegando-mecer 2.4s ease-in-out infinite;
+}
+.ar-cuenta .navegando__olas {
+  animation: navegando-olas 1.6s linear infinite;
+}
+.ar-cuenta .navegando span {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gris);
+}
+@keyframes navegando-mecer {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(2px) rotate(4deg);
+  }
+}
+@keyframes navegando-olas {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-20px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-cuenta .navegando__barco,
+  .ar-cuenta .navegando__olas {
+    animation: none;
+  }
+}
+
 .ar-cuenta .cuenta__volver {
   font-size: var(--fs-xs);
   color: var(--color-gris);
@@ -562,16 +649,6 @@
     rgba(37, 99, 235, 0.22);
 }
 
-.landing__logo {
-  display: inline-flex;
-  align-self: flex-start;
-}
-
-.landing__logo img {
-  display: block;
-  height: 26px;
-  width: auto;
-}
 
 .landing__lema {
   margin-top: auto;
