@@ -39,7 +39,7 @@ const datosCambioEstado = z.object({
 });
 
 // Suspender, reactivar, cerrar o reabrir la empresa. Es una escritura real
-// hacia los productos (PUT a HorIQ), por eso pide motivo y confirmación.
+// hacia los productos (PUT a Horiq), por eso pide motivo y confirmación.
 export async function cambiarEstadoAccion(datos: FormData) {
   const operador = await operadorActual();
   const d = datosCambioEstado.safeParse(Object.fromEntries(datos));

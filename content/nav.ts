@@ -1,7 +1,7 @@
 export const nav = {
   links: [
     { label: "Resumen", href: "#inicio" },
-    { label: "Agentes", href: "#agentes" },
+    { label: "Tripulación", href: "#agentes" },
     { label: "Nosotros", href: "#nosotros" },
     { label: "Precios", href: "#precios" },
   ],
@@ -12,16 +12,14 @@ export const nav = {
 } as const;
 
 export const footer = {
-  tagline:
-    "Tecnología que te impulsa. Agentes de IA conectados a la operación real de tu empresa.",
+  tagline: "Argonautas y argotipos conectados a la operación real de tu empresa.",
   columnas: [
     {
       titulo: "Producto",
       enlaces: [
-        { label: "Agentes", href: "#agentes" },
+        { label: "Argonautas", href: "#agentes" },
+        { label: "Argotipos", href: "#agentes" },
         { label: "Precios", href: "#precios" },
-        { label: "Conectores", href: "#" },
-        { label: "Documentación", href: "#" },
       ],
     },
     {
@@ -29,8 +27,6 @@ export const footer = {
       enlaces: [
         { label: "Nosotros", href: "#nosotros" },
         { label: "Seguridad", href: "#" },
-        { label: "Blog", href: "#" },
-        { label: "Trabaja con nosotros", href: "#" },
       ],
     },
   ],

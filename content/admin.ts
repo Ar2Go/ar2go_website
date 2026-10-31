@@ -101,7 +101,7 @@ export const admin = {
   estado: {
     titulo: "Estado de la cuenta",
     apoyo:
-      "Se manda a cada producto como versión nueva y se aplica cuando lo confirma. Suspendida: solo lectura, sin Activar ni Abrir en /cuenta. Cerrada: sin acceso; los productos conservan los datos (HorIQ, 5 años) y se puede reabrir.",
+      "Se manda a cada producto como versión nueva y se aplica cuando lo confirma. Suspendida: solo lectura, sin Activar ni Abrir en /cuenta. Cerrada: sin acceso; los productos conservan los datos (Horiq, 5 años) y se puede reabrir.",
     motivo: "Motivo (queda en la bitácora)",
     ejemplo: "Falta de pago de octubre",
     confirmar: "Confirmo que es una empresa de prueba o que el cliente ya fue avisado.",
@@ -124,7 +124,7 @@ export const admin = {
   eliminar: {
     titulo: "Eliminar cliente (solo en pruebas)",
     apoyo:
-      "Borra todo y no se puede deshacer: en HorIQ, trabajadores, checadas, selfies y expedientes; en AR2GO, la empresa, su plan, productos y bitácora. Las personas conservan su cuenta y pueden dar de alta otra empresa.",
+      "Borra todo y no se puede deshacer: en Horiq, trabajadores, checadas, selfies y expedientes; en AR2GO, la empresa, su plan, productos y bitácora. Las personas conservan su cuenta y pueden dar de alta otra empresa.",
     confirmacion: "Escribe el nombre exacto de la empresa",
     motivo: "Motivo (queda en la bitácora general)",
     ejemplo: "Cuenta de prueba",

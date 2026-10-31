@@ -7,23 +7,19 @@ import { nav } from "@/content/nav";
 
 // Nav flotante de la home — misma lógica que el <script> de la maqueta:
 // (1) el toggle móvil abre/cierra nav__links vía nav__inner[data-open];
-// (2) un IntersectionObserver sobre el hero pone nav[data-stuck] cuando el
-// hero deja de estar casi completo en pantalla, para que la píldora se
-// funda en una barra sólida (ver .nav[data-stuck] en app/home.css).
+// (2) en cuanto la página se mueve del tope, nav[data-stuck] funde la
+// píldora en una barra sólida (ver .nav[data-stuck] en app/home.css), para
+// que el contenido no pase por debajo de la píldora transparente.
 export function HomeNav() {
   const [abierto, setAbierto] = useState(false);
   const [pegado, setPegado] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const hero = document.getElementById("inicio");
-    if (!hero || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(
-      (entradas) => setPegado(entradas[0].intersectionRatio < 0.12),
-      { threshold: [0, 0.12, 1] },
-    );
-    observer.observe(hero);
-    return () => observer.disconnect();
+    const revisar = () => setPegado(window.scrollY > 0);
+    revisar();
+    window.addEventListener("scroll", revisar, { passive: true });
+    return () => window.removeEventListener("scroll", revisar);
   }, []);
 
   return (
@@ -37,7 +33,7 @@ export function HomeNav() {
           className="nav__toggle"
           type="button"
           aria-expanded={abierto}
-          aria-label={abierto ? "Cerrar menú" : "Abrir menú"}
+          aria-label="Menú"
           onClick={() => setAbierto((valor) => !valor)}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round">

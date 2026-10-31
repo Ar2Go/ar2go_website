@@ -32,12 +32,9 @@ export function HomeFooter() {
               <li>
                 <a href={`mailto:${site.contacto.correo}`}>{site.contacto.correo}</a>
               </li>
-              <li>
-                <a href={site.contacto.telefonoHref}>{site.contacto.telefono}</a>
-              </li>
               <li>{site.contacto.ciudad}</li>
               <li>
-                <a href={site.contacto.linkedin}>LinkedIn</a>
+                <a href={site.contacto.instagram}>Instagram</a>
               </li>
             </ul>
           </div>

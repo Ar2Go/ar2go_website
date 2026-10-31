@@ -17,7 +17,7 @@ type Props = {
 
 // Productos de /cuenta (catálogo de ar2go-customers), en dos grupos según su
 // tipo en content/cuenta.ts: "Argonautas" (agentes autónomos, p. ej.
-// Postio) y "Argotipos" (herramientas, p. ej. HorIQ). Un grupo sin
+// Postio) y "Argotipos" (herramientas, p. ej. Horiq). Un grupo sin
 // productos no se pinta. Cada tarjeta dice lo que la persona puede hacer:
 // abrirlo con login único o activarlo dentro de su plan.
 export function CintaProductos({

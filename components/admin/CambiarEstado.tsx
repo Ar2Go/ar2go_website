@@ -8,7 +8,7 @@ type Props = { empresaId: string; estado: string; campo: string };
 
 // Tarjeta de /admin/empresas/[id] para suspender, reactivar, cerrar o reabrir
 // la empresa. Un formulario por acción disponible, cada uno con motivo y
-// casilla de confirmación: el cambio llega a los productos (PUT a HorIQ).
+// casilla de confirmación: el cambio llega a los productos (PUT a Horiq).
 export function CambiarEstado({ empresaId, estado, campo }: Props) {
   const t = admin.estado;
   const acciones = t.disponibles[estado] ?? [];

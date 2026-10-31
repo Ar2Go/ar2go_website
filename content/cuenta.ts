@@ -80,7 +80,7 @@ export const cuenta = {
   // Cómo se presenta cada producto del catálogo de ar2go-customers, por su
   // slug. Un producto sin entrada aquí se muestra con el nombre que trae.
   productos: {
-    horiq: { nombre: "HorIQ", tipo: "argotipo", descripcion: "Administra la asistencia de tu equipo" },
+    horiq: { nombre: "Horiq", tipo: "argotipo", descripcion: "Administra la asistencia de tu equipo" },
     postio: {
       nombre: "Postio",
       tipo: "argonauta",
@@ -101,7 +101,7 @@ export const cuenta = {
       "Actualizamos documentos que tu empresa ya había aceptado. Puedes seguir usando el producto; acepta la versión nueva para volver a activarlo si algún día lo cancelas.",
     version: "Versión",
     yaAceptado: "Ya aceptado",
-    // "Acepto los Términos de servicio de HorIQ en nombre de Panadería …"
+    // "Acepto los Términos de servicio de Horiq en nombre de Panadería …"
     casilla: (titulo: string, empresa: string) => `Acepto el documento «${titulo}» en nombre de ${empresa}.`,
     constancia:
       "Guardamos la constancia de tu aceptación: quién aceptó, la fecha, la dirección IP, la versión y la huella del texto.",

@@ -18,3 +18,10 @@ cumplen la regla de `CLAUDE.md` §3.
 | `agente-inventario.webp` | Tarjeta "Vigilan y avisan" |
 | `nosotros.webp` | Franja "Ingeniería, no una demo bonita" |
 | `cta.webp` | Franja de CTA final |
+| `tripulacion.webp` | Fondo de 01 La tripulación |
+
+`tripulacion.webp` (pico sobre un fiordo, Noruega) la aportó el dueño del
+proyecto el 2026-10-31, a color. Se gradó con la misma receta que
+`public/acceso/landing.webp` (ver su README): ancho 2400 px,
+`modulate({ saturation: 0.25, brightness: 0.74 })`,
+`tint({ r: 176, g: 196, b: 226 })`, `linear(0.86, 6)`, WebP calidad 82.
