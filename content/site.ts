@@ -12,10 +12,6 @@ const DOMINIO = "ar2go.io";
 // flujo de contacto lo vuelve a usar.
 const WHATSAPP_NUMERO = "TODO_WHATSAPP";
 
-// TODO_TELEFONO: número de contacto para el pie de página, aún no asignado
-// (la maqueta trae +52 55 0000 0000 como relleno, no un número real).
-const TELEFONO = "TODO_TELEFONO";
-
 export const site = {
   nombre: "AR2GO",
   dominio: DOMINIO,
@@ -26,10 +22,7 @@ export const site = {
   },
   contacto: {
     correo: `hola@${DOMINIO}`,
-    telefono: TELEFONO,
-    telefonoHref: `tel:+${TELEFONO}`,
     ciudad: "Ciudad de México",
-    // TODO_LINKEDIN: liga real de LinkedIn de la empresa, aún no creada.
-    linkedin: "TODO_LINKEDIN",
+    instagram: "https://www.instagram.com/ar2go.io/",
   },
 } as const;

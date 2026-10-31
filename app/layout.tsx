@@ -19,15 +19,16 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
+const TITULO = `${site.nombre} — Tu tripulación de IA para la PyME`;
 const DESCRIPCION =
-  "Agentes de IA que se contratan como a un empleado: permisos acotados, trabajo repetitivo automatizado y cada decisión registrada. Precio visible, empieza gratis.";
+  "Argonautas: agentes de IA que trabajan solos. Argotipos: software inteligente llave en mano. Postio para redes sociales y Horiq para el expediente digital de asistencia. Empieza gratis.";
 
 // site.url resuelve a https://ar2go.io (content/site.ts) — dominio real
 // desde 2026-09-06.
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.nombre} — Agentes de IA trabajando para ti`,
+    default: TITULO,
     template: `%s — ${site.nombre}`,
   },
   description: DESCRIPCION,
@@ -38,13 +39,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_MX",
     siteName: site.nombre,
-    title: `${site.nombre} — Agentes de IA trabajando para ti`,
+    title: TITULO,
     description: DESCRIPCION,
     url: site.url,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.nombre} — Agentes de IA trabajando para ti`,
+    title: TITULO,
     description: DESCRIPCION,
   },
 };

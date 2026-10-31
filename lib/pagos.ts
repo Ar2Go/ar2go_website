@@ -4,7 +4,7 @@
 // equipo de AR2GO sube el plan desde /admin al ver el pago (D36). Son links
 // del modo de PRUEBA de Stripe (tarjeta 4242 4242 4242 4242); no cobran.
 //
-// Navegante usa por ahora el link de prueba que se armó para HorIQ con el
+// Navegante usa por ahora el link de prueba que se armó para Horiq con el
 // plan Equipo (otro monto); faltan los links de US$499 y de Timonel (US$999).
 //
 // Un link de pago no es secreto: es la misma URL que vería quien paga.

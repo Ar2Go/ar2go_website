@@ -1179,7 +1179,7 @@
 }
 
 /* Interruptor de cada producto (components/cuenta/InterruptorProducto.tsx),
-   el mismo de HorIQ: encendido = activo. */
+   el mismo de Horiq: encendido = activo. */
 .interruptor {
   position: relative;
   flex: none;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Etapas } from "@/components/sections/Etapas";
 import { nosotros } from "@/content/nosotros";
 
 export function Nosotros() {
@@ -8,28 +9,22 @@ export function Nosotros() {
         <Image src="/home/nosotros.webp" alt="" fill sizes="100vw" />
       </div>
       <div className="wrap">
-        <h2>{nosotros.titulo}</h2>
-        <p>
-          {nosotros.parrafos.map((parrafo) => (
-            <span key={parrafo}>
-              {parrafo}
+        <div className="about__top">
+          <div>
+            <p className="eyebrow">{nosotros.eyebrow}</p>
+            <h2>
+              {nosotros.titulo}
               <br />
-            </span>
-          ))}
-          <strong>{nosotros.enfasis}</strong>
-        </p>
-        <p>{nosotros.descripcion}</p>
-        <p>{nosotros.cierre}</p>
-
-        <div className="steps">
-          {nosotros.pasos.map((paso) => (
-            <article className="step" key={paso.numero}>
-              <div className="step__n">{paso.numero}</div>
-              <h3>{paso.titulo}</h3>
-              <p>{paso.descripcion}</p>
-            </article>
-          ))}
+              <span className="accent">{nosotros.tituloAcento}</span>
+            </h2>
+          </div>
+          <div className="about__copy">
+            <p>{nosotros.descripcion}</p>
+            <p className="about__close">{nosotros.cierre}</p>
+          </div>
         </div>
+
+        <Etapas />
       </div>
     </section>
   );

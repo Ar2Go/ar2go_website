@@ -4,6 +4,7 @@
 |---|---|
 | `fiordo.webp` | Panel izquierdo de `/crear-cuenta` e `/iniciar-sesion` |
 | `landing.webp` | Fondo a sangre de `/cuenta` con sesión iniciada (`components/cuenta/CuentaLanding.tsx`) |
+| `landing.webp` (también) | Fondo de la sección En astillero de la home (`components/sections/Astillero.tsx`) |
 
 La carpeta se llama `acceso/` y no `cuenta/` porque `middleware.ts` protege
 `/cuenta/:path*`: un archivo servido desde `/cuenta/…` se redirige a iniciar
