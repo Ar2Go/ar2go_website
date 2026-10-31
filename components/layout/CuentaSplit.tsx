@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { hero } from "@/content/hero";
 import { cuenta } from "@/content/cuenta";
 
 type Props = {
@@ -39,12 +38,6 @@ export function CuentaSplit({ eyebrow, titulo, apoyo, children }: Props) {
         <p className="cuenta__eyebrow">{eyebrow}</p>
         <h1>{titulo}</h1>
         <p className="lede">{apoyo}</p>
-        {/* Cifras confirmadas como reales (CLAUDE.md §1); las mismas del pie
-            del hero, no un dato nuevo. */}
-        <p className="cuenta__foto-pie">
-          <b>{hero.pieAgentes}</b> {hero.pieAgentesEtiqueta} &nbsp;·&nbsp;{" "}
-          <b>{hero.pieDisponibilidad}</b> {hero.pieDisponibilidadEtiqueta}
-        </p>
       </aside>
 
       <main className="cuenta__panel">

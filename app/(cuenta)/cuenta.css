@@ -208,17 +208,6 @@
   font-size: 1.0625rem;
   text-shadow: 0 1px 16px rgba(11, 15, 25, 0.85);
 }
-.ar-cuenta .cuenta__foto-pie {
-  margin: clamp(1.8rem, 4vw, 3rem) 0 0;
-  padding-top: 1.4rem;
-  border-top: 1px solid rgba(230, 233, 239, 0.14);
-  font-size: var(--fs-xs);
-  color: var(--color-gris);
-}
-.ar-cuenta .cuenta__foto-pie b {
-  font-weight: 400;
-  color: var(--color-niebla);
-}
 
 /* ─── Columna de formulario ──────────────── */
 .ar-cuenta .cuenta__panel {
@@ -258,6 +247,7 @@
 .ar-cuenta .navegando-pantalla {
   position: fixed;
   inset: 0;
+  min-width: 375px;
   z-index: 100;
   display: grid;
   place-items: center;

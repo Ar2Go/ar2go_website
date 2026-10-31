@@ -150,6 +150,9 @@
 .ar-home .nav {
   position: fixed;
   inset: 1.1rem 0 auto;
+  /* Mismo ancho mínimo que body (app/globals.css): por ser fixed se mide
+     contra la ventana y, sin esto, seguiría encogiéndose. */
+  min-width: 375px;
   z-index: 70;
   pointer-events: none;
   padding-inline: clamp(1rem, 2.4vw, 2.75rem);
@@ -426,7 +429,7 @@
   color: var(--white);
 }
 
-/* Bitácora de a bordo */
+/* Bitácora a bordo */
 .ar-home .log {
   background: rgba(18, 24, 38, 0.82);
   border: 1px solid rgba(230, 233, 239, 0.14);
@@ -647,18 +650,20 @@
   border-radius: var(--r-pill);
   font-size: var(--fs-xs);
 }
-/* Tarjeta en foco (Argonautas de entrada, la que tiene el cursor o la
-   elegida con clic): tinte y borde azules, no un bloque de azul sólido. */
-.ar-home .family--featured {
+/* Tarjeta en foco, igual en toda la home (La tripulación, En astillero,
+   Nosotros y Precios; ver lib/useFoco.ts): tinte y borde azules, no un
+   bloque de azul sólido. El :is() le da más peso que el fondo propio de
+   cada tarjeta (.plan y .yard li van más abajo en este archivo). */
+.ar-home :is(.family, .plan, .step, .yard li).foco {
   background:
     linear-gradient(160deg, rgba(37, 99, 235, 0.16) 0%, rgba(37, 99, 235, 0.04) 60%),
     var(--surface-2);
   border-color: rgba(37, 99, 235, 0.45);
 }
-.ar-home .family--featured .family__top {
+.ar-home .family.foco .family__top {
   color: var(--blue-soft);
 }
-.ar-home .family--featured .chips li {
+.ar-home .family.foco .chips li {
   border-color: rgba(37, 99, 235, 0.45);
   color: var(--blue-soft);
 }
@@ -672,16 +677,25 @@
 .ar-home .spot {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "cuerpo mock"
+    "cta mock";
   background: var(--surface);
   border: 1px solid var(--hair);
   border-radius: var(--r-card);
   overflow: hidden;
 }
 .ar-home .spot__body {
+  grid-area: cuerpo;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: clamp(1.4rem, 2.6vw, 2rem);
+  padding: clamp(1.4rem, 2.6vw, 2rem) clamp(1.4rem, 2.6vw, 2rem) 0;
+}
+.ar-home .spot__cta {
+  grid-area: cta;
+  padding: 0 clamp(1.4rem, 2.6vw, 2rem) clamp(1.4rem, 2.6vw, 2rem);
 }
 .ar-home .spot__kind {
   display: flex;
@@ -746,10 +760,8 @@
   font-size: var(--fs-xs);
   color: var(--blue-soft);
 }
-.ar-home .spot__body .btn {
-  margin-top: auto;
-}
 .ar-home .spot__mock {
+  grid-area: mock;
   display: flex;
   align-items: center;
   padding: clamp(1.2rem, 2.4vw, 1.8rem);
@@ -908,14 +920,19 @@
   border-radius: var(--r-card);
   overflow: hidden;
 }
-/* Celdas translúcidas: la foto de fondo de la sección se asoma detrás. */
+/* Celdas translúcidas: la foto de fondo de la sección se asoma detrás. La
+   celda en foco usa .foco; el borde va por dentro (box-shadow) porque las
+   líneas de la cuadrícula son el hueco entre celdas. */
 .ar-home .yard li {
   padding: 1.5rem 1.4rem 1.7rem;
   background: rgba(11, 15, 25, 0.84);
-  transition: background 0.18s ease;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
-.ar-home .yard li:hover {
-  background: rgba(18, 24, 38, 0.92);
+.ar-home .yard li.foco {
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.45);
 }
 .ar-home .yard__top {
   display: flex;
@@ -936,10 +953,88 @@
 }
 
 /* ─── 04 Para cualquier PyME ─────────────── */
+/* Contenedor de los tabs: cuando no caben (móvil), desvanecidos y flechas
+   en los bordes avisan de qué lado hay más para deslizar. */
+.ar-home .pills-wrap {
+  position: relative;
+  margin-top: 2.4rem;
+}
+.ar-home .pills-wrap::before,
+.ar-home .pills-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+.ar-home .pills-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ink), transparent);
+}
+.ar-home .pills-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--ink) 30%, transparent);
+}
+.ar-home .pills-wrap[data-izq]::before,
+.ar-home .pills-wrap[data-der]::after {
+  opacity: 1;
+}
+.ar-home .pills__flecha {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: none;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: -1rem;
+  border: 1px solid rgba(37, 99, 235, 0.6);
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--blue-soft);
+}
+.ar-home .pills__flecha--der {
+  right: 0;
+  animation: ar-empujar 1.6s ease-in-out infinite;
+}
+.ar-home .pills__flecha--izq {
+  left: 0;
+  animation: ar-empujar-izq 1.6s ease-in-out infinite;
+}
+.ar-home .pills-wrap[data-der] .pills__flecha--der,
+.ar-home .pills-wrap[data-izq] .pills__flecha--izq {
+  display: grid;
+}
+.ar-home .pills__flecha svg {
+  width: 14px;
+  height: 14px;
+}
+@keyframes ar-empujar-izq {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+}
+@keyframes ar-empujar {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
 .ar-home .pills {
   display: flex;
   gap: 0.5rem;
-  margin: 2.4rem -4px 0;
+  margin: 0 -4px;
   padding: 4px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -1086,19 +1181,22 @@
   margin-top: 3.4rem;
 }
 .ar-home .step {
-  padding-top: 1.3rem;
+  padding: 1.3rem 1rem 1.2rem;
   border-top: 2px solid var(--hair-strong);
+  border-radius: 0 0 var(--r-btn) var(--r-btn);
   cursor: pointer;
-  transition: border-color 0.25s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
 }
-/* Etapa en foco (la elegida o la que tiene el cursor encima). */
-.ar-home .step--on {
+/* Etapa en foco: .foco, con la línea de arriba en azul sólido. */
+.ar-home .steps .step.foco {
   border-top-color: var(--blue);
 }
 .ar-home .step h3 {
   transition: color 0.25s ease;
 }
-.ar-home .step--on h3 {
+.ar-home .step.foco h3 {
   color: var(--white);
 }
 .ar-home .step__n {
@@ -1136,33 +1234,13 @@
   cursor: pointer;
   transition:
     background 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
-}
-/* Tarjeta en foco (la elegida o la que tiene el cursor encima): superficie
-   más clara, borde y halo azules; el azul sólido queda solo en su botón. */
-.ar-home .plan--pick {
-  background: var(--surface-2);
-  border-color: rgba(37, 99, 235, 0.6);
-  box-shadow:
-    0 0 0 1px rgba(37, 99, 235, 0.25),
-    0 28px 60px -30px rgba(37, 99, 235, 0.55);
-  transform: translateY(-4px);
+    border-color 0.25s ease;
 }
 .ar-home .plan__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.7rem;
-}
-.ar-home .plan__badge {
-  font-size: 0.6875rem;
-  color: var(--blue-soft);
-  border: 1px solid rgba(37, 99, 235, 0.4);
-  background: rgba(37, 99, 235, 0.14);
-  padding: 0.15rem 0.5rem;
-  border-radius: 5px;
 }
 .ar-home .plan__price {
   display: flex;
@@ -1318,9 +1396,25 @@
   .ar-home .hero__text {
     max-width: 40rem;
   }
+  .ar-home .spot {
+    grid-template-rows: auto;
+    grid-template-areas:
+      "cuerpo"
+      "mock"
+      "cta";
+  }
+  .ar-home .spot__body {
+    padding-bottom: clamp(1.4rem, 2.6vw, 2rem);
+  }
+  .ar-home .spot__list {
+    margin-bottom: 0;
+  }
   .ar-home .spot__mock {
     border-left: 0;
-    border-top: 1px solid var(--hair);
+    border-block: 1px solid var(--hair);
+  }
+  .ar-home .spot__cta {
+    padding-top: clamp(1.2rem, 2.4vw, 1.8rem);
   }
   .ar-home .yard,
   .ar-home .steps,
@@ -1374,6 +1468,16 @@
   }
 }
 @media (max-width: 760px) {
+  /* 03 En astillero más compacto en móvil. */
+  .ar-home .yard li {
+    padding: 1rem 1.1rem 1.15rem;
+  }
+  .ar-home .yard__top {
+    margin-bottom: 0.9rem;
+  }
+  .ar-home .yard h3 {
+    margin-bottom: 0.3rem;
+  }
   .ar-home .hero {
     min-height: auto;
   }

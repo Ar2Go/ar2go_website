@@ -4,8 +4,9 @@ import { aBordo } from "@/content/aBordo";
 
 type Producto = typeof aBordo.postio | typeof aBordo.horiq;
 
-// Ficha de producto a dos columnas: contenido a la izquierda y, a la
-// derecha, el mockup que le toque.
+// Ficha de producto a dos columnas: contenido y botón a la izquierda y, a la
+// derecha, el mockup que le toque. El botón va aparte del contenido para que,
+// en una columna (móvil), quede al final, después del mockup.
 function Ficha({ producto, boton, children }: { producto: Producto; boton: string; children: ReactNode }) {
   return (
     <article className="spot">
@@ -25,6 +26,9 @@ function Ficha({ producto, boton, children }: { producto: Producto; boton: strin
             </li>
           ))}
         </ol>
+      </div>
+      <div className="spot__mock">{children}</div>
+      <div className="spot__cta">
         <HomeCtaLink
           href={producto.cta.href}
           section={`a_bordo_${producto.nombre.toLowerCase()}`}
@@ -33,7 +37,6 @@ function Ficha({ producto, boton, children }: { producto: Producto; boton: strin
           icon
         />
       </div>
-      <div className="spot__mock">{children}</div>
     </article>
   );
 }

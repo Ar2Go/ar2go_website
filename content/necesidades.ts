@@ -6,6 +6,9 @@ export const necesidades = {
   apoyo:
     "Un despacho, una tienda, un taller o una clínica: cada uno con su propia forma de trabajar. Elige lo que hoy te quita más tiempo y mira cómo la tripulación te ayuda a resolverlo.",
   etiquetaItems: "Lo que tu tripulación hace por ti",
+  // Flechas que aparecen cuando los tabs no caben (móvil).
+  verMas: "Ver más necesidades",
+  verAnteriores: "Ver necesidades anteriores",
   tabs: [
     {
       id: "conocer",

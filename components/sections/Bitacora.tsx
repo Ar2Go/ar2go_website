@@ -12,7 +12,7 @@ function hora(indice: number) {
   return `${String(horas).padStart(2, "0")}:${String(minutos).padStart(2, "0")}`;
 }
 
-// Bitácora de a bordo del hero: cada intervaloMs entra una entrada arriba y
+// Bitácora a bordo del hero: cada intervaloMs entra una entrada arriba y
 // la más vieja sale. `ultima` es el índice absoluto de la entrada más
 // reciente; con él salen la hora y la entrada del loop. Con
 // prefers-reduced-motion no rota.

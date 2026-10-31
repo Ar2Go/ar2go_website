@@ -19,7 +19,6 @@ export const precio = {
     {
       nombre: "Navegante",
       destacado: true,
-      badge: "El más elegido",
       monto: "US$499",
       periodo: "al mes",
       para: "Para la empresa que ya opera con AR2GO y quiere abrir otro frente.",

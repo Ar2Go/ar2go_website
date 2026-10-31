@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import { astillero } from "@/content/astillero";
+import { useFoco } from "@/lib/useFoco";
 
+// Foco de tarjetas compartido (lib/useFoco.ts); de entrada, la primera.
 export function Astillero() {
+  const { enFoco, grupo, tarjeta } = useFoco(astillero.argonautas[0].numero);
+
   return (
     <section className="band--photo">
       <div className="photo-bed photo-bed--fade" aria-hidden="true">
@@ -14,9 +20,13 @@ export function Astillero() {
           <p className="lede">{astillero.apoyo}</p>
         </div>
 
-        <ul className="yard">
+        <ul className="yard" {...grupo}>
           {astillero.argonautas.map((argonauta) => (
-            <li key={argonauta.numero}>
+            <li
+              key={argonauta.numero}
+              className={argonauta.numero === enFoco ? "foco" : undefined}
+              {...tarjeta(argonauta.numero)}
+            >
               <div className="yard__top">
                 <span>{argonauta.numero}</span>
                 <span>{astillero.estado}</span>
