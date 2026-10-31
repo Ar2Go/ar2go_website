@@ -24,19 +24,12 @@ export const hero = {
     { etiqueta: "Argotipo a bordo", valor: "Horiq", descripcion: "checador virtual" },
     { etiqueta: "En astillero", valor: "8 argonautas", descripcion: "por zarpar" },
   ],
-
-  // Solo los usa el pie de la foto de /crear-cuenta e /iniciar-sesion
-  // (components/layout/CuentaSplit.tsx). La home ya no los muestra.
-  pieAgentes: "más de 150",
-  pieAgentesEtiqueta: "agentes en producción",
-  pieDisponibilidad: "99.95%",
-  pieDisponibilidadEtiqueta: "de disponibilidad",
 } as const;
 
-// Bitácora de a bordo del hero. Ilustrativa: rota en loop y habla por área,
+// Bitácora a bordo del hero. Ilustrativa: rota en loop y habla por área,
 // nunca por producto (no nombra a Postio ni a Horiq).
 export const bitacora = {
-  titulo: "Bitácora de a bordo",
+  titulo: "Bitácora a bordo",
   estado: "En vivo",
   // Hora de la primera entrada; avanza un minuto por entrada.
   horaInicial: { horas: 9, minutos: 2 },

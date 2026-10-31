@@ -46,7 +46,7 @@ export const aBordo = {
     mock: {
       titulo: "Expediente digital · Octubre",
       estado: "Listo para auditoría",
-      nombre: "Ana Ramírez Soto",
+      nombre: "Paola Rodríguez Quevedo",
       folio: "Exp. 00148 · Generado automáticamente",
       sello: "Sellado",
       metricas: [

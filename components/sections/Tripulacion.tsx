@@ -1,19 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { tripulacion } from "@/content/tripulacion";
+import { useFoco } from "@/lib/useFoco";
 
 const DESTACADA =
   tripulacion.familias.find((familia) => familia.destacada)?.nombre ?? tripulacion.familias[0].nombre;
 
-// Mismo comportamiento que Precios y las etapas de Nosotros: el foco sigue al
-// cursor y, al salir, vuelve a la tarjeta elegida con clic (de entrada,
-// Argonautas).
+// Foco de tarjetas compartido (lib/useFoco.ts); de entrada, Argonautas.
 export function Tripulacion() {
-  const [elegida, setElegida] = useState<string>(DESTACADA);
-  const [encima, setEncima] = useState<string | null>(null);
-  const enFoco = encima ?? elegida;
+  const { enFoco, grupo, tarjeta } = useFoco(DESTACADA);
 
   return (
     <section className="band--photo" id="agentes">
@@ -27,13 +23,12 @@ export function Tripulacion() {
           <p className="lede">{tripulacion.apoyo}</p>
         </div>
 
-        <div className="families" onMouseLeave={() => setEncima(null)}>
+        <div className="families" {...grupo}>
           {tripulacion.familias.map((familia) => (
             <article
-              className={`family${familia.nombre === enFoco ? " family--featured" : ""}`}
+              className={`family${familia.nombre === enFoco ? " foco" : ""}`}
               key={familia.nombre}
-              onMouseEnter={() => setEncima(familia.nombre)}
-              onClick={() => setElegida(familia.nombre)}
+              {...tarjeta(familia.nombre)}
             >
               <div className="family__top">
                 {familia.etiquetas.map((etiqueta) => (

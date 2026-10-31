@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { HomeCtaLink } from "@/components/analytics/HomeCtaLink";
 import { precio } from "@/content/precio";
+import { useFoco } from "@/lib/useFoco";
 
 function Check() {
   return (
@@ -14,12 +14,10 @@ function Check() {
 
 const DESTACADO = precio.planes.find((plan) => plan.destacado)?.nombre ?? precio.planes[0].nombre;
 
-// El foco sigue al cursor (o al teclado) y, al salir, vuelve a la tarjeta
-// elegida con clic; de entrada, la destacada (Navegante).
+// Foco de tarjetas compartido (lib/useFoco.ts); de entrada, la destacada
+// (Navegante). La tarjeta en foco lleva su botón en azul sólido.
 export function Precios() {
-  const [elegido, setElegido] = useState<string>(DESTACADO);
-  const [encima, setEncima] = useState<string | null>(null);
-  const enFoco = encima ?? elegido;
+  const { enFoco, grupo, tarjeta } = useFoco(DESTACADO);
 
   return (
     <section className="band band--tight" id="precios">
@@ -30,21 +28,17 @@ export function Precios() {
           <p className="lede">{precio.apoyo}</p>
         </div>
 
-        <div className="plans" onMouseLeave={() => setEncima(null)}>
+        <div className="plans" {...grupo}>
           {precio.planes.map((plan) => {
             const activo = plan.nombre === enFoco;
             return (
               <article
-                className={`plan${activo ? " plan--pick" : ""}`}
+                className={`plan${activo ? " foco" : ""}`}
                 key={plan.nombre}
-                onMouseEnter={() => setEncima(plan.nombre)}
-                onClick={() => setElegido(plan.nombre)}
-                onFocus={() => setEncima(plan.nombre)}
-                onBlur={() => setEncima(null)}
+                {...tarjeta(plan.nombre)}
               >
                 <div className="plan__top">
                   <h3>{plan.nombre}</h3>
-                  {"badge" in plan && plan.badge && <span className="plan__badge">{plan.badge}</span>}
                 </div>
                 <p className="plan__for">{plan.para}</p>
                 <div className="plan__price">

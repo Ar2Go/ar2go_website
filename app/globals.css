@@ -11,7 +11,7 @@
   /* Superficies — de más oscura a menos oscura */
   --color-fondo: #0b0f19; /* fondo base de toda página */
   --color-superficie: #121826; /* tarjetas, nav, franjas alternas */
-  --color-superficie-alta: #161d2e; /* tarjeta destacada (plan--pick) */
+  --color-superficie-alta: #161d2e; /* tarjeta en foco (.foco de la home) */
 
   /* Azul de marca — único acento de color del sitio */
   --color-azul: #2563eb; /* fondos: CTA primario, estados activos, iconos */
