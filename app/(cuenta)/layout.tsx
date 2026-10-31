@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ClerkProvider } from "@clerk/nextjs";
-import { esMX } from "@clerk/localizations";
+import { localizacion } from "@/lib/clerk-localizacion";
 import { PantallaNavegando } from "@/components/cuenta/PantallaNavegando";
 import { apariencia } from "@/lib/clerk-appearance";
 import { cuenta } from "@/content/cuenta";
@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 export default function CuentaLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider
-      localization={esMX}
+      localization={localizacion}
       appearance={apariencia}
       signInUrl="/iniciar-sesion"
       signUpUrl="/crear-cuenta"
