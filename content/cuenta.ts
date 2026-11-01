@@ -86,6 +86,8 @@ export const cuenta = {
       tipo: "argonauta",
       descripcion: "Argonautas que crean y publican el contenido de tus redes",
     },
+    // D40 de Ar2Go/Ar2Go
+    carive: { nombre: "Carive", tipo: "argotipo", descripcion: "Digitaliza tus diseños de bordado" },
   } as Record<string, { nombre: string; tipo: "argonauta" | "argotipo"; descripcion: string }>,
   // Aceptación de los documentos legales de la empresa antes de activar un
   // producto (D25 de Ar2Go/Ar2Go): app/(cuenta)/cuenta/legal/[producto]. Los
