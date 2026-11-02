@@ -337,6 +337,30 @@
   font-size: 13.5px;
   line-height: 20px;
 }
+.adm .aviso-cerrable {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.adm .aviso-cerrar {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px -4px 0;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.75;
+}
+.adm .aviso-cerrar:hover {
+  opacity: 1;
+  background: rgba(11, 15, 25, 0.06);
+}
 .adm .aviso.verde {
   background: var(--exito-claro);
   color: var(--exito);

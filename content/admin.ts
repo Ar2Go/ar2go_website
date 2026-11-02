@@ -4,6 +4,7 @@
 export const admin = {
   eyebrow: "Panel de administración",
   cerrarSesion: "Cerrar sesión",
+  cerrarAviso: "Cerrar aviso",
   // Barra lateral (components/admin/MenuAdmin.tsx), como la del panel de Horiq.
   menu: {
     boton: "Menú",
