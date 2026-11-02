@@ -9,7 +9,7 @@ const DESTACADA =
 
 // Foco de tarjetas compartido (lib/useFoco.ts); de entrada, Argonautas.
 export function Tripulacion() {
-  const { enFoco, grupo, tarjeta } = useFoco(DESTACADA);
+  const { enFoco, tarjeta } = useFoco(DESTACADA);
 
   return (
     <section className="band--photo" id="agentes">
@@ -23,7 +23,7 @@ export function Tripulacion() {
           <p className="lede">{tripulacion.apoyo}</p>
         </div>
 
-        <div className="families" {...grupo}>
+        <div className="families">
           {tripulacion.familias.map((familia) => (
             <article
               className={`family${familia.nombre === enFoco ? " foco" : ""}`}

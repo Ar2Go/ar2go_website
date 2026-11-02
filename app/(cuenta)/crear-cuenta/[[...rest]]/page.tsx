@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SignUp } from "@clerk/nextjs";
 import { CuentaSplit } from "@/components/layout/CuentaSplit";
 import { cuenta } from "@/content/cuenta";
+import { aCuentaSiHaySesion } from "@/lib/sesion-cuenta";
 
 export const metadata: Metadata = {
   title: "Crear cuenta",
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 // Ruta catch-all ([[...rest]]) porque Clerk monta sus pasos intermedios
 // (verificación de correo, callback de Google) como subrutas de esta misma
 // página con path routing — ver path="/crear-cuenta" abajo.
-export default function CrearCuentaPage() {
+export default async function CrearCuentaPage() {
+  await aCuentaSiHaySesion();
   return (
     <CuentaSplit
       eyebrow={cuenta.crear.eyebrow}

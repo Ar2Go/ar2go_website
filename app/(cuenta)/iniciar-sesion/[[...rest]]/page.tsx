@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SignIn } from "@clerk/nextjs";
 import { CuentaSplit } from "@/components/layout/CuentaSplit";
 import { cuenta } from "@/content/cuenta";
+import { aCuentaSiHaySesion } from "@/lib/sesion-cuenta";
 
 // noindex: la página de alta (/crear-cuenta) es la que interesa en buscadores;
 // esta existe para quien ya tiene cuenta y para el enlace "¿Ya tienes cuenta?"
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function IniciarSesionPage() {
+export default async function IniciarSesionPage() {
+  await aCuentaSiHaySesion();
   return (
     <CuentaSplit
       eyebrow={cuenta.iniciar.eyebrow}
