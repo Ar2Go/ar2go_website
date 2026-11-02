@@ -2,7 +2,8 @@ export const nav = {
   links: [
     { label: "Resumen", href: "#inicio" },
     { label: "Tripulación", href: "#agentes" },
-    { label: "Nosotros", href: "#nosotros" },
+    // Lleva a la sección 04 — Para cualquier negocio.
+    { label: "Soluciones", href: "#soluciones" },
     { label: "Precios", href: "#precios" },
   ],
   // Alta y acceso de clientes con Clerk (correo + Google) — distinto del

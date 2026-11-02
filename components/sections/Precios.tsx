@@ -63,7 +63,6 @@ export function Precios() {
             );
           })}
         </div>
-        <p className="plans__note">{precio.notaMeta}</p>
       </div>
     </section>
   );
