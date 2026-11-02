@@ -5,6 +5,7 @@ import { CintaProductos } from "@/components/cuenta/CintaProductos";
 import { cuenta } from "@/content/cuenta";
 import { ErrorCuenta, hayPlanoDeControl, misEmpresas, resumen, type Resumen } from "@/lib/ar2go-customers";
 import { borrarUsuarioClerk } from "@/lib/clerk-admin";
+import { redirect } from "next/navigation";
 import { personaActual } from "./persona";
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default async function CuentaPage({ searchParams }: Props) {
     // así no queda una cuenta a medias (los dominios no se pueden bloquear en Clerk por API).
     if (e instanceof ErrorCuenta && e.code === "CORREO_BLOQUEADO") {
       await borrarUsuarioClerk(p.persona.clerk_user_id);
-      return <CuentaLanding titulo={cuenta.bloqueado.titulo} apoyo={cuenta.bloqueado.apoyo} />;
+      redirect("/no-disponible");
     }
     console.error("[cuenta] ar2go-customers no respondió:", e);
     sinServicio = true;
