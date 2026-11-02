@@ -1,4 +1,5 @@
 import { admin } from "@/content/admin";
+import { AvisoAdmin } from "./AvisoAdmin";
 
 type Props = {
   titulo: string;
@@ -30,10 +31,10 @@ export function TituloAdmin({ titulo, apoyo, aviso, detalleAviso, acciones }: Pr
         {acciones}
       </div>
       {textoAviso && (
-        <div role={esExito ? "status" : "alert"} className={`aviso ${esExito ? "verde" : "rojo"}`}>
+        <AvisoAdmin exito={esExito}>
           {textoAviso}
           {detalleAviso && <b style={{ display: "block", marginTop: 4, overflowWrap: "anywhere" }}>{detalleAviso}</b>}
-        </div>
+        </AvisoAdmin>
       )}
     </>
   );
