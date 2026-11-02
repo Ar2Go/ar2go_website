@@ -4,6 +4,17 @@
 export const admin = {
   eyebrow: "Panel de administración",
   cerrarSesion: "Cerrar sesión",
+  // Barra lateral (components/admin/MenuAdmin.tsx), como la del panel de Horiq.
+  menu: {
+    boton: "Menú",
+    clientes: "Clientes",
+    pendientes: "Pendientes",
+    sinEmpresa: "Sin empresa",
+    seguridad: "Seguridad",
+    porConfirmar: "por confirmar",
+    equipo: "Equipo AR2GO",
+    rol: "Administración",
+  },
   sinConfigurar: {
     titulo: "Falta conectar ar2go-customers",
     apoyo:
@@ -13,12 +24,17 @@ export const admin = {
   resumen: {
     empresas: "Empresas",
     sinEmpresa: "Sin empresa",
+    sinEmpresaApoyo: "Entraron y no dieron de alta su empresa",
+    activas: "activas",
     // "Explorador · 3"
     porPlan: "Por plan",
   },
   empresas: {
     titulo: "Clientes",
-    apoyo: "Empresas dadas de alta en /cuenta, la más reciente primero.",
+    apoyo: "empresas dadas de alta en /cuenta",
+    lista: "Empresas, la más reciente primero",
+    empresa: "empresa",
+    empresasPlural: "empresas",
     vacio: "Todavía no hay empresas.",
     columnas: {
       nombre: "Empresa",
@@ -33,6 +49,7 @@ export const admin = {
   },
   sinEmpresa: {
     titulo: "Entraron a /cuenta sin dar de alta su empresa",
+    subtitulo: "personas sin empresa en AR2GO",
     apoyo:
       "Personas que iniciaron sesión y no terminaron el alta. Quien se registró en Clerk y nunca llegó a /cuenta no aparece aquí.",
     vacio: "Nadie pendiente.",
@@ -42,6 +59,9 @@ export const admin = {
     volver: "Todos los clientes",
     datos: "Datos",
     campos: {
+      empresa: "Empresa",
+      correo: "Correo",
+      responsable: "Responsable",
       alta: "Alta",
       estado: "Estado",
       plan: "Plan",
@@ -50,6 +70,7 @@ export const admin = {
       id: "ID",
     },
     miembros: "Personas de la empresa",
+    columnasMiembros: { nombre: "Nombre", rol: "Rol", alta: "Alta" },
     suscripciones: "Productos",
     sinSuscripciones: "No ha activado productos.",
     columnasSuscripcion: {
@@ -72,6 +93,8 @@ export const admin = {
       "Términos y contrato de encargo que la empresa acepta en /cuenta antes de activar un producto. Cada constancia guarda la huella del texto que vio la persona.",
     exigida: "Activar exige aceptarlos (LEGAL_EXIGE_ACEPTACION encendida).",
     noExigida: "Activar todavía no exige aceptarlos (LEGAL_EXIGE_ACEPTACION apagada).",
+    exigidaCorta: "Exigida",
+    noExigidaCorta: "No exigida",
     // "terminos-horiq 0.2 tiene 9 marcas TODO_LEGAL"
     todoLegal: (doc: string, version: string, n: number) =>
       `${doc} ${version} tiene ${n} ${n === 1 ? "marca" : "marcas"} TODO_LEGAL: no se publica a clientes reales.`,
@@ -98,8 +121,33 @@ export const admin = {
   },
   // Ciclo de vida de la empresa (ar2go-customers, src/cicloVida.ts). Las
   // acciones que se ofrecen dependen del estado actual.
+  // Seguridad (app/admin/(panel)/seguridad): correos y dominios bloqueados.
+  seguridad: {
+    titulo: "Seguridad",
+    subtitulo: "correos y dominios que no pueden crear una cuenta",
+    lista: "Correos y dominios bloqueados",
+    campo: "Correo o dominio",
+    ejemplo: "persona@correo.com o @dominio.com",
+    agregar: "Bloquear",
+    vacio: "No hay correos ni dominios bloqueados.",
+    correo: "Correo",
+    dominio: "Dominio",
+    enClerk: "Bloqueado",
+    sinClerk: "No se pudo bloquear",
+    alEntrar: "Se borra al entrar",
+    quitar: "Quitar",
+    columnas: { valor: "Correo o dominio", tipo: "Tipo", clerk: "Clerk", quien: "Agregó", fecha: "Fecha", accion: "" },
+  },
+  // Herramientas habilitadas (components/admin/Herramientas.tsx).
+  herramientas: {
+    titulo: "Herramientas habilitadas",
+    noDisponible: "No configurada",
+    pendiente: "Por confirmar",
+  },
   estado: {
-    titulo: "Estado de la cuenta",
+    titulo: "Activar o desactivar cuenta",
+    activar: "Activar cuenta",
+    desactivar: "Desactivar cuenta",
     apoyo:
       "Se manda a cada producto como versión nueva y se aplica cuando lo confirma. Suspendida: solo lectura, sin Activar ni Abrir en /cuenta. Cerrada: sin acceso; los productos conservan los datos (Horiq, 5 años) y se puede reabrir.",
     motivo: "Motivo (queda en la bitácora)",
@@ -122,16 +170,17 @@ export const admin = {
   // aparece mientras ar2go-customers lo permite (ADMIN_PERMITE_ELIMINAR=si):
   // es para limpiar cuentas de prueba y se apaga antes de tener clientes reales.
   eliminar: {
-    titulo: "Eliminar cliente (solo en pruebas)",
+    titulo: "Eliminar cuenta",
     apoyo:
-      "Borra todo y no se puede deshacer: en Horiq, trabajadores, checadas, selfies y expedientes; en AR2GO, la empresa, su plan, productos y bitácora. Las personas conservan su cuenta y pueden dar de alta otra empresa.",
-    confirmacion: "Escribe el nombre exacto de la empresa",
+      "Borra todo y no se puede deshacer: en Horiq, trabajadores, checadas, selfies y expedientes; en AR2GO, la empresa, su plan, productos y bitácora. En Clerk, la cuenta de cada persona que no esté en otra empresa y la organización.",
     motivo: "Motivo (queda en la bitácora general)",
     ejemplo: "Cuenta de prueba",
     enviar: "Eliminar para siempre",
   },
   pendientes: {
     titulo: "Cambios pendientes de confirmar",
+    subtitulo: "versiones que un producto no ha confirmado",
+    porConfirmar: "por confirmar",
     apoyo:
       "Versiones que algún producto todavía no confirma. ar2go-customers las reintenta solo cada 15 minutos con espera creciente; a los 6 intentos, o si el producto las rechaza, se detiene y requieren que alguien las revise.",
     vacio: "Todo confirmado.",
@@ -150,7 +199,13 @@ export const admin = {
     reintentar: "Reintentar ahora",
   },
   avisos: {
-    EMPRESA_ELIMINADA: "Cliente eliminado por completo, en AR2GO y en sus productos.",
+    EMPRESA_ELIMINADA: "Cliente eliminado por completo: en AR2GO, en sus productos y en Clerk.",
+    BLOQUEO_INVALIDO: "Escribe un correo (persona@correo.com) o un dominio (@dominio.com).",
+    BLOQUEO_NO_ENCONTRADO: "Ese bloqueo ya no existe.",
+    CLERK_SIN_BLOQUEO:
+      "Quedó bloqueado en AR2GO, pero Clerk no lo agregó a su lista de bloqueo. Si se registra, se borra de Clerk al entrar a /cuenta.",
+    CLERK_PENDIENTE:
+      "Cliente eliminado en AR2GO y en sus productos, pero Clerk no borró todo. Bórralo a mano en el panel de Clerk:",
     ELIMINAR_DESACTIVADO: "El borrado total está desactivado en ar2go-customers (ADMIN_PERMITE_ELIMINAR).",
     CONFIRMACION_INVALIDA: "El nombre no coincide. Escribe el nombre exacto de la empresa para eliminarla.",
     PRODUCTO_NO_ELIMINO:
@@ -159,7 +214,10 @@ export const admin = {
     SUSCRIPCION_NO_ENCONTRADA: "No existe esa suscripción.",
     ESTADO_CAMBIADO: "Estado cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
     TRANSICION_INVALIDA: "Esa acción no aplica al estado actual de la empresa. Recarga la página.",
-    EMPRESA_CERRADA: "La empresa está cerrada: reábrela antes de cambiarle el plan.",
+    EMPRESA_CERRADA: "La cuenta está cerrada: actívala antes de hacer cambios.",
+    EMPRESA_SUSPENDIDA: "La cuenta está desactivada: actívala antes de cambiar sus herramientas.",
+    PRODUCTO_NO_DISPONIBLE: "Esa herramienta no está configurada en este ambiente.",
+    CUOTA_PENDIENTE: "El plan de la empresa no incluye esa herramienta.",
     CONFIRMACION_FALTANTE: "Marca la casilla de confirmación antes de cambiar el estado.",
     PLAN_CAMBIADO: "Plan cambiado. Revisa abajo que cada producto haya confirmado la versión nueva.",
     MOTIVO_INVALIDO: "Escribe un motivo de al menos 3 caracteres.",
@@ -172,7 +230,11 @@ export const admin = {
   // Cómo se lee cada acción de la bitácora de ar2go-customers.
   acciones: {
     CREAR_EMPRESA: "Alta de la empresa",
-    ACTIVAR_PRODUCTO: "Activó un producto",
+    ACTIVAR_PRODUCTO: "Habilitó una herramienta",
+    BLOQUEAR_ACCESO: "Bloqueó un correo o dominio",
+    DESBLOQUEAR_ACCESO: "Quitó un bloqueo",
+    DESACTIVAR_PRODUCTO: "Deshabilitó una herramienta",
+    FIJAR_SELECCION: "Quedó fija la selección de herramientas",
     APROVISIONAR: "Aprovisionamiento al producto",
     CAMBIAR_PLAN: "Cambio de plan",
     SUSPENDER_EMPRESA: "Suspendió la empresa",

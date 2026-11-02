@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
 // Lista blanca explícita. Es la única condición real de acceso: aunque el
@@ -17,15 +18,30 @@ const CORREOS_ADMIN = ["ar2gon.2026@gmail.com", "juand86@gmail.com", "h.gonzja@g
 export const esCorreoAdmin = (correo: string | null | undefined) =>
   typeof correo === "string" && CORREOS_ADMIN.includes(correo.trim().toLowerCase());
 
+// "Entrar en local": solo con `next dev`, que es el único modo con
+// NODE_ENV=development (el build de Vercel, Preview incluido, es production).
+// En local no hay cliente OAuth de Google; entra como Héctor contra el
+// ar2go-customers local (`npm run dev` allá, base PGlite con datos ficticios).
+export const hayEntradaLocal = process.env.NODE_ENV === "development";
+const CORREO_LOCAL = "h.gonzja@gmail.com";
+
+const entradaLocal = Credentials({
+  id: "local",
+  name: "Local",
+  credentials: {},
+  authorize: () => (hayEntradaLocal ? { email: CORREO_LOCAL, name: "Entrada local" } : null),
+});
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
+  providers: hayEntradaLocal ? [Google, entradaLocal] : [Google],
   trustHost: true,
   pages: {
     signIn: "/admin/login",
     error: "/admin/login",
   },
   callbacks: {
-    signIn({ profile }) {
+    signIn({ account, profile, user }) {
+      if (account?.provider === "local") return hayEntradaLocal && user.email === CORREO_LOCAL;
       return profile?.email_verified === true && esCorreoAdmin(profile.email);
     },
   },

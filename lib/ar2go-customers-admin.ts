@@ -46,6 +46,8 @@ export type DetalleEmpresa = {
     intentos?: number;
     requiere_atencion?: boolean;
   }[];
+  // Herramientas del catálogo; disponible = configurada en ese ambiente (se puede habilitar).
+  productos?: { slug: string; nombre: string; disponible: boolean }[];
   bitacora: { actor: string; accion: string; detalle: Record<string, unknown>; created_at: string }[];
   planes: { slug: string; nombre: string; precio_mensual_centavos: number | null }[];
   // Si ar2go-customers permite el borrado total (ADMIN_PERMITE_ELIMINAR=si, solo en pruebas).
@@ -122,9 +124,14 @@ export type AccionEmpresa = "SUSPENDER" | "REACTIVAR" | "CERRAR" | "REABRIR";
 export const cambiarEstado = (operador: string, empresaId: string, accion: AccionEmpresa, motivo: string) =>
   llamar<DetalleEmpresa>("/v1/admin/empresas/cambiar-estado", operador, { empresa_id: empresaId, accion, motivo });
 
+// Habilitar o deshabilitar una herramienta de la empresa (sin lista blanca ni límite del plan).
+export const cambiarProducto = (operador: string, empresaId: string, producto: string, habilitar: boolean) =>
+  llamar<DetalleEmpresa>("/v1/admin/empresas/producto", operador, { empresa_id: empresaId, producto, habilitar });
+
 // Borrado total (solo en pruebas): primero en cada producto, después en ar2go-customers.
 export const eliminarEmpresa = (operador: string, empresaId: string, confirmacion: string, motivo: string) =>
-  llamar<{ eliminada: true }>("/v1/admin/empresas/eliminar", operador, { empresa_id: empresaId, confirmacion, motivo });
+  llamar<{ eliminada: true; clerk?: { organizacion: string | null; usuarios: string[] } }>(
+    "/v1/admin/empresas/eliminar", operador, { empresa_id: empresaId, confirmacion, motivo });
 
 export const cambiosPendientes = (operador: string) =>
   llamar<{ pendientes: CambioPendiente[] }>("/v1/admin/pendientes", operador);
@@ -134,3 +141,15 @@ export const reintentar = (operador: string, suscripcionId: string) =>
 
 export const personasSinEmpresa = (operador: string) =>
   llamar<{ usuarios: PersonaSinEmpresa[] }>("/v1/admin/usuarios/sin-empresa", operador);
+
+// Seguridad: correos (ana@x.com) y dominios (@x.com) que no pueden crear ni usar una cuenta.
+export type Bloqueo = { id: string; valor: string; clerk_id: string | null; creado_por: string; created_at: string };
+
+export const listarBloqueos = (operador: string) =>
+  llamar<{ bloqueos: Bloqueo[] }>("/v1/admin/bloqueos/listar", operador);
+
+export const agregarBloqueo = (operador: string, valor: string, clerkId?: string) =>
+  llamar<{ bloqueos: Bloqueo[] }>("/v1/admin/bloqueos/agregar", operador, { valor, clerk_id: clerkId });
+
+export const quitarBloqueo = (operador: string, id: string) =>
+  llamar<{ quitado: { valor: string; clerk_id: string | null } }>("/v1/admin/bloqueos/quitar", operador, { id });

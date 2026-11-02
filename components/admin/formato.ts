@@ -8,10 +8,14 @@ const formatoFecha = new Intl.DateTimeFormat("es-MX", {
 
 export const fecha = (iso: string | null | undefined) => (iso ? formatoFecha.format(new Date(iso)) : "—");
 
-// Estados del plano de control con color funcional solo cuando significan
-// algo (docs/brand.md: --color-exito / --color-error, nunca decorativos).
-export function claseEstado(estado: string): string {
-  if (estado === "ACTIVA" || estado === "AL_CORRIENTE") return "text-exito";
-  if (["SUSPENDIDA", "CANCELADA", "CERRADA", "VENCIDO", "ELIMINADA"].includes(estado)) return "text-error";
-  return "text-gris";
+// Pastilla de estado con los colores del panel de Horiq (app/admin/admin.css).
+export function badgeEstado(estado: string): string {
+  if (estado === "ACTIVA" || estado === "AL_CORRIENTE") return "badge verde";
+  if (estado === "SUSPENDIDA" || estado === "VENCIDO") return "badge ambar";
+  if (["CANCELADA", "CERRADA", "ELIMINADA"].includes(estado)) return "badge rojo";
+  return "badge";
 }
+
+// "ACTIVA" → "Activa"; "AL_CORRIENTE" → "Al corriente".
+export const textoEstado = (estado: string) =>
+  estado.charAt(0) + estado.slice(1).toLowerCase().replaceAll("_", " ");

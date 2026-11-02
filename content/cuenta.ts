@@ -118,6 +118,11 @@ export const cuenta = {
     // En la tarjeta del producto activo con una versión nueva pendiente.
     nuevaVersion: "Documentos nuevos por aceptar",
   },
+  // Correo o dominio bloqueado desde Seguridad en /admin: su usuario ya se borró de Clerk.
+  bloqueado: {
+    titulo: "No es posible usar AR2GO con este correo",
+    apoyo: "Si crees que es un error, escríbenos a hola@ar2go.io.",
+  },
   // Mensajes para los códigos de error de ar2go-customers que puede ver la persona.
   avisos: {
     EMPRESA_SUSPENDIDA: "Tu cuenta está suspendida: no puedes activar ni abrir productos. Escríbenos para resolverlo.",
