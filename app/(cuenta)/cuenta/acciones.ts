@@ -18,6 +18,7 @@ import {
   lanzarProducto,
   misEmpresas,
   renombrarEmpresa,
+  solicitarProducto,
 } from "@/lib/ar2go-customers";
 import { urlPago } from "@/lib/pagos";
 import { personaActual } from "./persona";
@@ -105,6 +106,22 @@ export async function activarAccion(datos: FormData) {
   } catch (e) {
     // Con la regla encendida en ar2go-customers, primero se aceptan los documentos.
     if (e instanceof ErrorCuenta && e.code === "ACEPTACION_PENDIENTE") aAceptar(producto.data!);
+    if (e instanceof ErrorCuenta) conAviso(e.code);
+    throw e; // redirect() de Next se propaga
+  }
+  redirect(destino(datos));
+}
+
+// Plan Explorador: "Solicitar acceso". La solicitud espera en Pendientes de /admin; quien la
+// aprueba le da 2 meses de prueba.
+export async function solicitarAccion(datos: FormData) {
+  const producto = slugProducto.safeParse(datos.get("producto"));
+  if (!producto.success) conAviso("general");
+  try {
+    const c = await contexto();
+    if (!c.empresaId) redirect("/cuenta");
+    await solicitarProducto(c.persona, c.empresaId, producto.data!);
+  } catch (e) {
     if (e instanceof ErrorCuenta) conAviso(e.code);
     throw e; // redirect() de Next se propaga
   }

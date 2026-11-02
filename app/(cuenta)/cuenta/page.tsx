@@ -84,6 +84,7 @@ export default async function CuentaPage({ searchParams }: Props) {
             puedeActivar={puedeActivar}
             maxProductos={datos.empresa.max_productos ?? null}
             bloqueo={estadoEmpresa?.nota}
+            requiereSolicitud={!!datos.empresa.requiere_solicitud}
           />
       }
     >

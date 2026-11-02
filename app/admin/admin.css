@@ -255,6 +255,13 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.adm .fila-enlace {
+  cursor: pointer;
+}
+.adm .fila-enlace:hover,
+.adm .fila-enlace:hover td {
+  background: var(--superficie);
+}
 .adm .kv {
   display: flex;
   justify-content: space-between;

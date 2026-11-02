@@ -362,6 +362,12 @@
     border-color 0.18s ease,
     color 0.18s ease;
 }
+/* Inhabilitado (p. ej. "Solicitar acceso" con otra solicitud esperando en Explorador). */
+.ar-cuenta .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .ar-cuenta .btn--primary {
   background: var(--color-azul);
   color: var(--color-papel);
@@ -1294,10 +1300,6 @@
   margin-top: 0.6rem;
 }
 
-.suscripcion__opcion--actual .suscripcion__pronto {
-  color: var(--color-gris);
-}
-
 .suscripcion__cambiar summary {
   display: inline-block;
   font-size: var(--fs-xs);
@@ -1323,37 +1325,75 @@
   grid-column: 1 / -1;
 }
 
+/* Opciones de plan: las tres con la misma forma y tamaño (la cuadrícula las estira a la misma altura).
+   Nombre, detalle y una línea de estado al fondo. */
 .suscripcion__opcion {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.15rem;
-  padding: 0.55rem 0.85rem;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
   font-size: var(--fs-xs);
-  font-weight: 500;
   text-align: left;
   white-space: normal;
+  color: var(--color-niebla);
+  background: transparent;
+  border: 1px solid var(--hair-strong);
   border-radius: var(--radius-btn);
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.suscripcion__opcion span,
-.suscripcion__opcion small {
-  font-weight: 400;
+.suscripcion__opcion strong {
+  font-weight: 500;
+  color: var(--color-papel);
+}
+
+.suscripcion__opcion span {
   font-size: 0.6875rem;
   opacity: 0.8;
 }
 
+.suscripcion__opcion small {
+  margin-top: auto;
+  padding-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gris);
+}
+
+/* El plan contratado: en contraste, con el azul de marca. */
 .suscripcion__opcion--actual {
-  color: var(--color-niebla);
-  border: 1px solid var(--hair-strong);
+  background: rgba(37, 99, 235, 0.16);
+  border-color: var(--color-azul);
 }
 
 .suscripcion__opcion--actual small {
-  font-family: var(--font-mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-exito);
-  opacity: 1;
+  color: var(--color-azul-suave);
+}
+
+/* Los demás: neutros, con hover. Con link de pago se pueden elegir; sin él solo lo avisan. */
+.suscripcion__opcion--elegible {
+  cursor: pointer;
+}
+
+.suscripcion__opcion--elegible small {
+  color: var(--color-azul-suave);
+}
+
+.suscripcion__opcion--elegible:hover,
+.suscripcion__opcion--pronto:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(230, 233, 239, 0.4);
+}
+
+.suscripcion__opcion--elegible:focus-visible {
+  outline: 2px solid var(--color-azul);
+  outline-offset: 2px;
 }
 
 @media (max-width: 520px) {
@@ -1425,6 +1465,9 @@
 
 /* Tarjeta compacta: nombre y estado, descripción corta y la acción. */
 .cinta__tarjeta {
+  /* Misma altura en Argonautas y Argotipos (son dos cuadrículas), tenga o no botón o pie: la de la
+     tarjeta más completa (descripción de dos líneas, botón y pie). */
+  min-height: 13rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -1445,23 +1488,41 @@
 }
 
 .cinta__desc {
-  margin: 0;
+  /* Aire antes de la línea del pie. */
+  margin: 0 0 0.4rem;
   font-size: var(--fs-xs);
   line-height: 1.5;
   color: rgba(230, 233, 239, 0.74);
 }
 
+/* Botón de la tarjeta, justo bajo la descripción (arriba de la línea del pie), a la derecha. */
 .cinta__accion {
-  margin-top: auto;
-  padding-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.15rem;
 }
+
+/* Pie de la tarjeta: estado del plan (prueba, límite, solicitud, próximamente), bajo una línea
+   delgada para no competir con la descripción. Siempre al fondo de la tarjeta. */
+.cinta__pie {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
 
 .cinta__accion .btn {
   padding: 0.45rem 0.85rem;
 }
 
 .cinta__limite {
+  display: block;
   font-size: var(--fs-xs);
+  line-height: 1.5;
   color: rgba(230, 233, 239, 0.74);
 }
 
@@ -1469,6 +1530,14 @@
   color: var(--color-azul-suave);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Plan Explorador: hasta cuándo dura el acceso de prueba, en el pie de la tarjeta. */
+.cinta__prueba {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(230, 233, 239, 0.6);
 }
 
 .cinta__nota {

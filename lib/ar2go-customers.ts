@@ -21,6 +21,10 @@ export type Producto = {
   // Documentos legales de la empresa que faltan por aceptar (D25, desde
   // ar2go-customers#11). Con `exigida`, Activar responde ACEPTACION_PENDIENTE.
   legal?: { exigida: boolean; pendientes: { slug: string; titulo: string; version: string }[] };
+  // Plan Explorador: fecha de la solicitud de acceso que espera al equipo, y hasta cuándo dura el
+  // acceso de prueba de 2 meses que dio el equipo (null = sin vencimiento).
+  solicitud_pendiente?: string | null;
+  acceso_hasta?: string | null;
 };
 
 // Documento legal tal como lo acepta la persona: texto con el nombre de la
@@ -50,6 +54,8 @@ export type Resumen = {
     plan_nombre: string;
     max_productos?: number | null;
     seleccion_fijada_hasta?: string | null;
+    // Plan Explorador: las herramientas se solicitan y el equipo las aprueba (no se activan solas).
+    requiere_solicitud?: boolean;
   };
   rol: string;
   productos: Producto[];
@@ -116,6 +122,10 @@ export const resumen = (p: Persona, empresaId: string) =>
 
 export const activarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<Resumen>("/v1/cuenta/productos/activar", p, { empresa_id: empresaId, producto });
+
+// Plan Explorador: pide acceso a una herramienta; queda en Pendientes de /admin.
+export const solicitarProducto = (p: Persona, empresaId: string, producto: string) =>
+  llamar<Resumen>("/v1/cuenta/productos/solicitar", p, { empresa_id: empresaId, producto });
 
 export const desactivarProducto = (p: Persona, empresaId: string, producto: string) =>
   llamar<Resumen>("/v1/cuenta/productos/desactivar", p, { empresa_id: empresaId, producto });

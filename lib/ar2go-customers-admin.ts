@@ -45,7 +45,11 @@ export type DetalleEmpresa = {
     // Reintentos (desde ar2go-customers#9).
     intentos?: number;
     requiere_atencion?: boolean;
+    // Acceso de prueba de 2 meses del plan Explorador; null = sin vencimiento.
+    acceso_hasta?: string | null;
   }[];
+  // Solicitudes de acceso pendientes de la empresa (plan Explorador).
+  solicitudes?: { id: string; producto: string; created_at: string }[];
   // Herramientas del catálogo; disponible = configurada en ese ambiente (se puede habilitar).
   productos?: { slug: string; nombre: string; disponible: boolean }[];
   bitacora: { actor: string; accion: string; detalle: Record<string, unknown>; created_at: string }[];
@@ -153,3 +157,25 @@ export const agregarBloqueo = (operador: string, valor: string, clerkId?: string
 
 export const quitarBloqueo = (operador: string, id: string) =>
   llamar<{ quitado: { valor: string; clerk_id: string | null } }>("/v1/admin/bloqueos/quitar", operador, { id });
+
+// Solicitudes de acceso del plan Explorador: esperan en Pendientes; aprobar da 2 meses de prueba.
+export type SolicitudAcceso = {
+  id: string;
+  empresa_id: string;
+  empresa: string;
+  empresa_estado: string;
+  producto: string;
+  producto_nombre: string;
+  correo: string;
+  nombre: string;
+  created_at: string;
+};
+
+export const listarSolicitudes = (operador: string) =>
+  llamar<{ solicitudes: SolicitudAcceso[] }>("/v1/admin/solicitudes/listar", operador);
+
+export const aprobarSolicitud = (operador: string, id: string) =>
+  llamar<{ solicitudes: SolicitudAcceso[] }>("/v1/admin/solicitudes/aprobar", operador, { id });
+
+export const rechazarSolicitud = (operador: string, id: string) =>
+  llamar<{ solicitudes: SolicitudAcceso[] }>("/v1/admin/solicitudes/rechazar", operador, { id });

@@ -1,7 +1,7 @@
 import { cuenta } from "@/content/cuenta";
 import type { Producto } from "@/lib/ar2go-customers";
 import { tienePago } from "@/lib/pagos";
-import { cambiarPlanAccion } from "@/app/(cuenta)/cuenta/acciones";
+import { cambiarPlanAccion, solicitarAccion } from "@/app/(cuenta)/cuenta/acciones";
 import { InterruptorProducto } from "@/components/cuenta/InterruptorProducto";
 
 // Orden de los planes de AR2GO (D37): solo se sube a uno posterior.
@@ -24,6 +24,8 @@ type Props = {
   empresaActiva?: boolean;
   // Hasta cuándo la selección de productos está fija (D38); null = no lo está.
   fijaHasta?: string | null;
+  // Plan Explorador: lo que no está activo se solicita (el equipo lo aprueba), no se enciende.
+  requiereSolicitud?: boolean;
 };
 
 // Sección "Suscripción" de /cuenta/configuracion: administra la suscripción.
@@ -35,7 +37,7 @@ type Props = {
 // tienen link de pago (lib/pagos.ts) mandan a Stripe y el equipo de AR2GO
 // sube el plan desde /admin al ver el pago (D36; no hay webhooks hasta la
 // fase 3). Abrir productos sigue en /cuenta.
-export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false, empresaActiva = true, fijaHasta = null }: Props) {
+export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, productos, puedeEditar = false, empresaActiva = true, fijaHasta = null, requiereSolicitud = false }: Props) {
   const t = cuenta.landing.configuracion.suscripcion;
   const e = cuenta.tablero;
   const contratados = productos.filter((p) => p.estado && p.estado !== "CANCELADA");
@@ -48,6 +50,8 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
   const hoy = new Date(Date.now() - 6 * 3600_000);
   const proximoMes = fecha(new Date(Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth() + 1, 1, 12)));
   const llenaria = maxProductos !== null && contratados.length + 1 === maxProductos;
+  // Explorador pide una sola herramienta: con una solicitud esperando, las demás no se pueden pedir.
+  const solicitudEnCurso = requiereSolicitud && productos.some((p) => p.solicitud_pendiente);
   const elegibles = productos.filter((p) => p.disponible || (p.estado && p.estado !== "CANCELADA"));
   const superiores = plan ? PLANES.slice(PLANES.indexOf(plan) + 1) : [];
 
@@ -71,27 +75,40 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
             <details className="suscripcion__cambiar">
               <summary>{t.cambiarPlan}</summary>
               <form action={cambiarPlanAccion} className="suscripcion__planes">
-                {plan && e.planes[plan] && (
-                  <div className="suscripcion__opcion suscripcion__opcion--actual">
-                    {e.planes[plan].nombre}
-                    <span>{e.planes[plan].detalle}</span>
-                    <small>{t.actual}</small>
-                  </div>
-                )}
-                {superiores.map((s) =>
-                  tienePago(s) ? (
-                    <button key={s} type="submit" name="plan" value={s} className="btn btn--primary suscripcion__opcion">
-                      {e.planes[s].nombre}
+                {/* Mismo tamaño y orden en todas: nombre, detalle y una línea de estado. El actual resalta;
+                    los demás reaccionan al pasar el mouse. Sin link de pago, la misma línea lo dice. */}
+                {[...(plan && e.planes[plan] ? [plan] : []), ...superiores].map((s) => {
+                  const contenido = (estado: string) => (
+                    <>
+                      <strong>{e.planes[s].nombre}</strong>
                       <span>{e.planes[s].detalle}</span>
-                    </button>
-                  ) : (
-                    <div key={s} className="suscripcion__opcion suscripcion__opcion--actual">
-                      {e.planes[s].nombre}
-                      <span>{e.planes[s].detalle}</span>
-                      <small className="suscripcion__pronto">{t.sinPago}</small>
+                      <small>{estado}</small>
+                    </>
+                  );
+                  if (s === plan)
+                    return (
+                      <div key={s} className="suscripcion__opcion suscripcion__opcion--actual" aria-current="true">
+                        {contenido(t.actual)}
+                      </div>
+                    );
+                  if (tienePago(s))
+                    return (
+                      <button
+                        key={s}
+                        type="submit"
+                        name="plan"
+                        value={s}
+                        className="suscripcion__opcion suscripcion__opcion--elegible"
+                      >
+                        {contenido(t.contratar)}
+                      </button>
+                    );
+                  return (
+                    <div key={s} className="suscripcion__opcion suscripcion__opcion--pronto" aria-disabled="true">
+                      {contenido(t.sinPago)}
                     </div>
-                  ),
-                )}
+                  );
+                })}
                 <small className="suscripcion__nota">{t.notaPago}</small>
               </form>
             </details>
@@ -118,6 +135,23 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
                           {p.estado === "SUSPENDIDA" ? e.suspendido : e.preparando}
                         </span>
                       )}
+                      {requiereSolicitud && !activo ? (
+                        p.solicitud_pendiente ? (
+                          <span className="suscripcion__nota">{e.solicitudEnviada}</span>
+                        ) : (
+                          <form action={solicitarAccion}>
+                            <input type="hidden" name="producto" value={p.slug} />
+                            <input type="hidden" name="volver" value="suscripcion" />
+                            <button
+                              type="submit"
+                              className="btn btn--ghost"
+                              disabled={!puedeEditar || !empresaActiva || enLimite || solicitudEnCurso || !p.disponible}
+                            >
+                              {e.solicitar}
+                            </button>
+                          </form>
+                        )
+                      ) : (
                       <InterruptorProducto
                         producto={p.slug}
                         nombre={nombre}
@@ -128,6 +162,7 @@ export function SuscripcionResumen({ empresa, plan, planNombre, maxProductos, pr
                         confirmar={t.confirmarDesactivar(nombre)}
                         confirmarActivar={llenaria ? t.confirmarLlenar(nombre, proximoMes) : null}
                       />
+                      )}
                     </div>
                   </li>
                 );

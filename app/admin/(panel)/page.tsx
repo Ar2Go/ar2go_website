@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { badgeEstado, fecha, textoEstado } from "@/components/admin/formato";
 import { SinConfigurar, ErrorDeCarga } from "@/components/admin/Estados";
+import { FilaEnlace } from "@/components/admin/FilaEnlace";
 import { TituloAdmin } from "@/components/admin/TituloAdmin";
 import { admin } from "@/content/admin";
 import { ErrorCuenta } from "@/lib/ar2go-customers";
@@ -104,7 +105,7 @@ export default async function AdminPage({ searchParams }: Props) {
                   </thead>
                   <tbody>
                     {datos.empresas.map((e) => (
-                      <tr key={e.id}>
+                      <FilaEnlace key={e.id} href={`/admin/empresas/${e.id}`}>
                         <td className="celda-principal">
                           <Link href={`/admin/empresas/${e.id}`}>{e.nombre}</Link>
                         </td>
@@ -132,7 +133,7 @@ export default async function AdminPage({ searchParams }: Props) {
                         <td data-label={t.columnas.estado}>
                           <span className={badgeEstado(e.estado)}>{textoEstado(e.estado)}</span>
                         </td>
-                      </tr>
+                      </FilaEnlace>
                     ))}
                   </tbody>
                 </table>
