@@ -42,7 +42,7 @@ export function MenuAdmin({ operador, pendientes }: Props) {
   return (
     <aside className="panel-aside" data-menu-abierto={abierto}>
       <div className="panel-marca">
-        <Link href="/admin" aria-label="AR2GO, panel de administración" style={{ display: "flex" }}>
+        <Link href="/" aria-label="AR2GO, ir al sitio" style={{ display: "flex" }}>
           <Image
             src="/brand/ar2go-logotipo-2026-claro.png"
             alt="AR2GO"

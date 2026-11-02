@@ -12,6 +12,9 @@ type Herramienta = {
   habilitada: boolean;
   // El producto todavía no confirma el último cambio.
   pendiente: boolean;
+  // Plan Explorador: "Día 12 de 61" del acceso de prueba, o cuánto lleva esperando su solicitud.
+  prueba?: string | null;
+  solicitud?: string | null;
 };
 
 type Props = { empresaId: string; herramientas: Herramienta[] };
@@ -55,11 +58,12 @@ export function Herramientas({ empresaId, herramientas }: Props) {
               />
               {h.nombre}
             </span>
-            {!h.disponible ? (
-              <span className="badge">{t.noDisponible}</span>
-            ) : h.pendiente ? (
-              <span className="badge ambar">{t.pendiente}</span>
-            ) : null}
+            <span className="row" style={{ ["--gap" as string]: "6px", justifyContent: "flex-end" }}>
+              {!h.disponible && <span className="badge">{t.noDisponible}</span>}
+              {h.pendiente && <span className="badge ambar">{t.pendiente}</span>}
+              {h.habilitada && h.prueba && <span className="badge azul">{h.prueba}</span>}
+              {!h.habilitada && h.solicitud && <span className="badge solido">{h.solicitud}</span>}
+            </span>
           </label>
         ))}
       </div>

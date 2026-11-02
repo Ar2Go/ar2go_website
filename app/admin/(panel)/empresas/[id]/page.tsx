@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { cambiarPlanAccion } from "@/app/admin/acciones";
 import { CambiarEstado } from "@/components/admin/CambiarEstado";
 import { EliminarEmpresa } from "@/components/admin/EliminarEmpresa";
-import { fecha } from "@/components/admin/formato";
+import { diaDePrueba, fecha, transcurrido } from "@/components/admin/formato";
 import { Herramientas } from "@/components/admin/Herramientas";
 import { Icono } from "@/components/admin/Icono";
 import { TituloAdmin } from "@/components/admin/TituloAdmin";
@@ -54,12 +54,15 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
   // Una casilla por producto del catálogo; marcada si la suscripción está viva.
   const herramientas = (d.productos ?? []).map((p) => {
     const s = d.suscripciones.find((x) => x.producto === p.slug);
+    const pedida = d.solicitudes?.find((x) => x.producto === p.slug);
     return {
       slug: p.slug,
       nombre: p.nombre,
       disponible: p.disponible,
       habilitada: !!s && s.estado !== "CANCELADA" && s.estado !== "ELIMINADA",
       pendiente: !!s && s.version_aplicada < s.version,
+      prueba: s?.acceso_hasta ? admin.herramientas.prueba(diaDePrueba(s.acceso_hasta)) : null,
+      solicitud: pedida ? admin.herramientas.solicitud(transcurrido(pedida.created_at)) : null,
     };
   });
 

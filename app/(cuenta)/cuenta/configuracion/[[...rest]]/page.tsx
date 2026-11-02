@@ -55,6 +55,7 @@ export default async function ConfiguracionPage() {
             puedeEditar={puedeEditar}
             empresaActiva={datos?.empresa.estado === "ACTIVA"}
             fijaHasta={datos?.empresa.seleccion_fijada_hasta ?? null}
+            requiereSolicitud={!!datos?.empresa.requiere_solicitud}
           />
         }
       />

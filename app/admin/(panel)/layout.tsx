@@ -1,5 +1,5 @@
 import { MenuAdmin } from "@/components/admin/MenuAdmin";
-import { cambiosPendientes, hayAdminDePlanoDeControl } from "@/lib/ar2go-customers-admin";
+import { cambiosPendientes, hayAdminDePlanoDeControl, listarSolicitudes } from "@/lib/ar2go-customers-admin";
 import { operadorActual } from "../operador";
 
 // Panel con barra lateral (como el de Horiq). Cada página vuelve a revisar al operador: el layout
@@ -8,8 +8,11 @@ export default async function PanelAdminLayout({ children }: { children: React.R
   const operador = await operadorActual();
   // Contador del menú; si la API no responde, la página de pendientes lo dice.
   const pendientes = hayAdminDePlanoDeControl
-    ? await cambiosPendientes(operador)
-        .then((r) => r.pendientes.length)
+    ? await Promise.all([
+        cambiosPendientes(operador).then((r) => r.pendientes.length),
+        listarSolicitudes(operador).then((r) => r.solicitudes.length),
+      ])
+        .then(([cambios, solicitudes]) => cambios + solicitudes)
         .catch(() => null)
     : null;
 

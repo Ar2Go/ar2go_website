@@ -40,4 +40,11 @@ export function TituloAdmin({ titulo, apoyo, aviso, detalleAviso, acciones }: Pr
   );
 }
 
-const EXITOS = new Set(["REINTENTADO", "EMPRESA_ELIMINADA", "PLAN_CAMBIADO", "ESTADO_CAMBIADO"]);
+const EXITOS = new Set([
+  "REINTENTADO",
+  "EMPRESA_ELIMINADA",
+  "PLAN_CAMBIADO",
+  "ESTADO_CAMBIADO",
+  "ACCESO_APROBADO",
+  "SOLICITUD_RECHAZADA",
+]);

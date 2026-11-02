@@ -10,11 +10,13 @@ import { ErrorCuenta } from "@/lib/ar2go-customers";
 import { bloquearEnClerk, borrarEnClerk, desbloquearEnClerk } from "@/lib/clerk-admin";
 import {
   agregarBloqueo,
+  aprobarSolicitud,
   cambiarEstado,
   cambiarPlan,
   cambiarProducto,
   eliminarEmpresa,
   quitarBloqueo,
+  rechazarSolicitud,
   reintentar,
 } from "@/lib/ar2go-customers-admin";
 import { operadorActual } from "./operador";
@@ -177,4 +179,28 @@ export async function quitarBloqueoAccion(datos: FormData) {
     throw e; // redirect() de Next se propaga
   }
   redirect("/admin/seguridad");
+}
+
+// Pendientes → Solicitudes de acceso (plan Explorador). Dar acceso habilita la herramienta por 2
+// meses; rechazar solo la cierra. Se vuelve a Pendientes con el aviso.
+async function resolverSolicitud(datos: FormData, aprobar: boolean) {
+  const operador = await operadorActual();
+  const id = z.uuid().safeParse(datos.get("id"));
+  const destino = (aviso: string) => redirect(`/admin/pendientes?aviso=${encodeURIComponent(aviso)}`);
+  if (!id.success) destino("general");
+  try {
+    await (aprobar ? aprobarSolicitud : rechazarSolicitud)(operador, id.data!);
+  } catch (e) {
+    if (e instanceof ErrorCuenta) destino(e.code);
+    throw e; // redirect() de Next se propaga
+  }
+  destino(aprobar ? "ACCESO_APROBADO" : "SOLICITUD_RECHAZADA");
+}
+
+export async function aprobarSolicitudAccion(datos: FormData) {
+  await resolverSolicitud(datos, true);
+}
+
+export async function rechazarSolicitudAccion(datos: FormData) {
+  await resolverSolicitud(datos, false);
 }

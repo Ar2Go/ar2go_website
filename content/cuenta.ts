@@ -39,6 +39,11 @@ export const cuenta = {
     apoyo: "Aquí activas y abres tus argonautas y argotipos.",
     productos: "Productos",
     activar: "Activar",
+    // Plan Explorador: las herramientas se solicitan y el equipo de AR2GO las aprueba por 2 meses.
+    solicitar: "Solicitar acceso",
+    solicitudEnviada: "Solicitud enviada",
+    // "Prueba hasta el 2 de enero de 2027"
+    pruebaHasta: (fecha: string) => `Prueba hasta el ${fecha}`,
     // Planes de AR2GO (D37), de la empresa: limitan cuántos productos tiene
     // activos. Se cambian en Configuración → Suscripción (lib/pagos.ts).
     planes: {
@@ -84,10 +89,10 @@ export const cuenta = {
     postio: {
       nombre: "Postio",
       tipo: "argonauta",
-      descripcion: "Argonautas que crean y publican el contenido de tus redes",
+      descripcion: "Argonauta que crea y publica el contenido de tus redes",
     },
     // D40 de Ar2Go/Ar2Go
-    carive: { nombre: "Carive", tipo: "argotipo", descripcion: "Digitaliza tus diseños de bordado" },
+    carive: { nombre: "Carive", tipo: "argotipo", descripcion: "Crea tus programas de bordado en .dst" },
   } as Record<string, { nombre: string; tipo: "argonauta" | "argotipo"; descripcion: string }>,
   // Aceptación de los documentos legales de la empresa antes de activar un
   // producto (D25 de Ar2Go/Ar2Go): app/(cuenta)/cuenta/legal/[producto]. Los
@@ -136,6 +141,9 @@ export const cuenta = {
     ROL_INSUFICIENTE: "Solo quien administra la cuenta puede activar productos.",
     NOMBRE_INVALIDO: "Escribe el nombre de tu empresa (2 a 120 caracteres).",
     SIN_SERVICIO: "No pudimos cargar tu cuenta. Intenta de nuevo en unos minutos.",
+    REQUIERE_SOLICITUD: "En el plan Explorador, solicita acceso a la herramienta; el equipo de AR2GO lo aprueba.",
+    YA_ACTIVO: "Esa herramienta ya está activa.",
+    SOLICITUD_NO_APLICA: "Tu plan activa herramientas directamente.",
     ACEPTACION_PENDIENTE: "Antes de activar el producto, acepta sus términos y el contrato de encargo de datos.",
     DOCUMENTO_DESACTUALIZADO: "El documento cambió mientras lo leías. Revisa la versión vigente antes de aceptar.",
     FALTA_CASILLA: "Marca la casilla de cada documento para aceptarlo.",
@@ -203,7 +211,8 @@ export const cuenta = {
           `¿Desactivar ${nombre}? Tu equipo deja de tener acceso; los datos se conservan y puedes activarlo otra vez.`,
         tipos: { argonauta: "Argonauta", argotipo: "Argotipo" },
         cambiarPlan: "Cambiar plan",
-        actual: "Actual",
+        actual: "Plan actual",
+        contratar: "Contratar",
         notaPago: "Subimos tu plan al confirmar tu pago.",
         sinPago: "Pago en línea pronto",
         productosIncluidos: (activos: number, max: number | null) =>

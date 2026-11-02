@@ -144,6 +144,11 @@ export const admin = {
     titulo: "Herramientas habilitadas",
     noDisponible: "No configurada",
     pendiente: "Por confirmar",
+    // "Día 12 de 61" del acceso de prueba (plan Explorador).
+    prueba: (p: { dia: number; total: number; vencida: boolean }) =>
+      p.vencida ? "Prueba vencida" : `Día ${p.dia} de ${p.total}`,
+    // "Solicitó hace 3 h"
+    solicitud: (hace: string) => `Solicitó ${hace}`,
   },
   estado: {
     titulo: "Activar o desactivar cuenta",
@@ -179,9 +184,22 @@ export const admin = {
     enviar: "Eliminar para siempre",
     enCurso: "Eliminando…",
   },
+  // Solicitudes de acceso del plan Explorador (components/admin/SolicitudesAcceso.tsx).
+  solicitudes: {
+    titulo: "Solicitudes de acceso",
+    porAtender: "por atender",
+    porAtenderPlural: "por atender",
+    vacio: "Nadie está esperando acceso.",
+    sinDatos: "No se pudieron leer las solicitudes.",
+    aprobar: "Dar acceso",
+    aprobando: "Dando acceso…",
+    rechazar: "Rechazar",
+    rechazando: "Rechazando…",
+    columnas: { empresa: "Empresa", herramienta: "Herramienta", quien: "Solicitó", espera: "Esperando", accion: "" },
+  },
   pendientes: {
     titulo: "Cambios pendientes de confirmar",
-    subtitulo: "versiones que un producto no ha confirmado",
+    subtitulo: "solicitudes de acceso y cambios por confirmar",
     porConfirmar: "por confirmar",
     apoyo:
       "Versiones que algún producto todavía no confirma. ar2go-customers las reintenta solo cada 15 minutos con espera creciente; a los 6 intentos, o si el producto las rechaza, se detiene y requieren que alguien las revise.",
@@ -206,6 +224,10 @@ export const admin = {
     BLOQUEO_NO_ENCONTRADO: "Ese bloqueo ya no existe.",
     CLERK_SIN_BLOQUEO:
       "Quedó bloqueado en AR2GO, pero Clerk no lo agregó a su lista de bloqueo. Si se registra, se borra de Clerk al entrar a /cuenta.",
+    ACCESO_APROBADO: "Acceso dado por 2 meses. La herramienta ya aparece activa en su cuenta.",
+    SOLICITUD_RECHAZADA: "Solicitud rechazada.",
+    SOLICITUD_NO_ENCONTRADA: "Esa solicitud ya no existe.",
+    SOLICITUD_RESUELTA: "Esa solicitud ya la atendió alguien más.",
     CLERK_PENDIENTE:
       "Cliente eliminado en AR2GO y en sus productos, pero Clerk no borró todo. Bórralo a mano en el panel de Clerk:",
     ELIMINAR_DESACTIVADO: "El borrado total está desactivado en ar2go-customers (ADMIN_PERMITE_ELIMINAR).",
@@ -231,6 +253,10 @@ export const admin = {
   acciones: {
     CREAR_EMPRESA: "Alta de la empresa",
     ACTIVAR_PRODUCTO: "Habilitó una herramienta",
+    SOLICITAR_ACCESO: "Solicitó acceso a una herramienta",
+    APROBAR_ACCESO: "Dio acceso de prueba (2 meses)",
+    RECHAZAR_ACCESO: "Rechazó la solicitud de acceso",
+    VENCER_ACCESO: "Venció el acceso de prueba",
     BLOQUEAR_ACCESO: "Bloqueó un correo o dominio",
     DESBLOQUEAR_ACCESO: "Quitó un bloqueo",
     DESACTIVAR_PRODUCTO: "Deshabilitó una herramienta",
