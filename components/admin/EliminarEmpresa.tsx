@@ -1,4 +1,5 @@
 import { eliminarEmpresaAccion } from "@/app/admin/acciones";
+import { BotonEnviar } from "@/components/admin/BotonEnviar";
 import { admin } from "@/content/admin";
 
 type Props = { empresaId: string; nombre: string };
@@ -27,9 +28,9 @@ export function EliminarEmpresa({ empresaId, nombre }: Props) {
             {t.motivo}
             <input name="motivo" required minLength={3} maxLength={500} placeholder={t.ejemplo} />
           </label>
-          <button type="submit" className="btn btn-danger">
+          <BotonEnviar className="btn btn-danger" enCurso={t.enCurso}>
             {t.enviar}
-          </button>
+          </BotonEnviar>
         </div>
       </form>
     </section>

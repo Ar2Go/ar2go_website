@@ -176,6 +176,7 @@ export const admin = {
     motivo: "Motivo (queda en la bitácora general)",
     ejemplo: "Cuenta de prueba",
     enviar: "Eliminar para siempre",
+    enCurso: "Eliminando…",
   },
   pendientes: {
     titulo: "Cambios pendientes de confirmar",

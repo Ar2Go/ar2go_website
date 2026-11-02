@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { cambiarPlanAccion } from "@/app/admin/acciones";
 import { CambiarEstado } from "@/components/admin/CambiarEstado";
 import { EliminarEmpresa } from "@/components/admin/EliminarEmpresa";
@@ -32,13 +32,15 @@ type Props = {
 export default async function EmpresaAdminPage({ params, searchParams }: Props) {
   const operador = await operadorActual();
   const [{ id }, { aviso }] = await Promise.all([params, searchParams]);
-  if (!ES_UUID.test(id) || !hayAdminDePlanoDeControl) notFound();
+  // Una empresa que ya no existe (recién eliminada o un enlace viejo) regresa a la lista.
+  if (!ES_UUID.test(id)) redirect("/admin?aviso=EMPRESA_NO_ENCONTRADA");
+  if (!hayAdminDePlanoDeControl) notFound();
 
   let d: DetalleEmpresa;
   try {
     d = await detalleEmpresa(operador, id);
   } catch (e) {
-    if (e instanceof ErrorCuenta && e.code === "EMPRESA_NO_ENCONTRADA") notFound();
+    if (e instanceof ErrorCuenta && e.code === "EMPRESA_NO_ENCONTRADA") redirect("/admin?aviso=EMPRESA_NO_ENCONTRADA");
     throw e;
   }
   const t = admin.detalle;
