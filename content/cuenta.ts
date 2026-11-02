@@ -118,10 +118,10 @@ export const cuenta = {
     // En la tarjeta del producto activo con una versión nueva pendiente.
     nuevaVersion: "Documentos nuevos por aceptar",
   },
-  // Correo o dominio bloqueado desde Seguridad en /admin: su usuario ya se borró de Clerk.
-  bloqueado: {
-    titulo: "No es posible usar AR2GO con este correo",
-    apoyo: "Si crees que es un error, escríbenos a hola@ar2go.io.",
+  // /no-disponible: correo o dominio bloqueado desde Seguridad en /admin (su usuario ya se borró de Clerk).
+  noDisponible: {
+    titulo: "No podemos atender tu solicitud por ahora",
+    regresar: "Regresar al inicio",
   },
   // Mensajes para los códigos de error de ar2go-customers que puede ver la persona.
   avisos: {
