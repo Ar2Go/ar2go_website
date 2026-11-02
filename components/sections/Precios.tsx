@@ -17,7 +17,7 @@ const DESTACADO = precio.planes.find((plan) => plan.destacado)?.nombre ?? precio
 // Foco de tarjetas compartido (lib/useFoco.ts); de entrada, la destacada
 // (Navegante). La tarjeta en foco lleva su botón en azul sólido.
 export function Precios() {
-  const { enFoco, grupo, tarjeta } = useFoco(DESTACADO);
+  const { enFoco, tarjeta } = useFoco(DESTACADO);
 
   return (
     <section className="band band--tight" id="precios">
@@ -28,7 +28,7 @@ export function Precios() {
           <p className="lede">{precio.apoyo}</p>
         </div>
 
-        <div className="plans" {...grupo}>
+        <div className="plans">
           {precio.planes.map((plan) => {
             const activo = plan.nombre === enFoco;
             return (

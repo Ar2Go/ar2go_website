@@ -5,10 +5,10 @@ import { useFoco } from "@/lib/useFoco";
 
 // Foco de tarjetas compartido (lib/useFoco.ts); de entrada, la primera etapa.
 export function Etapas() {
-  const { enFoco, grupo, tarjeta } = useFoco(nosotros.pasos[0].numero);
+  const { enFoco, tarjeta } = useFoco(nosotros.pasos[0].numero);
 
   return (
-    <div className="steps" {...grupo}>
+    <div className="steps">
       {nosotros.pasos.map((paso) => (
         <article
           className={`step${paso.numero === enFoco ? " foco" : ""}`}
