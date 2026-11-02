@@ -14,11 +14,11 @@ type Herramienta = {
   pendiente: boolean;
 };
 
-type Props = { empresaId: string; herramientas: Herramienta[]; bloqueada: boolean };
+type Props = { empresaId: string; herramientas: Herramienta[] };
 
 // Herramientas de la empresa: una casilla por producto del catálogo. Marcarla la habilita (aprovisiona
-// el producto); desmarcarla la deshabilita. Con la cuenta desactivada no se puede cambiar.
-export function Herramientas({ empresaId, herramientas, bloqueada }: Props) {
+// el producto); desmarcarla la deshabilita, en cualquier estado de la cuenta.
+export function Herramientas({ empresaId, herramientas }: Props) {
   const [enCurso, iniciar] = useTransition();
   // La casilla cambia al momento; si el servidor no lo aplica, regresa sola al recargar la página.
   const [vista, marcar] = useOptimistic(herramientas, (actual, [slug, habilitada]: [string, boolean]) =>
@@ -49,7 +49,7 @@ export function Herramientas({ empresaId, herramientas, bloqueada }: Props) {
               <input
                 type="checkbox"
                 checked={h.habilitada}
-                disabled={bloqueada || enCurso || (!h.disponible && !h.habilitada)}
+                disabled={enCurso || (!h.disponible && !h.habilitada)}
                 onChange={(e) => cambiar(h.slug, e.currentTarget.checked)}
                 style={{ width: 18, height: 18, accentColor: "var(--acento)" }}
               />
