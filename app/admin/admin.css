@@ -1,0 +1,619 @@
+/*
+ * /admin con la experiencia visual del panel de Horiq (horiq/src/styles/global.css y panel.css):
+ * fondo gris claro, barra lateral blanca, tarjetas blancas y botón primario oscuro. Todo vive bajo
+ * .adm para no tocar el resto del sitio, que es oscuro (docs/brand.md).
+ */
+.adm {
+  --primario: #0b0f19;
+  --primario-2: #121826;
+  --acento: #2363eb;
+  --acento-osc: #1a4fc4;
+  --acento-claro: #e8effd;
+  --neutro: #a0a7b4;
+  --fondo: #e6e9ef;
+  --blanco: #ffffff;
+  --tinta: var(--primario);
+  --tinta-2: var(--primario-2);
+  --gris: #4f5868;
+  --borde: #d3d8e1;
+  --borde-fuerte: var(--neutro);
+  --linea: #edf0f4;
+  --superficie: #f5f7fa;
+  --exito: #0e7a4f;
+  --exito-claro: #e1f3ea;
+  --ambar: #fbebd9;
+  --ambar-txt: #6b3304;
+  --rojo: #b42318;
+  --rojo-claro: #fde8e6;
+  --radio: 14px;
+
+  min-height: 100vh;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  color-scheme: light;
+}
+.adm a {
+  color: var(--acento);
+}
+.adm a:hover {
+  color: var(--acento-osc);
+}
+.adm h1,
+.adm h2,
+.adm h3 {
+  margin: 0;
+  font-weight: 600;
+}
+.adm :focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+.adm .muted {
+  color: var(--gris);
+}
+.adm .mono {
+  font-variant-numeric: tabular-nums;
+}
+.adm .stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap, 12px);
+}
+.adm .row {
+  display: flex;
+  align-items: center;
+  gap: var(--gap, 12px);
+  flex-wrap: wrap;
+}
+.adm .spread {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.adm .grow {
+  flex: 1;
+  min-width: 0;
+}
+.adm .romper {
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Botones ---------- */
+.adm .btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid var(--borde-fuerte);
+  background: var(--blanco);
+  color: var(--tinta);
+  font-size: 14.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+.adm .btn:hover:not(:disabled) {
+  background: var(--fondo);
+  border-color: var(--gris);
+  box-shadow: 0 1px 2px rgba(11, 15, 25, 0.08);
+}
+.adm .btn-primary {
+  background: var(--primario);
+  border-color: var(--primario);
+  color: var(--blanco);
+  font-weight: 600;
+}
+.adm .btn-primary:hover:not(:disabled) {
+  background: #273249;
+  border-color: #273249;
+  color: var(--blanco);
+}
+.adm .btn-danger {
+  color: var(--rojo);
+  border-color: #f1b5ae;
+}
+.adm .btn-danger:hover:not(:disabled) {
+  background: var(--rojo-claro);
+  border-color: var(--rojo);
+}
+.adm .btn-sm {
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13.5px;
+  border-radius: 8px;
+}
+.adm .btn-ancho {
+  width: 100%;
+}
+.adm .icon-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--gris);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.adm .icon-btn:hover {
+  background: var(--fondo);
+  color: var(--tinta);
+}
+
+/* ---------- Campos ---------- */
+.adm .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.adm .campo input,
+.adm .campo select {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 10px;
+  background: var(--blanco);
+  color: var(--tinta);
+  font-size: 14.5px;
+  font-weight: 400;
+}
+.adm .casilla {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--gris);
+}
+.adm .casilla input {
+  margin-top: 3px;
+}
+
+/* ---------- Tarjetas y tablas ---------- */
+.adm .card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+.adm .card-pad {
+  padding: 20px;
+}
+.adm .card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--borde);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.adm .card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.adm .card-peligro {
+  border-color: #f1b5ae;
+}
+.adm .card-peligro .card-title {
+  color: var(--rojo);
+}
+.adm .vacio {
+  padding: 20px;
+  color: var(--gris);
+  font-size: 14px;
+}
+.adm .table-wrap {
+  overflow-x: auto;
+}
+.adm table.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.adm .tabla th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gris);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--borde);
+  white-space: nowrap;
+}
+.adm .tabla td {
+  padding: 12px 16px;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--linea);
+  vertical-align: middle;
+}
+.adm .tabla tr:last-child td {
+  border-bottom: none;
+}
+.adm .tabla a {
+  font-weight: 600;
+  text-decoration: none;
+}
+.adm .tabla a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.adm .kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linea);
+  font-size: 14px;
+}
+.adm .kv:last-child {
+  border-bottom: none;
+}
+.adm .kv > :last-child {
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Indicadores ---------- */
+.adm .kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.adm .kpi {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.adm .kpi-valor {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.adm .etiqueta {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* ---------- Badges y avisos ---------- */
+.adm .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--linea);
+  color: var(--gris);
+}
+.adm .badge.verde {
+  background: var(--exito-claro);
+  color: var(--exito);
+}
+.adm .badge.ambar {
+  background: var(--ambar);
+  color: var(--ambar-txt);
+}
+.adm .badge.azul {
+  background: var(--acento-claro);
+  color: var(--acento-osc);
+}
+.adm .badge.rojo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+}
+.adm .badge.solido {
+  background: #b45309;
+  color: var(--blanco);
+}
+.adm .aviso {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 20px;
+}
+.adm .aviso.verde {
+  background: var(--exito-claro);
+  color: var(--exito);
+}
+.adm .aviso.ambar {
+  background: var(--ambar);
+  color: var(--ambar-txt);
+}
+.adm .aviso.rojo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+}
+.adm .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: var(--acento-claro);
+  color: var(--acento-osc);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+/* ---------- Estructura del panel ---------- */
+.adm .panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+.adm .panel-aside {
+  width: 240px;
+  flex: none;
+  background: var(--blanco);
+  border-right: 1px solid var(--borde);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.adm .panel-marca {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.adm .panel-marca .panel-menu-boton {
+  display: none;
+}
+.adm .panel-equipo {
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.adm .panel-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.adm .panel-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--tinta-2);
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+.adm .panel-nav a:hover {
+  background: var(--fondo);
+}
+.adm .panel-nav a.activo {
+  background: var(--acento-claro);
+  color: var(--acento-osc);
+  font-weight: 600;
+}
+.adm .panel-nav .solo-celular {
+  display: none;
+}
+.adm .panel-nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--tinta-2);
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.adm .panel-nav button:hover {
+  background: var(--fondo);
+}
+.adm .panel-nav .badge {
+  margin-left: auto;
+  height: 20px;
+  padding: 0 7px;
+  font-size: 11px;
+}
+.adm .panel-usuario {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+}
+.adm .panel-main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 32px 48px;
+}
+.adm .panel-contenido {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.adm .panel-titulo h1 {
+  font-size: 28px;
+  line-height: 36px;
+  overflow-wrap: anywhere;
+}
+.adm .volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+/* Dos tarjetas por fila, de la misma altura; en cada una el botón queda al pie. */
+.adm .rejilla-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.adm .rejilla-2 > .card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.adm .card-cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+.adm .card-lista {
+  flex: 1;
+  padding: 6px 20px;
+}
+.adm .card-pie {
+  margin-top: auto;
+  padding-top: 6px;
+}
+.adm .campos-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 960px) {
+  .adm .rejilla-2,
+  .adm .campos-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.adm .login-panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+.adm .login-panel .card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+}
+
+@media (max-width: 860px) {
+  .adm .panel {
+    flex-direction: column;
+  }
+  .adm .panel-aside {
+    width: auto;
+    height: auto;
+    position: static;
+    padding: 12px 16px;
+    gap: 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--borde);
+  }
+  .adm .panel-equipo,
+  .adm .panel-usuario {
+    display: none;
+  }
+  .adm .panel-marca {
+    padding: 0;
+  }
+  .adm .panel-marca .panel-menu-boton {
+    display: inline-flex;
+  }
+  .adm .panel-aside[data-menu-abierto="false"] .panel-nav {
+    display: none;
+  }
+  .adm .panel-nav .solo-celular {
+    display: block;
+  }
+  .adm .panel-main {
+    padding: 20px 16px 40px;
+  }
+}
+
+/* Tabla que se vuelve tarjetas cuando su contenedor es angosto (como en Horiq). Cada <td> lleva
+   data-label con el nombre de su columna; .celda-principal ocupa todo el ancho de la tarjeta. */
+.adm .tabla-responsiva {
+  container-type: inline-size;
+}
+@container (max-width: 760px) {
+  .adm .tabla-responsiva .tabla {
+    min-width: 0 !important;
+  }
+  .adm .tabla-responsiva .tabla thead {
+    display: none;
+  }
+  .adm .tabla-responsiva .tabla,
+  .adm .tabla-responsiva .tabla tbody {
+    display: block;
+  }
+  .adm .tabla-responsiva .tabla tr {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px 20px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--linea);
+  }
+  .adm .tabla-responsiva .tabla tr:last-child {
+    border-bottom: none;
+  }
+  .adm .tabla-responsiva .tabla td {
+    padding: 0;
+    border: none;
+    min-width: 0;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+  .adm .tabla-responsiva .tabla td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+  .adm .tabla-responsiva .tabla td.celda-principal,
+  .adm .tabla-responsiva .tabla td.celda-ancha {
+    grid-column: 1 / -1;
+  }
+}

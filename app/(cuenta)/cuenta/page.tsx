@@ -3,7 +3,8 @@ import { CuentaLanding } from "@/components/cuenta/CuentaLanding";
 import { AltaEmpresa } from "@/components/cuenta/AltaEmpresa";
 import { CintaProductos } from "@/components/cuenta/CintaProductos";
 import { cuenta } from "@/content/cuenta";
-import { hayPlanoDeControl, misEmpresas, resumen, type Resumen } from "@/lib/ar2go-customers";
+import { ErrorCuenta, hayPlanoDeControl, misEmpresas, resumen, type Resumen } from "@/lib/ar2go-customers";
+import { borrarUsuarioClerk } from "@/lib/clerk-admin";
 import { personaActual } from "./persona";
 
 export const metadata: Metadata = {
@@ -41,6 +42,12 @@ export default async function CuentaPage({ searchParams }: Props) {
     const { empresas } = await misEmpresas(p.persona);
     if (empresas[0]) datos = await resumen(p.persona, empresas[0].id);
   } catch (e) {
+    // Correo o dominio bloqueado en Seguridad (/admin): no usa AR2GO y su usuario se borra de Clerk,
+    // así no queda una cuenta a medias (los dominios no se pueden bloquear en Clerk por API).
+    if (e instanceof ErrorCuenta && e.code === "CORREO_BLOQUEADO") {
+      await borrarUsuarioClerk(p.persona.clerk_user_id);
+      return <CuentaLanding titulo={cuenta.bloqueado.titulo} apoyo={cuenta.bloqueado.apoyo} />;
+    }
     console.error("[cuenta] ar2go-customers no respondió:", e);
     sinServicio = true;
   }

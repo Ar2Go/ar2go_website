@@ -140,12 +140,12 @@ deja de ser un cascarón:
 
 1. La primera vez pide el nombre de la empresa y la da de alta en
    `ar2go-customers` (plan Explorador).
-2. Después muestra el plan y los productos: **Activar** (p. ej. HORIQ) y
+2. Después muestra el plan y los productos: **Activar** (p. ej. Horiq) y
    **Abrir**, que redirige al producto con un código de un solo uso (login único).
 
 Todo pasa por `lib/ar2go-customers.ts`, solo en el servidor, con llamadas firmadas.
 El secreto es el mismo que `SITIO_SECRETOS_VERIFICACION` en `ar2go-customers`.
-Para probar en local, corre `ar2go-customers` (`npm run dev`, puerto 9090) y HORIQ
+Para probar en local, corre `ar2go-customers` (`npm run dev`, puerto 9090) y Horiq
 (ver el README de cada repo) y apunta `AR2GO_CUSTOMERS_URL=http://localhost:9090`.
 
 Si las variables faltan por completo, el middleware las detecta y deja pasar

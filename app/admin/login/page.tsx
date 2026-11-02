@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { signIn } from "@/auth";
-import { Button } from "@/components/ui/Button";
-import { Section } from "@/components/ui/Section";
-import { tipografia } from "@/lib/typography";
+import Image from "next/image";
+import { hayEntradaLocal, signIn } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Acceso admin",
@@ -17,40 +15,59 @@ type LoginPageProps = {
   searchParams: Promise<{ error?: string }>;
 };
 
+// Acceso a /admin con la tarjeta del acceso al panel de Horiq (horiq/src/panel/AdminLogin.tsx).
 export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const { error } = await searchParams;
   const mensajeError = error ? (MENSAJES_ERROR[error] ?? "No se pudo iniciar sesión.") : null;
 
   return (
-    <Section background="superficie" className="flex min-h-[60vh] items-center">
-      <div className="mx-auto w-full max-w-sm rounded-card border border-linea/10 bg-fondo p-8 text-center">
-        <p className={tipografia.eyebrow}>Acceso restringido</p>
-        <h1 className={`mt-2 ${tipografia.h3}`}>Panel de administración</h1>
-        <p className={`mt-3 ${tipografia.cuerpoChico} text-gris`}>
-          Solo cuentas de Google autorizadas pueden entrar.
-        </p>
+    <div className="login-panel">
+      <div className="card stack" style={{ ["--gap" as string]: "20px" }}>
+        <Image
+          src="/brand/ar2go-logotipo-2026-claro.png"
+          alt="AR2GO"
+          width={118}
+          height={28}
+          priority
+          style={{ height: 28, width: "auto", alignSelf: "flex-start" }}
+        />
+        <div className="stack" style={{ ["--gap" as string]: "4px" }}>
+          <h1 style={{ fontSize: 20 }}>Panel de administración</h1>
+          <p className="muted">Solo cuentas de Google autorizadas pueden entrar.</p>
+        </div>
 
         {mensajeError && (
-          <p
-            role="alert"
-            className={`mt-4 rounded-card border border-error/40 bg-error/10 p-3 ${tipografia.cuerpoChico} text-error`}
-          >
+          <div role="alert" className="aviso rojo">
             {mensajeError}
-          </p>
+          </div>
         )}
 
-        <form
-          className="mt-6"
-          action={async () => {
-            "use server";
-            await signIn("google", { redirectTo: "/admin" });
-          }}
-        >
-          <Button type="submit" variant="primary" className="w-full">
-            Iniciar sesión con Google
-          </Button>
-        </form>
+        <div className="stack" style={{ ["--gap" as string]: "10px" }}>
+          <form
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: "/admin" });
+            }}
+          >
+            <button type="submit" className="btn btn-primary btn-ancho">
+              Iniciar sesión con Google
+            </button>
+          </form>
+
+          {hayEntradaLocal && (
+            <form
+              action={async () => {
+                "use server";
+                await signIn("local", { redirectTo: "/admin" });
+              }}
+            >
+              <button type="submit" className="btn btn-ancho">
+                Entrar en local
+              </button>
+            </form>
+          )}
+        </div>
       </div>
-    </Section>
+    </div>
   );
 }

@@ -1,65 +1,39 @@
 import { cambiarEstadoAccion } from "@/app/admin/acciones";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { badgeEstado, textoEstado } from "@/components/admin/formato";
 import { admin } from "@/content/admin";
-import { tipografia } from "@/lib/typography";
 
-type Props = { empresaId: string; estado: string; campo: string };
+type Props = { empresaId: string; estado: string };
 
-// Tarjeta de /admin/empresas/[id] para suspender, reactivar, cerrar o reabrir
-// la empresa. Un formulario por acción disponible, cada uno con motivo y
-// casilla de confirmación: el cambio llega a los productos (PUT a Horiq).
-export function CambiarEstado({ empresaId, estado, campo }: Props) {
+// Activar o desactivar la cuenta en /admin/empresas/[id]. Desactivar es suspender (solo lectura, sin
+// Activar ni Abrir en /cuenta); activar reactiva una suspendida o reabre una cerrada. Pide motivo y
+// confirmación porque el cambio llega a los productos.
+export function CambiarEstado({ empresaId, estado }: Props) {
   const t = admin.estado;
-  const acciones = t.disponibles[estado] ?? [];
+  const accion = estado === "ACTIVA" ? "SUSPENDER" : estado === "SUSPENDIDA" ? "REACTIVAR" : "REABRIR";
+  const activar = accion !== "SUSPENDER";
   return (
-    <Card>
-      <p className={tipografia.eyebrow}>{t.titulo}</p>
-      <p className={`mt-3 ${tipografia.cuerpoChico} text-gris`}>{t.apoyo}</p>
-      {acciones.map((accion) => (
-        <form
-          key={accion}
-          action={cambiarEstadoAccion}
-          className="mt-6 border-t border-linea/10 pt-5"
-        >
-          <input type="hidden" name="empresa_id" value={empresaId} />
-          <input type="hidden" name="accion" value={accion} />
-          <label className={`block ${tipografia.cuerpoChico}`}>
-            {t.motivo}
-            <input
-              name="motivo"
-              required
-              minLength={3}
-              maxLength={500}
-              placeholder={t.ejemplo}
-              className={campo}
-            />
-          </label>
-          <label
-            className={`mt-3 flex items-start gap-2 ${tipografia.cuerpoChico} text-gris`}
-          >
-            <input
-              type="checkbox"
-              name="confirmo"
-              value="si"
-              required
-              className="mt-1"
-            />
-            {t.confirmar}
-          </label>
-          <Button
-            type="submit"
-            variant={
-              accion === "REACTIVAR" || accion === "REABRIR"
-                ? "primary"
-                : "ghost"
-            }
-            className="mt-4"
-          >
-            {t.acciones[accion] ?? accion}
-          </Button>
-        </form>
-      ))}
-    </Card>
+    <div className="card">
+      <div className="card-head">
+        <span className="card-title">{t.titulo}</span>
+        <span className={badgeEstado(estado)}>{textoEstado(estado)}</span>
+      </div>
+      <form action={cambiarEstadoAccion} className="card-cuerpo">
+        <input type="hidden" name="empresa_id" value={empresaId} />
+        <input type="hidden" name="accion" value={accion} />
+        <label className="campo">
+          {t.motivo}
+          <input name="motivo" required minLength={3} maxLength={500} placeholder={t.ejemplo} />
+        </label>
+        <label className="casilla">
+          <input type="checkbox" name="confirmo" value="si" required />
+          {t.confirmar}
+        </label>
+        <div className="card-pie">
+          <button type="submit" className={activar ? "btn btn-primary" : "btn btn-danger"}>
+            {activar ? t.activar : t.desactivar}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
