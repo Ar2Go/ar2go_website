@@ -86,6 +86,8 @@ export async function eliminarEmpresaAccion(datos: FormData) {
   try {
     clerk = (await eliminarEmpresa(operador, d.data!.empresa_id, d.data!.confirmacion, d.data!.motivo)).clerk;
   } catch (e) {
+    // Un segundo envío llega cuando la empresa ya se borró: se vuelve a la lista, no a su detalle.
+    if (e instanceof ErrorCuenta && e.code === "EMPRESA_NO_ENCONTRADA") redirect("/admin?aviso=EMPRESA_ELIMINADA");
     if (e instanceof ErrorCuenta) destino(e.code);
     throw e; // redirect() de Next se propaga
   }
