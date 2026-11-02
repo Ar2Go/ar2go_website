@@ -10,8 +10,8 @@ export const precio = {
     {
       nombre: "Explorador",
       destacado: false,
-      monto: "$0",
-      periodo: "MXN, para siempre",
+      monto: "US$0",
+      periodo: "al mes",
       para: "Para probar AR2GO con un caso real antes de comprometer presupuesto.",
       incluye: ["1 argonauta o argotipo activo", "Horiq con hasta 10 trabajadores"],
       cta: { label: "Crear cuenta gratis", href: "/crear-cuenta" },
@@ -39,5 +39,4 @@ export const precio = {
       cta: { label: "Crear cuenta", href: "/crear-cuenta" },
     },
   ],
-  notaMeta: "Precios sin IVA. Explorador en pesos mexicanos; Navegante y Timonel en dólares estadounidenses.",
 } as const;

@@ -1289,11 +1289,6 @@
 .ar-home .plan .btn {
   margin-top: auto;
 }
-.ar-home .plans__note {
-  margin-top: 1.6rem;
-  font-size: var(--fs-xs);
-  color: var(--smoke);
-}
 
 /* ─── CTA final ──────────────────────────── */
 /* Foto a sangre en toda la sección, fundida con el fondo arriba y abajo. */

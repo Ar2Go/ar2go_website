@@ -52,7 +52,7 @@ export function Necesidades() {
   }
 
   return (
-    <section className="band band--tight">
+    <section className="band band--tight" id="soluciones">
       <div className="wrap">
         <div className="head">
           <p className="eyebrow">{necesidades.eyebrow}</p>
