@@ -84,7 +84,7 @@ export default async function EmpresaAdminPage({ params, searchParams }: Props) 
           </div>
         </div>
 
-        <Herramientas empresaId={d.empresa.id} herramientas={herramientas} bloqueada={d.empresa.estado !== "ACTIVA"} />
+        <Herramientas empresaId={d.empresa.id} herramientas={herramientas} />
 
         <div className="card">
           <div className="card-head">
