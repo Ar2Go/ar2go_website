@@ -1,0 +1,36 @@
+# Revisión de cada PR y de main (ancla de seguridad v1.4, punto 20): lo mismo que
+# CLAUDE.md pide antes de abrir un PR, más npm audit de producción. Hasta ahora el
+# único check era la vista previa de Vercel.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Dependencias de producción sin vulnerabilidades altas
+        run: npm audit --omit=dev --audit-level=high
+      - name: Tipos
+        run: npx tsc --noEmit
+      - name: Lint
+        run: npm run lint
+      - name: Build (sin variables de Clerk ni de Auth.js, como en local)
+        run: npm run build
