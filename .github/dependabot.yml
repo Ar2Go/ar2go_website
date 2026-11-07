@@ -1,0 +1,25 @@
+# Actualizaciones de dependencias (ancla de seguridad v1.4, punto 20).
+# Las alertas y las actualizaciones de seguridad se encienden aparte, en
+# Settings → Code security, con la cuenta admin.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Mexico_City
+    open-pull-requests-limit: 5
+    groups:
+      # Parches y menores en un solo PR por semana; las versiones mayores van solas.
+      menores-y-parches:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: "infra"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "infra"
