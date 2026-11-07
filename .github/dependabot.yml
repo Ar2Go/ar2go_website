@@ -8,18 +8,23 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      time: "08:00"
+      time: '08:00'
       timezone: America/Mexico_City
     open-pull-requests-limit: 5
+    # Las versiones mayores se evalúan a mano (cambian APIs; el stack está fijado,
+    # p. ej. Next 15 en el sitio). Las alertas de seguridad siguen llegando.
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
-      # Parches y menores en un solo PR por semana; las versiones mayores van solas.
+      # Parches y menores en un solo PR por semana.
       menores-y-parches:
         update-types: [minor, patch]
     commit-message:
-      prefix: "infra"
+      prefix: 'infra'
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
     commit-message:
-      prefix: "infra"
+      prefix: 'infra'
